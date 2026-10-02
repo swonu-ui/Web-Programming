@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <style>
+        :root {
+            --primary: #0f766e;
+            --accent: #14b8a6;
+            --bg: #f0fdfa;
+            --text: #1e293b;
+            --radius: 12px;
+        }
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #051a0a;
+                --text: #d4edda;
+            }
+        }
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: sans-serif;
+            padding: 24px;
+        }
+        h1 {
+            color: var(--primary);
+            margin-bottom: 24px;
+        }
+        /* Forces vertical single-column layout across all screens */
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+            max-width: 600px;
+        }
+        .card {
+            border: 2px solid var(--accent);
+            border-radius: var(--radius);
+            background: var(--bg);
+            color: var(--text);
+            font-size: 15px;
+            font-weight: 600;
+            overflow: hidden;
+        }
+        /* Style the main clickable toggle container */
+        .card summary {
+            padding: 16px 24px;
+            cursor: pointer;
+            outline: none;
+            user-select: none;
+            transition: transform 0.25s ease;
+        }
+        .card summary:hover {
+            transform: translateX(5px);
+        }
+        /* Container for first level sub-options (Monday/Friday) */
+        .sub-options {
+            display: flex;
+            flex-direction: column;
+            background: rgba(20, 184, 166, 0.05);
+            border-top: 1px solid rgba(20, 184, 166, 0.2);
+        }
+        /* Layout configuration for nested day components */
+        .sub-options details {
+            border-bottom: 1px solid rgba(20, 184, 166, 0.1);
+        }
+        .sub-options details:last-child {
+            border-bottom: none;
+        }
+        .sub-options summary {
+            padding: 12px 32px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        /* Container for final link items */
+        .nested-links {
+            display: flex;
+            flex-direction: column;
+            background: rgba(20, 184, 166, 0.03);
+        }
+        /* Stretches final clickable items to fill width */
+        .nested-links a {
+            padding: 10px 48px;
+            text-decoration: none;
+            color: inherit;
+            font-size: 13px;
+            font-weight: 400;
+            transition: background 0.2s ease, padding-left 0.2s ease;
+        }
+        .nested-links a:hover {
+            background: rgba(20, 184, 166, 0.1);
+            padding-left: 54px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Rai Swonu (202637725)</h1>
+    <div class="grid">
+        <!-- Week 2 -->
+        <div class="card">
+            <details>
+                <summary>Week 2</summary>
+                <div class="sub-options">
+                    <details>
+                        <summary>Monday</summary>
+                        <div class="nested-links">
+                        <a href="file:///Users/raiswonu/College%20majors/Web%20Programming/week2/Monday/sep%207/T1.html" target="_blank" rel="noopener noreferrer">Task 1</a>
+                    <a href="file:///Users/raiswonu/College%20majors/Web%20Programming/week2/Monday/sep%207/T2.html" target="_blank" rel="noopener noreferrer">Task 2</a>
+                    <a href="file:///Users/raiswonu/College%20majors/Web%20Programming/week2/Monday/sep%207/T3.html" target="_blank" rel="noopener noreferrer">Task 3</a>
+                    <a href="file:///Users/raiswonu/College%20majors/Web%20Programming/week2/Monday/sep%207/T4.html" target="_blank" rel="noopener noreferrer">Task 4</a>
+                    <a href="file:///Users/raiswonu/College%20majors/Web%20Programming/week2/Monday/sep%207/T5.html" target="_blank" rel="noopener noreferrer">Task 5</a>
+                    <a href="file:///Users/raiswonu/College%20majors/Web%20Programming/week2/Monday/sep%207/T6.html" target="_blank" rel="noopener noreferrer">Task 6</a>
+                    <a href="file:///Users/raiswonu/College%20majors/Web%20Programming/week2/Monday/sep%207/T7.html" target="_blank" rel="noopener noreferrer">Task 7</a>
+                    <a href="file:///Users/raiswonu/College%20majors/Web%20Programming/week2/Monday/sep%207/T8.html" target="_blank" rel="noopener noreferrer">Task 8</a>
+
+                        </div>
+                    </details>
+                    <details>
+                        <summary>Friday</summary>
+                        <div class="nested-links">
+                            <a href="file:///Users/raiswonu/College%20majors/Web%20Programming/week2/friday/sep11/t1.html" target="_blank" rel="noopener noreferrer">Task 1</a>
+                            <a href="file:///Users/raiswonu/College%20majors/Web%20Programming/week2/friday/sep11/t2.html" target="_blank" rel="noopener noreferrer">Task 2</a>
+                            <a href="file:///Users/raiswonu/College%20majors/Web%20Programming/week2/friday/sep11/t3.html" target="_blank" rel="noopener noreferrer">Task 3</a>
+                            <a href="file:///Users/raiswonu/College%20majors/Web%20Programming/week2/friday/sep11/t4.html" target="_blank" rel="noopener noreferrer">Task 4</a>
+                            <a href="file:///Users/raiswonu/College%20majors/Web%20Programming/week2/friday/sep11/t5.html" target="_blank" rel="noopener noreferrer">Task 5</a>
+                            <a href="file:///Users/raiswonu/College%20majors/Web%20Programming/week2/friday/sep11/t6.html" target="_blank" rel="noopener noreferrer">Task 6</a>
+                            <a href="/Users/raiswonu/College%20majors/Web%20Programming/week2/friday/sep11/t7.html" target="_blank" rel="noopener noreferrer">Task 7</a>
+                            <a href="file:///Users/raiswonu/College%20majors/Web%20Programming/week2/friday/sep11/t8.html" target="_blank" rel="noopener noreferrer">Task 8</a>
+                        </div>
+                    </details>
+                </div>
+            </details>
+        </div>
+
+        <!-- Week 3 -->
+        <div class="card">
+            <details>
+                <summary>Week 3</summary>
+                <div class="sub-options">
+                    <details>
+                        <summary>Monday</summary>
+                        <div class="nested-links">
+                            <a href="file:///Users/raiswonu/College%20majors/Web%20Programming/week3/monday/w3mt1.html" target="_blank" rel="noopener noreferrer">Task 1</a>
+                            <a href="file:///Users/raiswonu/College%20majors/Web%20Programming/week3/monday/w3mt2.html" target="_blank" rel="noopener noreferrer">Task 2</a>
+                            <a href="file:///Users/raiswonu/College%20majors/Web%20Programming/week3/monday/w3mt3.html" target="_blank" rel="noopener noreferrer">Task 3</a>
+                            <a href="file:///Users/raiswonu/College%20majors/Web%20Programming/week3/monday/w3mt4.html" target="_blank" rel="noopener noreferrer">Task 4</a>
+                            <a href="file:///Users/raiswonu/College%20majors/Web%20Programming/week3/monday/w3mt5.html" target="_blank" rel="noopener noreferrer">Task 5</a>
+                            <a href="file:///Users/raiswonu/College%20majors/Web%20Programming/week3/monday/w3mt6.html" target="_blank" rel="noopener noreferrer">Task 6</a>
+                            <a href="file:///Users/raiswonu/College%20majors/Web%20Programming/week3/monday/w3mt7.html" target="_blank" rel="noopener noreferrer">Task 7</a>
+                            <a href="file:///Users/raiswonu/College%20majors/Web%20Programming/week3/monday/w3mt8.html" target="_blank" rel="noopener noreferrer">Task 8</a>
+                        </div>
+                    </details>
+                    <details>
+                        <summary>Friday</summary>
+                        <div class="nested-links">
+                            <a href="file:///Users/raiswonu/College%20majors/Web%20Programming/week3/friday/w3f1.html" target="_blank" rel="noopener noreferrer">Task 1</a>
+                            <a href="file:///Users/raiswonu/College%20majors/Web%20Programming/week3/friday/w3f2.html" target="_blank" rel="noopener noreferrer">Task 2</a>
+                            <a href="file:///Users/raiswonu/College%20majors/Web%20Programming/week3/friday/w3f3.html" target="_blank" rel="noopener noreferrer">Task 3</a>
+                            <a href="file:///Users/raiswonu/College%20majors/Web%20Programming/week3/friday/w3f4.html" target="_blank" rel="noopener noreferrer">Task 4</a>
+                            <a href="file:///Users/raiswonu/College%20majors/Web%20Programming/week3/friday/w3f5.html" target="_blank" rel="noopener noreferrer">Task 5</a>
+                            <a href="file:///Users/raiswonu/College%20majors/Web%20Programming/week3/friday/w3f6.html" target="_blank" rel="noopener noreferrer">Task 6</a>
+                            <a href="file:///Users/raiswonu/College%20majors/Web%20Programming/week3/friday/w3f7.html" target="_blank" rel="noopener noreferrer">Task 7</a>
+                            <a href="#" target="_blank" rel="noopener noreferrer">Task 8</a>
+                        </div>
+                    </details>
+                </div>
+            </details>
+        </div>
+
+        <!-- Week 4 -->
+        <div class="card">
+            <details>
+                <summary>Week 4</summary>
+                <div class="sub-options">
+                    <details>
+                        <summary>Monday</summary>
+                        <div class="nested-links">
+                            <a href="file:///Users/raiswonu/College%20majors/Web%20Programming/week4/w4t1.html" target="_blank" rel="noopener noreferrer">Task 1</a>
+                            <a href="file:///Users/raiswonu/College%20majors/Web%20Programming/week4/w4t2.html" target="_blank" rel="noopener noreferrer">Task 2</a>
+                            <a href="file:///Users/raiswonu/College%20majors/Web%20Programming/week4/w4t3.html" target="_blank" rel="noopener noreferrer">Task 3</a>
+                            <a href="file:///Users/raiswonu/College%20majors/Web%20Programming/week4/w4t4.html" target="_blank" rel="noopener noreferrer">Task 4</a>
+                            
+                        </div>
+                    </details>
+                  
+                    
+                </div>
+            </details>
+        </div>
+    </div>
+</body>
+</html>
