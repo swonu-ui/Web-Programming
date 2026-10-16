@@ -8,7 +8,7 @@
         body {
             font-family: system-ui, -apple-system, sans-serif;
             max-width: 600px;
-            margin: 40px auto;
+            margin: 50px auto;
             padding: 0 20px;
             background-color: #f7f9fc;
             color: #333;
@@ -28,7 +28,6 @@
             border-radius: 6px;
             cursor: pointer;
             margin-right: 10px;
-            transition: background 0.2s;
         }
         button:hover {
             background-color: #1d4ed8;
@@ -39,23 +38,18 @@
         .btn-fav:hover {
             background-color: #059669;
         }
-        #spinner {
-            display: none;
+        #status {
             font-weight: bold;
             color: #2563eb;
-            margin-top: 15px;
+            margin: 15px 0;
         }
-        .joke-box {
+        #joke-area {
             margin: 20px 0;
             padding: 15px;
             background: #f1f5f9;
             border-left: 4px solid #2563eb;
             border-radius: 4px;
-            min-height: 60px;
-        }
-        .error {
-            color: #dc2626;
-            font-weight: bold;
+            min-height: 50px;
         }
         .favorites-section {
             margin-top: 30px;
@@ -71,27 +65,96 @@
 
     <div class="card">
         <h1>😂 Random Joke Fetcher</h1>
-        <p>Click the button to load a fresh joke using the Fetch API!</p>
+        <p>Based on your Week 6 Study Guide</p>
         
         <div>
-            <button id="loadBtn">Load Joke</button>
-            <button id="favBtn" class="btn-fav" style="display:none;">Save Favourite ⭐</button>
+            <!-- A button the user clicks -->
+            <button onclick="loadJoke()">Load a Joke</button>
+            <button id="favBtn" class="btn-fav" style="display:none;" onclick="saveFavorite()">Save Favourite ⭐</button>
         </div>
 
-        <div id="spinner">⏳ Loading joke...</div>
-        <div id="errorMsg" class="error"></div>
+        <!-- Loading and error text -->
+        <p id="status"></p>
 
-        <div class="joke-box">
-            <p id="jokeSetup">Click 'Load Joke' to begin!</p>
-            <p id="jokePunch" style="font-weight: bold; margin-top: 10px;"></p>
-        </div>
+        <!-- Where the joke will appear -->
+        <div id="joke-area">Click 'Load a Joke' to begin!</div>
 
         <div class="favorites-section">
             <h3>Saved Favourites</h3>
-            <ul id="favList"></ul>
+            <ul id="favList"><li>No saved jokes yet.</li></ul>
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script>
+        let currentJoke = null;
+
+        // Load existing favorites on startup
+        document.addEventListener('DOMContentLoaded', displayFavorites);
+
+        // Complete version matching the study guide pattern
+        async function loadJoke() {
+            const status = document.getElementById('status');
+            const jokeArea = document.getElementById('joke-area');
+            const favBtn = document.getElementById('favBtn');
+            
+            status.textContent = 'Loading…';
+            favBtn.style.display = 'none';
+
+            try {
+                const res = await fetch('https://official-joke-api.appspot.com/random_joke');
+                
+                // You must check this manually! fetch() doesn't throw on 404/500
+                if (!res.ok) throw new Error(`HTTP error: ${res.status}`);
+                
+                const data = await res.json();
+                currentJoke = data;
+
+                // Put the setup and punchline on the page
+                jokeArea.innerHTML = `<p><strong>${data.setup}</strong></p><p>${data.punchline}</p>`;
+                
+                // Show favorite button on success
+                favBtn.style.display = 'inline-block';
+
+            } catch (err) {
+                status.textContent = 'Error: ' + err.message;
+                jokeArea.textContent = 'Could not load joke.';
+            } finally {
+                if (!status.textContent.startsWith('Error')) {
+                    status.textContent = '';
+                }
+            }
+        }
+
+        function saveFavorite() {
+            if (!currentJoke) return;
+
+            let favorites = JSON.parse(localStorage.getItem('favoriteJokes')) || [];
+
+            // Prevent duplicate entries
+            const exists = favorites.some(j => j.id === currentJoke.id);
+            if (!exists) {
+                favorites.push(currentJoke);
+                localStorage.setItem('favoriteJokes', JSON.stringify(favorites));
+                displayFavorites();
+            }
+        }
+
+        function displayFavorites() {
+            const favList = document.getElementById('favList');
+            let favorites = JSON.parse(localStorage.getItem('favoriteJokes')) || [];
+
+            if (favorites.length === 0) {
+                favList.innerHTML = '<li>No saved jokes yet.</li>';
+                return;
+            }
+
+            favList.innerHTML = '';
+            favorites.forEach((joke) => {
+                const li = document.createElement('li');
+                li.textContent = `${joke.setup} — ${joke.punchline}`;
+                favList.appendChild(li);
+            });
+        }
+    </script>
 </body>
 </html>
