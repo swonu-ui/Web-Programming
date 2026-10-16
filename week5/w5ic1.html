@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grade Checker</title>
+</head>
+<body>
+    <h2>Check Your Grade</h2>
+    <h3>Enter your score below to see your grade.</h3>
+    <input type="number" id="scoreInput" value="75" placeholder="Enter score">
+    <button onclick="checkGrade()">Check</button>
+    <p>Your Grade: <strong id="gradeOutput">C</strong></p>
+
+    <script>
+        function checkGrade() {
+            let score = parseInt(document.getElementById('scoreInput').value);
+            let grade = '';
+
+            if (score >= 90) {
+                grade = 'A';
+            } else if (score >= 80) {
+                grade = 'B';
+            } else if (score >= 70) {
+                grade = 'C';
+            } else {
+                grade = 'F';
+            }
+
+            document.getElementById('gradeOutput').innerText = grade;
+            console.log(grade);
+        }
+    </script>
+</body>
+</html>
