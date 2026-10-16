@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Joke Fetcher</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 0 20px;
+            background-color: #f7f9fc;
+            color: #333;
+        }
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        button {
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            font-size: 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-right: 10px;
+            transition: background 0.2s;
+        }
+        button:hover {
+            background-color: #1d4ed8;
+        }
+        .btn-fav {
+            background-color: #10b981;
+        }
+        .btn-fav:hover {
+            background-color: #059669;
+        }
+        #spinner {
+            display: none;
+            font-weight: bold;
+            color: #2563eb;
+            margin-top: 15px;
+        }
+        .joke-box {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f1f5f9;
+            border-left: 4px solid #2563eb;
+            border-radius: 4px;
+            min-height: 60px;
+        }
+        .error {
+            color: #dc2626;
+            font-weight: bold;
+        }
+        .favorites-section {
+            margin-top: 30px;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 20px;
+        }
+        ul {
+            padding-left: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h1>😂 Random Joke Fetcher</h1>
+        <p>Click the button to load a fresh joke using the Fetch API!</p>
+        
+        <div>
+            <button id="loadBtn">Load Joke</button>
+            <button id="favBtn" class="btn-fav" style="display:none;">Save Favourite ⭐</button>
+        </div>
+
+        <div id="spinner">⏳ Loading joke...</div>
+        <div id="errorMsg" class="error"></div>
+
+        <div class="joke-box">
+            <p id="jokeSetup">Click 'Load Joke' to begin!</p>
+            <p id="jokePunch" style="font-weight: bold; margin-top: 10px;"></p>
+        </div>
+
+        <div class="favorites-section">
+            <h3>Saved Favourites</h3>
+            <ul id="favList"></ul>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

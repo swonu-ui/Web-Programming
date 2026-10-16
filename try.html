@@ -1,0 +1,49 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Custom Counter</title>
+</head>
+<body>
+
+    <h2>Custom Counter App</h2>
+
+    <label>Enter starting number: </label>
+    <input type="number" id="startingNumber" value="0">
+    <button onclick="startCounter()">Start Counter</button>
+
+    <h3>Count: <span id="count">0</span></h3>
+
+    <button onclick="changeCount(1)">+ Increase</button>
+    <button onclick="changeCount(-1)">- Decrease</button>
+    <button onclick="resetCounter()">Reset</button>
+
+    <script>
+        let count = 0;
+
+        function startCounter() {
+            let input = document.getElementById("startingNumber").value;
+
+            if (input.trim() === "") {
+                alert("Please enter a starting number.");
+                return;
+            }
+
+            count = Number(input);
+            document.getElementById("count").textContent = count;
+        }
+
+        function changeCount(amount) {
+            count = count + amount;
+            document.getElementById("count").textContent = count;
+        }
+
+        function resetCounter() {
+            count = 0;
+            document.getElementById("count").textContent = count;
+            document.getElementById("startingNumber").value = 0;
+        }
+    </script>
+
+</body>
+</html>
