@@ -1,0 +1,273 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog Post Searcher</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6fb;
+      color: #202538;
+      max-width: 850px;
+      margin: 40px auto;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #3449a8;
+    }
+
+    .controls {
+      display: grid;
+      gap: 12px;
+      margin: 24px 0;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccd1df;
+      border-radius: 8px;
+      font-size: 16px;
+      background: white;
+    }
+
+    .post {
+      background: white;
+      padding: 18px;
+      margin: 14px 0;
+      border-radius: 10px;
+      border: 1px solid #e0e4ee;
+    }
+
+    .post h2 {
+      font-size: 20px;
+      text-transform: capitalize;
+    }
+
+    .meta {
+      color: #667085;
+      font-size: 13px;
+    }
+
+    button {
+      padding: 9px 12px;
+      margin-top: 8px;
+      border: none;
+      border-radius: 6px;
+      background: #3449a8;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #26377f;
+    }
+
+    .comments {
+      background: #f4f6fb;
+      padding: 12px;
+      margin-top: 12px;
+      border-radius: 8px;
+    }
+
+    .comment {
+      border-bottom: 1px solid #dce1ec;
+      padding: 10px 0;
+    }
+
+    .comment:last-child {
+      border-bottom: none;
+    }
+
+    #status {
+      color: #667085;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Blog Post Searcher</h1>
+  <p>Search posts, choose an author, and read comments.</p>
+
+  <div class="controls">
+    <input
+      id="search"
+      type="search"
+      placeholder="Search post titles or content..."
+    >
+
+    <select id="author">
+      <option value="all">All authors</option>
+    </select>
+  </div>
+
+  <p id="status">Loading posts...</p>
+  <main id="posts"></main>
+
+  <script>
+    const API = "https://jsonplaceholder.typicode.com";
+
+    const searchInput = document.querySelector("#search");
+    const authorSelect = document.querySelector("#author");
+    const postsContainer = document.querySelector("#posts");
+    const status = document.querySelector("#status");
+
+    let allPosts = [];
+    let allUsers = [];
+
+    async function loadData() {
+      try {
+        const responses = await Promise.all([
+          fetch(`${API}/posts`),
+          fetch(`${API}/users`)
+        ]);
+
+        if (responses.some(response => !response.ok)) {
+          throw new Error("Could not load the data.");
+        }
+
+        allPosts = await responses[0].json();
+        allUsers = await responses[1].json();
+
+        allUsers.forEach(user => {
+          const option = document.createElement("option");
+          option.value = String(user.id);
+          option.textContent = user.name;
+          authorSelect.appendChild(option);
+        });
+
+        showPosts(allPosts);
+      } catch (error) {
+        status.textContent =
+          "Could not load posts. Check your internet connection and refresh.";
+        console.error(error);
+      }
+    }
+
+    function filterPosts() {
+      const term = searchInput.value.trim().toLowerCase();
+      const authorId = authorSelect.value;
+
+      const matchingPosts = allPosts.filter(post => {
+        const matchesText =
+          post.title.toLowerCase().includes(term) ||
+          post.body.toLowerCase().includes(term);
+
+        const matchesAuthor =
+          authorId === "all" ||
+          String(post.userId) === authorId;
+
+        return matchesText && matchesAuthor;
+      });
+
+      showPosts(matchingPosts);
+    }
+
+    function showPosts(posts) {
+      postsContainer.replaceChildren();
+      status.textContent = `${posts.length} posts found`;
+
+      if (posts.length === 0) {
+        status.textContent = "No matching posts found.";
+        return;
+      }
+
+      posts.forEach(post => {
+        const card = document.createElement("article");
+        card.className = "post";
+
+        const title = document.createElement("h2");
+        title.textContent = post.title;
+
+        const author = allUsers.find(
+          user => user.id === post.userId
+        );
+
+        const meta = document.createElement("p");
+        meta.className = "meta";
+        meta.textContent =
+          `Post #${post.id} · Author: ${author?.name ?? "Unknown"}`;
+
+        const body = document.createElement("p");
+        body.textContent = post.body;
+
+        const button = document.createElement("button");
+        button.textContent = "Show comments";
+
+        const commentsArea = document.createElement("div");
+        commentsArea.className = "comments";
+        commentsArea.hidden = true;
+
+        button.addEventListener("click", async () => {
+          if (!commentsArea.hidden) {
+            commentsArea.hidden = true;
+            button.textContent = "Show comments";
+            return;
+          }
+
+          commentsArea.hidden = false;
+          button.textContent = "Hide comments";
+
+          if (commentsArea.dataset.loaded === "true") {
+            return;
+          }
+
+          commentsArea.textContent = "Loading comments...";
+
+          try {
+            const response = await fetch(
+              `${API}/posts/${post.id}/comments`
+            );
+
+            if (!response.ok) {
+              throw new Error("Could not load comments.");
+            }
+
+            const comments = await response.json();
+            commentsArea.replaceChildren();
+
+            comments.forEach(comment => {
+              const item = document.createElement("div");
+              item.className = "comment";
+
+              const name = document.createElement("strong");
+              name.textContent = comment.name;
+
+              const email = document.createElement("p");
+              email.textContent = comment.email;
+
+              const message = document.createElement("p");
+              message.textContent = comment.body;
+
+              item.append(name, email, message);
+              commentsArea.appendChild(item);
+            });
+
+            commentsArea.dataset.loaded = "true";
+          } catch (error) {
+            commentsArea.textContent =
+              "Comments could not be loaded. Try again.";
+            console.error(error);
+          }
+        });
+
+        card.append(title, meta, body, button, commentsArea);
+        postsContainer.appendChild(card);
+      });
+    }
+
+    searchInput.addEventListener("input", filterPosts);
+    authorSelect.addEventListener("change", filterPosts);
+
+    loadData();
+  </script>
+</body>
+</html>
