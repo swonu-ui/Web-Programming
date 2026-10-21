@@ -1,0 +1,490 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Random User Profiles</title>
+
+  <style>
+    :root {
+      --pink: #ff0169;
+      --purple: #7638fa;
+      --orange: #ff7a00;
+      --blue: #0095f6;
+      --text: #262626;
+      --muted: #737373;
+      --border: #dbdbdb;
+      --background: #fafafa;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--background);
+      color: var(--text);
+    }
+
+    .top-gradient {
+      height: 7px;
+      background: linear-gradient(
+        90deg,
+        #ffd600,
+        #ff7a00,
+        #ff0169,
+        #d300c5,
+        #7638fa
+      );
+    }
+
+    header {
+      text-align: center;
+      padding: 40px 20px 30px;
+      background: white;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo {
+      font-size: 30px;
+      font-weight: 800;
+      letter-spacing: -1px;
+      background: linear-gradient(
+        45deg,
+        var(--orange),
+        var(--pink),
+        var(--purple)
+      );
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      display: inline-block;
+    }
+
+    header p {
+      color: var(--muted);
+      margin: 10px 0 0;
+    }
+
+    main {
+      width: min(1100px, 92%);
+      margin: 30px auto;
+    }
+
+    .controls {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      display: flex;
+      align-items: end;
+      gap: 16px;
+      flex-wrap: wrap;
+      box-shadow: 0 4px 18px #26262608;
+    }
+
+    .field {
+      flex: 1;
+      min-width: 140px;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 9px;
+    }
+
+    select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      background: white;
+      color: var(--text);
+      font-size: 14px;
+      outline: none;
+    }
+
+    select:focus {
+      border-color: var(--pink);
+    }
+
+    button {
+      padding: 13px 22px;
+      border: none;
+      border-radius: 9px;
+      background: linear-gradient(45deg, var(--pink), var(--purple));
+      color: white;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      transition: transform 0.2s, opacity 0.2s;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      opacity: 0.9;
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: wait;
+      transform: none;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 32px 0 18px;
+    }
+
+    .section-heading h2 {
+      font-size: 21px;
+      margin: 0;
+    }
+
+    #user-count {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .profiles {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .profile-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px 18px;
+      text-align: center;
+      box-shadow: 0 4px 18px #26262608;
+      transition: transform 0.2s, box-shadow 0.2s;
+      min-width: 0;
+    }
+
+    .profile-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 25px #7638fa18;
+    }
+
+    .avatar-ring {
+      width: 112px;
+      height: 112px;
+      padding: 4px;
+      margin: 0 auto 16px;
+      border-radius: 50%;
+      background: linear-gradient(
+        45deg,
+        #ffd600,
+        #ff7a00,
+        #ff0169,
+        #d300c5,
+        #7638fa
+      );
+    }
+
+    .avatar {
+      width: 100%;
+      height: 100%;
+      display: block;
+      border-radius: 50%;
+      border: 3px solid white;
+      object-fit: cover;
+      background: #f4f4f4;
+    }
+
+    .profile-card h3 {
+      font-size: 18px;
+      margin: 8px 0;
+      overflow-wrap: anywhere;
+    }
+
+    .location {
+      color: var(--muted);
+      font-size: 13px;
+      margin: 0 0 18px;
+    }
+
+    .details {
+      text-align: left;
+      border-top: 1px solid #efefef;
+      padding-top: 14px;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .detail {
+      margin: 9px 0;
+      overflow-wrap: anywhere;
+    }
+
+    .detail-label {
+      display: block;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.7px;
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 2px;
+    }
+
+    .email {
+      color: #8a2be2;
+    }
+
+    .message {
+      text-align: center;
+      color: var(--muted);
+      padding: 45px 15px;
+      grid-column: 1 / -1;
+      background: white;
+      border: 1px dashed var(--border);
+      border-radius: 16px;
+    }
+
+    .message.error {
+      color: #d9304f;
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    @media (max-width: 760px) {
+      .profiles {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .controls {
+        align-items: stretch;
+      }
+
+      .controls button {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .profiles {
+        grid-template-columns: 1fr;
+      }
+
+      header {
+        padding-top: 30px;
+      }
+
+      .profile-card {
+        padding: 24px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="top-gradient"></div>
+
+  <header>
+    <div class="logo">PeopleGram</div>
+    <p>Discover random people, one profile at a time.</p>
+  </header>
+
+  <main>
+    <section class="controls">
+      <div class="field">
+        <label for="how-many">Number of users</label>
+        <select id="how-many">
+          <option value="3">3 users</option>
+          <option value="6" selected>6 users</option>
+          <option value="9">9 users</option>
+          <option value="12">12 users</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="gender">Gender</label>
+        <select id="gender">
+          <option value="all">All genders</option>
+          <option value="female">Female</option>
+          <option value="male">Male</option>
+        </select>
+      </div>
+
+      <button id="load-btn ">✦ Load Users</button>
+    </section>
+
+    <div class="section-heading">
+      <h2>Explore people</h2>
+      <span id="user-count">Ready to discover</span>
+    </div>
+
+    <section class="profiles" id="profiles">
+      <div class="message">
+        Click "Load Users" to discover random profiles!
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    Random profile data provided by randomuser.me
+  </footer>
+
+  <script>
+    const loadButton = document.querySelector("#load-btn");
+    const profilesContainer = document.querySelector("#profiles");
+    const countLabel = document.querySelector("#user-count");
+
+    loadButton.addEventListener("click", loadUsers);
+
+    async function loadUsers() {
+      const amount = document.querySelector("#how-many").value;
+      const gender = document.querySelector("#gender").value;
+
+      const parameters = new URLSearchParams({
+        results: amount
+      });
+
+      if (gender !== "all") {
+        parameters.set("gender", gender);
+      }
+
+      const url = `https://randomuser.me/api/?${parameters}`;
+
+      loadButton.disabled = true;
+      loadButton.textContent = "Loading...";
+      countLabel.textContent = "Finding people";
+
+      profilesContainer.innerHTML =
+        '<div class="message">Loading random profiles...</div>';
+
+      try {
+        const response = await fetch(url);
+
+        if (!response.ok) {
+          throw new Error("The server could not load profiles.");
+        }
+
+        const data = await response.json();
+        const users = data.results;
+
+        if (users.length === 0) {
+          throw new Error("No profiles were returned. Try again.");
+        }
+
+        profilesContainer.innerHTML = "";
+
+        users.forEach(function(user) {
+          const fullName =
+            `${user.name.first} ${user.name.last}`;
+
+          const location =
+            `${user.location.city}, ${user.location.country}`;
+
+          const card = document.createElement("article");
+          card.className = "profile-card";
+
+          const avatarRing = document.createElement("div");
+          avatarRing.className = "avatar-ring";
+
+          const avatar = document.createElement("img");
+          avatar.className = "avatar";
+          avatar.src = user.picture.large;
+          avatar.alt = `Profile photo of ${fullName}`;
+          avatar.loading = "lazy";
+
+          avatarRing.appendChild(avatar);
+
+          const name = document.createElement("h3");
+          name.textContent = fullName;
+
+          const place = document.createElement("p");
+          place.className = "location";
+          place.textContent = `📍 ${location}`;
+
+          const details = document.createElement("div");
+          details.className = "details";
+
+          details.appendChild(
+            makeDetail("Email", user.email, "email")
+          );
+
+          details.appendChild(
+            makeDetail("Phone", user.phone)
+          );
+
+          details.appendChild(
+            makeDetail("Age", `${user.dob.age} years old`)
+          );
+
+          details.appendChild(
+            makeDetail(
+              "Country",
+              user.location.country
+            )
+          );
+
+          card.append(
+            avatarRing,
+            name,
+            place,
+            details
+          );
+
+          profilesContainer.appendChild(card);
+        });
+
+        countLabel.textContent =
+          `${users.length} profiles found`;
+
+      } catch (error) {
+        profilesContainer.innerHTML = "";
+
+        const errorMessage = document.createElement("div");
+        errorMessage.className = "message error";
+        errorMessage.textContent =
+          `${error.message} Check your internet connection and try again.`;
+
+        profilesContainer.appendChild(errorMessage);
+        countLabel.textContent = "Unable to load profiles";
+
+      } finally {
+        loadButton.disabled = false;
+        loadButton.textContent = "✦ Load Users";
+      }
+    }
+
+    function makeDetail(labelText, valueText, extraClass = "") {
+      const wrapper = document.createElement("div");
+      wrapper.className = "detail";
+
+      const label = document.createElement("span");
+      label.className = "detail-label";
+      label.textContent = labelText;
+
+      const value = document.createElement("div");
+      value.textContent = valueText;
+
+      if (extraClass) {
+        value.className = extraClass;
+      }
+
+      wrapper.append(label, value);
+      return wrapper;
+    }
+
+    // Load some profiles when the page first opens.
+    loadUsers();
+  </script>
+</body>
+</html>
