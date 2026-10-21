@@ -1,0 +1,674 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Country Explorer</title>
+
+  <style>
+    :root {
+      --primary: #4361ee;
+      --secondary: #7209b7;
+      --background: #f2f4ff;
+      --surface: #ffffff;
+      --soft: #e3e8ff;
+      --text: #20243a;
+      --muted: #70758a;
+      --border: #e1e5f0;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background: var(--background);
+    }
+
+    header {
+      padding: 38px 20px;
+      color: white;
+      background: linear-gradient(130deg, var(--primary), var(--secondary));
+    }
+
+    .header-content,
+    main {
+      width: min(950px, 100%);
+      margin: auto;
+    }
+
+    header h1 {
+      margin: 0 0 10px;
+      font-size: clamp(30px, 5vw, 44px);
+    }
+
+    header p {
+      margin: 0;
+      line-height: 1.7;
+    }
+
+    main {
+      padding: 28px 18px 45px;
+    }
+
+    .card {
+      padding: 24px;
+      margin-bottom: 22px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: 0 8px 28px rgba(30, 40, 80, 0.05);
+    }
+
+    h2 {
+      margin-top: 0;
+    }
+
+    .muted {
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .search-form {
+      display: flex;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    input {
+      flex: 1;
+      min-width: 0;
+      padding: 14px;
+      color: var(--text);
+      background: white;
+      border: 2px solid var(--border);
+      border-radius: 11px;
+      font: inherit;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: var(--primary);
+    }
+
+    button {
+      padding: 13px 19px;
+      color: white;
+      background: var(--primary);
+      border: none;
+      border-radius: 11px;
+      font: inherit;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: var(--secondary);
+    }
+
+    .quick-searches {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 15px;
+    }
+
+    .quick-searches button {
+      padding: 8px 12px;
+      color: var(--text);
+      background: var(--soft);
+      border: 1px solid var(--border);
+      border-radius: 30px;
+      font-size: 13px;
+    }
+
+    .quick-searches button:hover {
+      color: white;
+      background: var(--primary);
+    }
+
+    #status {
+      margin-top: 15px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .error {
+      color: #b42318 !important;
+    }
+
+    .country-hero {
+      display: grid;
+      grid-template-columns: 1fr 0.9fr;
+      align-items: center;
+      gap: 24px;
+    }
+
+    #country-name {
+      margin: 0 0 10px;
+      font-size: clamp(28px, 5vw, 40px);
+      overflow-wrap: anywhere;
+    }
+
+    #official-name {
+      color: var(--muted);
+      line-height: 1.6;
+      overflow-wrap: anywhere;
+    }
+
+    .flag-box {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 175px;
+      padding: 18px;
+      background: var(--soft);
+      border-radius: 15px;
+    }
+
+    #flag {
+      display: block;
+      width: 100%;
+      max-height: 190px;
+      object-fit: contain;
+      filter: drop-shadow(0 5px 8px rgba(0, 0, 0, 0.12));
+    }
+
+    .facts {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 25px;
+    }
+
+    .fact {
+      min-width: 0;
+      padding: 16px;
+      background: var(--soft);
+      border-radius: 13px;
+    }
+
+    .fact-label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .fact-value {
+      font-size: 16px;
+      font-weight: bold;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+
+    .details {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0 24px;
+      margin-top: 18px;
+    }
+
+    .detail {
+      min-width: 0;
+      padding: 15px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .detail-label {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .detail-value {
+      font-weight: 600;
+      line-height: 1.6;
+      overflow-wrap: anywhere;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .empty-state {
+      padding: 28px 10px;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.8;
+    }
+
+    .empty-state span {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 42px;
+    }
+
+    footer {
+      padding: 0 18px 28px;
+      color: var(--muted);
+      text-align: center;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 650px) {
+      .card {
+        padding: 18px;
+      }
+
+      .country-hero {
+        grid-template-columns: 1fr;
+      }
+
+      .flag-box {
+        min-height: 130px;
+      }
+
+      #flag {
+        max-height: 155px;
+      }
+
+      .facts {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .details {
+        grid-template-columns: 1fr;
+      }
+
+      .search-form {
+        flex-direction: column;
+      }
+
+      .search-form button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="header-content">
+      <h1>🌍 Country Explorer</h1>
+      <p>
+        Discover the world, one country at a time.
+        Search for a country to explore its information.
+      </p>
+    </div>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>Search for a country</h2>
+      <p class="muted">
+        Enter a country name and press Search or Enter to view its details.
+      </p>
+
+      <form id="search-form" class="search-form">
+        <input
+          id="search-input"
+          type="search"
+          placeholder="e.g. Nepal, Japan, South Korea..."
+          autocomplete="off"
+          aria-label="Search country"
+        >
+        <button type="submit">Search</button>
+      </form>
+
+      <div class="quick-searches">
+        <button type="button" data-name="Nepal">🇳🇵 Nepal</button>
+        <button type="button" data-name="Japan">🇯🇵 Japan</button>
+        <button type="button" data-name="South Korea">🇰🇷 South Korea</button>
+        <button type="button" data-name="India">🇮🇳 India</button>
+        <button type="button" data-name="United States">🇺🇸 USA</button>
+      </div>
+
+      <div id="status" role="status" aria-live="polite">
+        Loading country data...
+      </div>
+    </section>
+
+    <section id="empty-state" class="card">
+      <div class="empty-state">
+        <span>🗺️</span>
+        <strong>Ready to explore?</strong>
+        <div>Search for a country to see its information.</div>
+      </div>
+    </section>
+
+    <section id="country-panel" class="card hidden">
+      <div class="country-hero">
+        <div>
+          <h2 id="country-name">Country name</h2>
+          <p id="official-name"></p>
+          <p id="description" class="muted"></p>
+        </div>
+
+        <div class="flag-box">
+          <img id="flag" alt="Country flag">
+        </div>
+      </div>
+
+      <div class="facts">
+        <div class="fact">
+          <span class="fact-label">Capital</span>
+          <div class="fact-value" id="capital">—</div>
+        </div>
+
+        <div class="fact">
+          <span class="fact-label">Region</span>
+          <div class="fact-value" id="region">—</div>
+        </div>
+
+        <div class="fact">
+          <span class="fact-label">Population</span>
+          <div class="fact-value" id="population">—</div>
+        </div>
+
+        <div class="fact">
+          <span class="fact-label">Area</span>
+          <div class="fact-value" id="area">—</div>
+        </div>
+
+        <div class="fact">
+          <span class="fact-label">Country code</span>
+          <div class="fact-value" id="code">—</div>
+        </div>
+
+        <div class="fact">
+          <span class="fact-label">Driving side</span>
+          <div class="fact-value" id="driving">—</div>
+        </div>
+      </div>
+
+      <h2 style="margin-top:30px">More information</h2>
+
+      <div class="details">
+        <div class="detail">
+          <span class="detail-label">Official name</span>
+          <div class="detail-value" id="official-detail">—</div>
+        </div>
+
+        <div class="detail">
+          <span class="detail-label">Languages</span>
+          <div class="detail-value" id="languages">—</div>
+        </div>
+
+        <div class="detail">
+          <span class="detail-label">Currency</span>
+          <div class="detail-value" id="currency">—</div>
+        </div>
+
+        <div class="detail">
+          <span class="detail-label">Subregion</span>
+          <div class="detail-value" id="subregion">—</div>
+        </div>
+
+        <div class="detail">
+          <span class="detail-label">Continents</span>
+          <div class="detail-value" id="continents">—</div>
+        </div>
+
+        <div class="detail">
+          <span class="detail-label">Time zones</span>
+          <div class="detail-value" id="timezones">—</div>
+        </div>
+
+        <div class="detail">
+          <span class="detail-label">Neighbouring countries</span>
+          <div class="detail-value" id="borders">—</div>
+        </div>
+
+        <div class="detail">
+          <span class="detail-label">Internet domain</span>
+          <div class="detail-value" id="domain">—</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    Country information is loaded from a public country-data source.
+    An internet connection is required.
+  </footer>
+
+  <script>
+    const COUNTRY_API =
+      "https://cdn.jsdelivr.net/npm/world-countries@5.1.0/countries.json";
+
+    const searchForm = document.querySelector("#search-form");
+    const searchInput = document.querySelector("#search-input");
+    const statusBox = document.querySelector("#status");
+    const countryPanel = document.querySelector("#country-panel");
+    const emptyState = document.querySelector("#empty-state");
+    const flagImage = document.querySelector("#flag");
+
+    let countries = [];
+
+    function setText(id, value) {
+      document.getElementById(id).textContent =
+        value === undefined || value === null || value === ""
+          ? "Not available"
+          : value;
+    }
+
+    function formatNumber(value) {
+      return typeof value === "number"
+        ? value.toLocaleString()
+        : "Not available";
+    }
+
+    function getCommonName(country) {
+      return country.name?.common || country.name || "Unknown country";
+    }
+
+    function getCapital(country) {
+      return Array.isArray(country.capital) && country.capital.length
+        ? country.capital.join(", ")
+        : "Not available";
+    }
+
+    function getCode(country) {
+      return country.cca2 || country.alpha2Code || "";
+    }
+
+    function showCountry(country) {
+      const name = getCommonName(country);
+      const officialName = country.name?.official || name;
+
+      setText("country-name", name);
+      setText("official-name", officialName);
+
+      setText(
+        "description",
+        `${country.region || "Region unavailable"} · ${country.subregion || "Subregion unavailable"}`
+      );
+
+      setText("capital", getCapital(country));
+      setText("region", country.region);
+      setText("population", formatNumber(country.population));
+
+      setText(
+        "area",
+        typeof country.area === "number"
+          ? `${country.area.toLocaleString()} km²`
+          : "Not available"
+      );
+
+      setText("code", getCode(country));
+      setText("driving", country.car?.side);
+      setText("official-detail", officialName);
+
+      setText(
+        "languages",
+        country.languages
+          ? Object.values(country.languages).join(", ")
+          : null
+      );
+
+      const currencyText = country.currencies
+        ? Object.entries(country.currencies)
+            .map(([code, currency]) =>
+              `${currency.name || code}${currency.symbol ? ` (${currency.symbol})` : ""}`
+            )
+            .join(", ")
+        : null;
+
+      setText("currency", currencyText);
+      setText("subregion", country.subregion);
+
+      setText(
+        "continents",
+        Array.isArray(country.continents)
+          ? country.continents.join(", ")
+          : null
+      );
+
+      setText(
+        "timezones",
+        Array.isArray(country.timezones)
+          ? country.timezones.join(", ")
+          : null
+      );
+
+      setText(
+        "borders",
+        Array.isArray(country.borders)
+          ? country.borders.join(", ")
+          : null
+      );
+
+      setText(
+        "domain",
+        Array.isArray(country.tld)
+          ? country.tld.join(", ")
+          : null
+      );
+
+      const code = getCode(country);
+
+      flagImage.alt = `${name} flag`;
+      flagImage.onerror = () => {
+        flagImage.alt = `Flag unavailable for ${name}`;
+      };
+
+      flagImage.src = code
+        ? `https://flagcdn.com/w320/${code.toLowerCase()}.png`
+        : "";
+
+      countryPanel.classList.remove("hidden");
+      emptyState.classList.add("hidden");
+
+      statusBox.className = "";
+      statusBox.textContent = `Showing information for ${name}.`;
+    }
+
+    function searchCountry(query) {
+      const term = query.trim().toLowerCase();
+
+      if (!term) {
+        statusBox.className = "error";
+        statusBox.textContent = "Please enter a country name.";
+        return;
+      }
+
+      const exactMatch = countries.find(country => {
+        const common = getCommonName(country).toLowerCase();
+        const official = (country.name?.official || "").toLowerCase();
+        const code = getCode(country).toLowerCase();
+
+        return common === term || official === term || code === term;
+      });
+
+      const partialMatch = countries.find(country => {
+        const common = getCommonName(country).toLowerCase();
+        const official = (country.name?.official || "").toLowerCase();
+
+        return common.includes(term) || official.includes(term);
+      });
+
+      const country = exactMatch || partialMatch;
+
+      if (!country) {
+        statusBox.className = "error";
+        statusBox.textContent =
+          `No country found for "${query}". Check the spelling and try again.`;
+
+        countryPanel.classList.add("hidden");
+        emptyState.classList.remove("hidden");
+        return;
+      }
+
+      searchInput.value = getCommonName(country);
+      showCountry(country);
+    }
+
+    async function loadCountries() {
+      statusBox.className = "";
+      statusBox.textContent = "Loading country data...";
+
+      try {
+        const response = await fetch(COUNTRY_API);
+
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        if (!Array.isArray(data)) {
+          throw new Error("The API did not return a country list.");
+        }
+
+        countries = data
+          .filter(country => country && country.name)
+          .sort((a, b) =>
+            getCommonName(a).localeCompare(getCommonName(b))
+          );
+
+        if (!countries.length) {
+          throw new Error("No country data was returned.");
+        }
+
+        const initialCountry =
+          countries.find(country => getCode(country) === "NP") ||
+          countries[0];
+
+        statusBox.textContent =
+          `Loaded ${countries.length} countries. Search for a country above.`;
+
+        showCountry(initialCountry);
+        searchInput.value = getCommonName(initialCountry);
+      } catch (error) {
+        console.error("Country loading error:", error);
+
+        statusBox.className = "error";
+        statusBox.textContent =
+          "Could not load country data. Check your internet connection and refresh the page.";
+      }
+    }
+
+    searchForm.addEventListener("submit", event => {
+      event.preventDefault();
+      searchCountry(searchInput.value);
+    });
+
+    document.querySelectorAll("[data-name]").forEach(button => {
+      button.addEventListener("click", () => {
+        searchCountry(button.dataset.name);
+      });
+    });
+
+    loadCountries();
+  </script>
+</body>
+</html>
