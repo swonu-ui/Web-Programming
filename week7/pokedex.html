@@ -1,0 +1,709 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ColorDex | Dynamic Pokédex</title>
+
+  <style>
+    :root {
+      --primary: #e8c900;
+      --accent: #f5a623;
+      --background: #fffbea;
+      --surface: #ffffff;
+      --soft: #fff3b0;
+      --text: #292719;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background: var(--background);
+      transition: background 0.4s ease, color 0.4s ease;
+      min-height: 100vh;
+    }
+
+    header {
+      padding: 24px 6%;
+      background: var(--surface);
+      border-bottom: 4px solid var(--primary);
+      transition: border-color 0.4s ease;
+    }
+
+    .brand {
+      font-size: 25px;
+      font-weight: 900;
+      letter-spacing: -1px;
+    }
+
+    .brand span {
+      color: var(--primary);
+    }
+
+    .hero {
+      text-align: center;
+      padding: 48px 20px 32px;
+    }
+
+    .eyebrow {
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      font-size: clamp(32px, 6vw, 54px);
+      margin: 12px 0;
+      letter-spacing: -2px;
+    }
+
+    .hero p {
+      color: #777;
+      line-height: 1.6;
+    }
+
+    .search-box {
+      display: flex;
+      width: min(540px, 100%);
+      margin: 26px auto 0;
+      padding: 6px;
+      background: var(--surface);
+      border: 2px solid var(--primary);
+      border-radius: 16px;
+      gap: 8px;
+      box-shadow: 0 8px 28px #0000000a;
+    }
+
+    input {
+      flex: 1;
+      min-width: 0;
+      border: none;
+      outline: none;
+      background: transparent;
+      color: var(--text);
+      padding: 12px;
+      font-size: 16px;
+    }
+
+    button {
+      border: none;
+      background: var(--primary);
+      color: white;
+      font-weight: 800;
+      border-radius: 11px;
+      padding: 12px 20px;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    button:hover {
+      opacity: 0.82;
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: wait;
+    }
+
+    .suggestions {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 9px;
+      margin-top: 16px;
+    }
+
+    .suggestions button {
+      background: var(--soft);
+      color: var(--text);
+      border-radius: 30px;
+      font-size: 12px;
+      padding: 9px 14px;
+    }
+
+    main {
+      width: min(1000px, 92%);
+      margin: 10px auto 60px;
+    }
+
+    #message {
+      text-align: center;
+      padding: 22px;
+      color: #777;
+    }
+
+    #message.error {
+      color: #c62828;
+    }
+
+    .pokemon-layout {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--soft);
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 12px 35px #00000008;
+    }
+
+    .art-panel {
+      background: linear-gradient(
+        145deg,
+        var(--soft),
+        var(--background)
+      );
+      text-align: center;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 380px;
+    }
+
+    .number {
+      align-self: flex-end;
+      font-weight: 800;
+      color: var(--primary);
+      font-size: 14px;
+    }
+
+    .pokemon-image {
+      width: 100%;
+      max-width: 300px;
+      aspect-ratio: 1;
+      object-fit: contain;
+      filter: drop-shadow(0 12px 10px #00000012);
+    }
+
+    .pokemon-name {
+      text-transform: capitalize;
+      font-size: 34px;
+      margin: 5px 0 12px;
+    }
+
+    .types {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .type {
+      padding: 7px 15px;
+      border-radius: 30px;
+      background: var(--primary);
+      color: white;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .details-panel {
+      padding: 28px;
+    }
+
+    .section-title {
+      font-size: 18px;
+      margin: 0 0 18px;
+    }
+
+    .measurements {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 30px;
+    }
+
+    .measurement {
+      padding: 16px;
+      border-radius: 14px;
+      background: var(--background);
+    }
+
+    .measurement small {
+      display: block;
+      color: #777;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 7px;
+    }
+
+    .measurement strong {
+      font-size: 19px;
+    }
+
+    .stat {
+      margin: 17px 0;
+    }
+
+    .stat-heading {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      text-transform: capitalize;
+    }
+
+    .bar {
+      height: 9px;
+      background: var(--soft);
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      width: 0;
+      background: var(--primary);
+      border-radius: 20px;
+      transition: width 0.5s ease;
+    }
+
+    .abilities {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .ability {
+      background: var(--soft);
+      padding: 8px 12px;
+      border-radius: 9px;
+      font-size: 12px;
+      text-transform: capitalize;
+    }
+
+    .palette-section {
+      margin-top: 24px;
+      padding: 24px;
+      border-radius: 22px;
+      background: var(--surface);
+      border: 1px solid var(--soft);
+    }
+
+    .palette-section h2 {
+      margin: 0 0 7px;
+      font-size: 19px;
+    }
+
+    .palette-section p {
+      font-size: 13px;
+      color: #777;
+      line-height: 1.6;
+      margin-bottom: 18px;
+    }
+
+    .swatches {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .swatch {
+      overflow: hidden;
+      border-radius: 12px;
+      border: 1px solid #00000010;
+    }
+
+    .swatch-color {
+      height: 70px;
+      background: var(--swatch);
+    }
+
+    .swatch-label {
+      text-align: center;
+      padding: 10px 3px;
+      font-size: 11px;
+      font-weight: 700;
+      background: var(--surface);
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px;
+      font-size: 12px;
+      color: #777;
+    }
+
+    @media (max-width: 700px) {
+      .pokemon-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .art-panel {
+        min-height: 300px;
+      }
+
+      .pokemon-image {
+        max-width: 240px;
+      }
+
+      .details-panel {
+        padding: 22px;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .search-box {
+        flex-direction: column;
+      }
+
+      .search-box button {
+        width: 100%;
+      }
+
+      .swatches {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="brand">Color<span>Dex</span> ✦</div>
+  </header>
+
+  <section class="hero">
+    <div class="eyebrow">Your colorful Pokédex</div>
+    <h1>Find your Pokémon.</h1>
+    <p>
+      Search any Pokémon and watch the entire page
+      transform into its color theme.
+    </p>
+
+    <form class="search-box" id="search-form">
+      <input
+        id="pokemon-search"
+        type="text"
+        placeholder="Try Pikachu, Gengar, Eevee..."
+        aria-label="Search Pokémon by name or number"
+        required
+      >
+      <button id="search-button" type="submit">
+        Search →
+      </button>
+    </form>
+
+    <div class="suggestions">
+      <button type="button" data-name="pikachu">⚡ Pikachu</button>
+      <button type="button" data-name="bulbasaur">🌿 Bulbasaur</button>
+      <button type="button" data-name="squirtle">💧 Squirtle</button>
+      <button type="button" data-name="charizard">🔥 Charizard</button>
+      <button type="button" data-name="gengar">👻 Gengar</button>
+    </div>
+  </section>
+
+  <main>
+    <div id="message">Loading Pokémon...</div>
+
+    <section id="pokemon-content" hidden>
+      <div class="pokemon-layout">
+        <article class="panel art-panel">
+          <div class="number" id="pokemon-number"></div>
+          <img class="pokemon-image" id="pokemon-image" alt="">
+          <h2 class="pokemon-name" id="pokemon-name"></h2>
+          <div class="types" id="pokemon-types"></div>
+        </article>
+
+        <article class="panel details-panel">
+          <h2 class="section-title">Pokémon details</h2>
+
+          <div class="measurements">
+            <div class="measurement">
+              <small>Height</small>
+              <strong id="pokemon-height"></strong>
+            </div>
+            <div class="measurement">
+              <small>Weight</small>
+              <strong id="pokemon-weight"></strong>
+            </div>
+          </div>
+
+          <h3 class="section-title">Base stats</h3>
+          <div id="pokemon-stats"></div>
+
+          <h3 class="section-title" style="margin-top: 28px">
+            Abilities
+          </h3>
+          <div class="abilities" id="pokemon-abilities"></div>
+        </article>
+      </div>
+
+      <section class="palette-section">
+        <h2>Pokémon color palette 🎨</h2>
+        <p id="palette-description">
+          A theme inspired by this Pokémon.
+        </p>
+        <div class="swatches" id="color-swatches"></div>
+      </section>
+    </section>
+  </main>
+
+  <footer>
+    Pokémon data provided by PokéAPI. Fan-made learning project.
+  </footer>
+
+  <script>
+    const form = document.querySelector("#search-form");
+    const searchInput = document.querySelector("#pokemon-search");
+    const searchButton = document.querySelector("#search-button");
+    const message = document.querySelector("#message");
+    const content = document.querySelector("#pokemon-content");
+
+    const palettes = {
+      yellow: ["#F6D743", "#FFF4B8", "#F4B942", "#453B13"],
+      green:  ["#65B96E", "#DDF3D5", "#A6D96A", "#193D29"],
+      blue:   ["#4F9DE8", "#DCEEFF", "#82D5F5", "#183B60"],
+      red:    ["#E85D5D", "#FFE0D9", "#FF9671", "#571F28"],
+      purple: ["#9B79D0", "#EDE0FF", "#C6A6F7", "#35234D"],
+      pink:   ["#EA8AB2", "#FFE1EE", "#F5B6D0", "#54283D"],
+      brown:  ["#A87850", "#F2E0CC", "#D6B18A", "#49301E"],
+      black:  ["#55515F", "#E3E0EA", "#9993A8", "#24222C"],
+      gray:   ["#8995A5", "#E7EBF0", "#B8C2CC", "#303944"],
+      white:  ["#B7C5D8", "#F2F5FA", "#DDE5EF", "#293849"]
+    };
+
+    // Type colors help make each Pokémon's theme more distinctive.
+    const typeColors = {
+      normal: "#A8A77A",
+      fire: "#EE8130",
+      water: "#6390F0",
+      electric: "#F7D02C",
+      grass: "#7AC74C",
+      ice: "#96D9D6",
+      fighting: "#C22E28",
+      poison: "#A33EA1",
+      ground: "#E2BF65",
+      flying: "#A98FF3",
+      psychic: "#F95587",
+      bug: "#A6B91A",
+      rock: "#B6A136",
+      ghost: "#735797",
+      dragon: "#6F35FC",
+      dark: "#705746",
+      steel: "#B7B7CE",
+      fairy: "#D685AD"
+    };
+
+    function setTheme(colors) {
+      const root = document.documentElement;
+
+      root.style.setProperty("--primary", colors[0]);
+      root.style.setProperty("--background", colors[1]);
+      root.style.setProperty("--soft", colors[2]);
+      root.style.setProperty("--accent", colors[2]);
+      root.style.setProperty("--text", colors[3]);
+    }
+
+    function makeElement(tag, className, text) {
+      const element = document.createElement(tag);
+      element.className = className;
+      element.textContent = text;
+      return element;
+    }
+
+    async function searchPokemon(name) {
+      const query = name.trim().toLowerCase();
+
+      if (!query) return;
+
+      searchButton.disabled = true;
+      searchButton.textContent = "Searching...";
+      message.hidden = false;
+      message.className = "";
+      message.textContent = "Finding your Pokémon...";
+      content.hidden = true;
+
+      try {
+        const pokemonResponse = await fetch(
+          `https://pokeapi.co/api/v2/pokemon/${encodeURIComponent(query)}`
+        );
+
+        if (!pokemonResponse.ok) {
+          throw new Error(
+            "Pokémon not found. Check the spelling or try its Pokédex number."
+          );
+        }
+
+        const pokemon = await pokemonResponse.json();
+
+        const speciesResponse = await fetch(pokemon.species.url);
+
+        if (!speciesResponse.ok) {
+          throw new Error("Could not load this Pokémon's species data.");
+        }
+
+        const species = await speciesResponse.json();
+
+        // Choose the main palette from the Pokémon's species color.
+        const speciesColor = species.color.name;
+        const basePalette =
+          palettes[speciesColor] || palettes.gray;
+
+        // Blend the official species color with the Pokémon's type.
+        const mainType = pokemon.types[0].type.name;
+        const typeColor = typeColors[mainType] || basePalette[0];
+
+        const colors = [
+          typeColor,
+          basePalette[1],
+          basePalette[2],
+          basePalette[3]
+        ];
+
+        setTheme(colors);
+
+        // Display the Pokémon's identity.
+        document.querySelector("#pokemon-number").textContent =
+          "#" + String(pokemon.id).padStart(4, "0");
+
+        document.querySelector("#pokemon-name").textContent =
+          pokemon.name.replaceAll("-", " ");
+
+        const image = document.querySelector("#pokemon-image");
+        image.src =
+          pokemon.sprites.other["official-artwork"].front_default ||
+          pokemon.sprites.front_default || "";
+
+        image.alt = pokemon.name;
+
+        document.querySelector("#pokemon-height").textContent =
+          (pokemon.height / 10).toFixed(1) + " m";
+
+        document.querySelector("#pokemon-weight").textContent =
+          (pokemon.weight / 10).toFixed(1) + " kg";
+
+        // Display types.
+        const typesContainer = document.querySelector("#pokemon-types");
+        typesContainer.replaceChildren();
+
+        pokemon.types.forEach(function(item) {
+          const type = makeElement(
+            "span",
+            "type",
+            item.type.name
+          );
+
+          type.style.backgroundColor =
+            typeColors[item.type.name] || colors[0];
+
+          typesContainer.appendChild(type);
+        });
+
+        // Display stats with animated bars.
+        const statsContainer = document.querySelector("#pokemon-stats");
+        statsContainer.replaceChildren();
+
+        pokemon.stats.forEach(function(item) {
+          const row = makeElement("div", "stat", "");
+
+          const heading = makeElement("div", "stat-heading", "");
+          heading.append(
+            makeElement("span", "", item.stat.name.replaceAll("-", " ")),
+            makeElement("span", "", item.base_stat)
+          );
+
+          const bar = makeElement("div", "bar", "");
+          const fill = makeElement("div", "bar-fill", "");
+
+          fill.style.width =
+            Math.min(item.base_stat / 255 * 100, 100) + "%";
+
+          bar.appendChild(fill);
+          row.append(heading, bar);
+          statsContainer.appendChild(row);
+        });
+
+        // Display abilities.
+        const abilitiesContainer =
+          document.querySelector("#pokemon-abilities");
+
+        abilitiesContainer.replaceChildren();
+
+        pokemon.abilities.forEach(function(item) {
+          abilitiesContainer.appendChild(
+            makeElement(
+              "span",
+              "ability",
+              item.ability.name.replaceAll("-", " ")
+            )
+          );
+        });
+
+        // Show the palette swatches.
+        const swatches = document.querySelector("#color-swatches");
+        swatches.replaceChildren();
+
+        const labels = [
+          "Main color",
+          "Background",
+          "Accent",
+          "Text"
+        ];
+
+        colors.forEach(function(color, index) {
+          const swatch = makeElement("div", "swatch", "");
+          const colorBlock = makeElement("div", "swatch-color", "");
+          const label = makeElement("div", "swatch-label", "");
+
+          colorBlock.style.setProperty("--swatch", color);
+          label.textContent = labels[index] + " " + color;
+
+          swatch.append(colorBlock, label);
+          swatches.appendChild(swatch);
+        });
+
+        document.querySelector("#palette-description").textContent =
+          `Inspired by ${pokemon.name.replaceAll("-", " ")}. ` +
+          `Species color: ${speciesColor}; main type: ${mainType}.`;
+
+        message.hidden = true;
+        content.hidden = false;
+        searchInput.value = pokemon.name;
+
+      } catch (error) {
+        message.className = "error";
+        message.textContent = error.message;
+        message.hidden = false;
+
+      } finally {
+        searchButton.disabled = false;
+        searchButton.textContent = "Search →";
+      }
+    }
+
+    form.addEventListener("submit", function(event) {
+      event.preventDefault();
+      searchPokemon(searchInput.value);
+    });
+
+    document.querySelectorAll("[data-name]").forEach(function(button) {
+      button.addEventListener("click", function() {
+        searchPokemon(button.dataset.name);
+      });
+    });
+
+    // Show Pikachu when the page first opens.
+    searchPokemon("pikachu");
+  </script>
+</body>
+</html>
