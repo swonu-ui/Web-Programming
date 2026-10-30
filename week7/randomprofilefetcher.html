@@ -4,86 +4,61 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Random User Profiles</title>
+  <title>PeopleGram | Random Profiles</title>
 
   <style>
-    :root {
-      --pink: #ff0169;
-      --purple: #7638fa;
-      --orange: #ff7a00;
-      --blue: #0095f6;
-      --text: #262626;
-      --muted: #737373;
-      --border: #dbdbdb;
-      --background: #fafafa;
-    }
-
     * {
       box-sizing: border-box;
     }
 
     body {
       margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      background: var(--background);
-      color: var(--text);
-    }
-
-    .top-gradient {
-      height: 7px;
-      background: linear-gradient(
-        90deg,
-        #ffd600,
-        #ff7a00,
-        #ff0169,
-        #d300c5,
-        #7638fa
-      );
+      font-family: Arial, sans-serif;
+      background: #fafafa;
+      color: #262626;
     }
 
     header {
+      padding: 35px 20px;
       text-align: center;
-      padding: 40px 20px 30px;
       background: white;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid #ddd;
+      border-top: 6px solid transparent;
+      border-image: linear-gradient(
+        90deg, #ffd600, #ff7a00, #ff0169, #d300c5, #7638fa
+      ) 1;
     }
 
     .logo {
-      font-size: 30px;
-      font-weight: 800;
-      letter-spacing: -1px;
-      background: linear-gradient(
-        45deg,
-        var(--orange),
-        var(--pink),
-        var(--purple)
-      );
-      -webkit-background-clip: text;
+      font-size: 32px;
+      font-weight: bold;
+      background: linear-gradient(45deg, #ff7a00, #ff0169, #7638fa);
       background-clip: text;
+      -webkit-background-clip: text;
       color: transparent;
       display: inline-block;
     }
 
     header p {
-      color: var(--muted);
-      margin: 10px 0 0;
+      color: #737373;
+      font-size: 14px;
     }
 
     main {
-      width: min(1100px, 92%);
+      max-width: 1100px;
+      width: 92%;
       margin: 30px auto;
     }
 
     .controls {
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 24px;
       display: flex;
-      align-items: end;
-      gap: 16px;
+      gap: 15px;
       flex-wrap: wrap;
-      box-shadow: 0 4px 18px #26262608;
+      align-items: end;
+      padding: 22px;
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 15px;
     }
 
     .field {
@@ -94,63 +69,51 @@
     label {
       display: block;
       font-size: 13px;
-      font-weight: 700;
-      margin-bottom: 9px;
+      font-weight: bold;
+      margin-bottom: 8px;
     }
 
     select {
       width: 100%;
       padding: 12px;
-      border: 1px solid var(--border);
-      border-radius: 9px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
       background: white;
-      color: var(--text);
       font-size: 14px;
-      outline: none;
-    }
-
-    select:focus {
-      border-color: var(--pink);
     }
 
     button {
       padding: 13px 22px;
       border: none;
       border-radius: 9px;
-      background: linear-gradient(45deg, var(--pink), var(--purple));
+      background: linear-gradient(45deg, #ff0169, #7638fa);
       color: white;
-      font-weight: 700;
-      font-size: 14px;
+      font-weight: bold;
       cursor: pointer;
-      transition: transform 0.2s, opacity 0.2s;
     }
 
     button:hover {
-      transform: translateY(-2px);
-      opacity: 0.9;
+      opacity: 0.85;
     }
 
     button:disabled {
-      opacity: 0.6;
+      opacity: 0.5;
       cursor: wait;
-      transform: none;
     }
 
-    .section-heading {
+    .heading {
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      gap: 12px;
-      margin: 32px 0 18px;
+      align-items: center;
+      margin: 30px 0 18px;
     }
 
-    .section-heading h2 {
+    .heading h2 {
       font-size: 21px;
-      margin: 0;
     }
 
     #user-count {
-      color: var(--muted);
+      color: #737373;
       font-size: 13px;
     }
 
@@ -161,45 +124,38 @@
     }
 
     .profile-card {
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 24px 18px;
+      padding: 23px 18px;
       text-align: center;
-      box-shadow: 0 4px 18px #26262608;
-      transition: transform 0.2s, box-shadow 0.2s;
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 15px;
+      transition: 0.2s;
       min-width: 0;
     }
 
     .profile-card:hover {
       transform: translateY(-4px);
-      box-shadow: 0 10px 25px #7638fa18;
+      box-shadow: 0 8px 25px #7638fa20;
     }
 
     .avatar-ring {
-      width: 112px;
-      height: 112px;
+      width: 115px;
+      height: 115px;
       padding: 4px;
-      margin: 0 auto 16px;
+      margin: 0 auto 15px;
       border-radius: 50%;
       background: linear-gradient(
-        45deg,
-        #ffd600,
-        #ff7a00,
-        #ff0169,
-        #d300c5,
-        #7638fa
+        45deg, #ffd600, #ff7a00, #ff0169, #d300c5, #7638fa
       );
     }
 
     .avatar {
       width: 100%;
       height: 100%;
-      display: block;
-      border-radius: 50%;
       border: 3px solid white;
+      border-radius: 50%;
       object-fit: cover;
-      background: #f4f4f4;
+      background: #eee;
     }
 
     .profile-card h3 {
@@ -209,70 +165,61 @@
     }
 
     .location {
-      color: var(--muted);
+      color: #737373;
       font-size: 13px;
-      margin: 0 0 18px;
     }
 
     .details {
       text-align: left;
-      border-top: 1px solid #efefef;
-      padding-top: 14px;
-      font-size: 13px;
-      line-height: 1.6;
+      border-top: 1px solid #eee;
+      margin-top: 18px;
+      padding-top: 12px;
     }
 
     .detail {
-      margin: 9px 0;
+      margin: 12px 0;
+      font-size: 13px;
       overflow-wrap: anywhere;
     }
 
     .detail-label {
       display: block;
+      color: #888;
       font-size: 11px;
+      font-weight: bold;
       text-transform: uppercase;
-      letter-spacing: 0.7px;
-      font-weight: 700;
-      color: var(--muted);
-      margin-bottom: 2px;
+      margin-bottom: 4px;
     }
 
     .email {
-      color: #8a2be2;
+      color: #9b35d5;
     }
 
     .message {
-      text-align: center;
-      color: var(--muted);
-      padding: 45px 15px;
       grid-column: 1 / -1;
+      padding: 40px 15px;
+      text-align: center;
+      color: #737373;
       background: white;
-      border: 1px dashed var(--border);
-      border-radius: 16px;
+      border: 1px dashed #ddd;
+      border-radius: 12px;
+      overflow-wrap: anywhere;
     }
 
-    .message.error {
+    .error {
       color: #d9304f;
     }
 
     footer {
       text-align: center;
       padding: 25px;
-      color: var(--muted);
+      color: #888;
       font-size: 12px;
     }
 
     @media (max-width: 760px) {
       .profiles {
         grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .controls {
-        align-items: stretch;
-      }
-
-      .controls button {
-        width: 100%;
       }
     }
 
@@ -281,19 +228,14 @@
         grid-template-columns: 1fr;
       }
 
-      header {
-        padding-top: 30px;
-      }
-
-      .profile-card {
-        padding: 24px;
+      .controls button {
+        width: 100%;
       }
     }
   </style>
 </head>
 
 <body>
-  <div class="top-gradient"></div>
 
   <header>
     <div class="logo">PeopleGram</div>
@@ -301,9 +243,12 @@
   </header>
 
   <main>
+
     <section class="controls">
+
       <div class="field">
         <label for="how-many">Number of users</label>
+
         <select id="how-many">
           <option value="3">3 users</option>
           <option value="6" selected>6 users</option>
@@ -314,6 +259,7 @@
 
       <div class="field">
         <label for="gender">Gender</label>
+
         <select id="gender">
           <option value="all">All genders</option>
           <option value="female">Female</option>
@@ -321,158 +267,292 @@
         </select>
       </div>
 
-      <button id="load-btn ">✦ Load Users</button>
+      <button id="load-btn" type="button">
+        ✦ Load Users
+      </button>
+
     </section>
 
-    <div class="section-heading">
-      <h2>Explore people</h2>
+    <div class="heading">
+      <h2>Explore People</h2>
       <span id="user-count">Ready to discover</span>
     </div>
 
     <section class="profiles" id="profiles">
       <div class="message">
-        Click "Load Users" to discover random profiles!
+        Loading profiles...
       </div>
     </section>
+
   </main>
 
   <footer>
-    Random profile data provided by randomuser.me
+    Profile data provided by Random User API
   </footer>
 
   <script>
+
+    // STEP 1: Select HTML elements
+
     const loadButton = document.querySelector("#load-btn");
-    const profilesContainer = document.querySelector("#profiles");
-    const countLabel = document.querySelector("#user-count");
+
+    const profilesContainer =
+      document.querySelector("#profiles");
+
+    const countLabel =
+      document.querySelector("#user-count");
+
+
+    // STEP 2: Listen for button clicks
 
     loadButton.addEventListener("click", loadUsers);
 
-    async function loadUsers() {
-      const amount = document.querySelector("#how-many").value;
-      const gender = document.querySelector("#gender").value;
 
-      const parameters = new URLSearchParams({
-        results: amount
-      });
+    // STEP 3: Fetch random users from the API
+
+    async function loadUsers() {
+
+      const amount =
+        document.querySelector("#how-many").value;
+
+      const gender =
+        document.querySelector("#gender").value;
+
+      // Build the API URL
+
+      const params = new URLSearchParams();
+
+      params.set("results", amount);
+
+      params.set(
+        "inc",
+        "gender,name,location,email,dob,phone,picture"
+      );
 
       if (gender !== "all") {
-        parameters.set("gender", gender);
+        params.set("gender", gender);
       }
 
-      const url = `https://randomuser.me/api/?${parameters}`;
+      const url =
+        `https://randomuser.me/api/1.4/?${params.toString()}`;
+
+      // Show loading information
 
       loadButton.disabled = true;
-      loadButton.textContent = "Loading...";
-      countLabel.textContent = "Finding people";
 
-      profilesContainer.innerHTML =
-        '<div class="message">Loading random profiles...</div>';
+      loadButton.textContent = "Loading...";
+
+      countLabel.textContent = "Fetching data...";
+
+      profilesContainer.replaceChildren();
+
+      showMessage("Connecting to Random User API...");
 
       try {
+
+        // Send an HTTP request to the API
+
+        console.log("Requesting:", url);
+
         const response = await fetch(url);
 
+        // Check whether the request succeeded
+
         if (!response.ok) {
-          throw new Error("The server could not load profiles.");
+          throw new Error(
+            `HTTP error: ${response.status}`
+          );
         }
+
+        // Convert JSON response into JavaScript data
 
         const data = await response.json();
+
+        console.log("Received JSON:", data);
+
+        // Get the array containing user profiles
+
         const users = data.results;
 
-        if (users.length === 0) {
-          throw new Error("No profiles were returned. Try again.");
+        if (!Array.isArray(users) || users.length === 0) {
+          throw new Error("No user profiles were returned.");
         }
 
-        profilesContainer.innerHTML = "";
+        // Remove the loading message
+
+        profilesContainer.replaceChildren();
+
+        // Create a card for every user
 
         users.forEach(function(user) {
-          const fullName =
-            `${user.name.first} ${user.name.last}`;
 
-          const location =
-            `${user.location.city}, ${user.location.country}`;
+          createProfile(user);
 
-          const card = document.createElement("article");
-          card.className = "profile-card";
-
-          const avatarRing = document.createElement("div");
-          avatarRing.className = "avatar-ring";
-
-          const avatar = document.createElement("img");
-          avatar.className = "avatar";
-          avatar.src = user.picture.large;
-          avatar.alt = `Profile photo of ${fullName}`;
-          avatar.loading = "lazy";
-
-          avatarRing.appendChild(avatar);
-
-          const name = document.createElement("h3");
-          name.textContent = fullName;
-
-          const place = document.createElement("p");
-          place.className = "location";
-          place.textContent = `📍 ${location}`;
-
-          const details = document.createElement("div");
-          details.className = "details";
-
-          details.appendChild(
-            makeDetail("Email", user.email, "email")
-          );
-
-          details.appendChild(
-            makeDetail("Phone", user.phone)
-          );
-
-          details.appendChild(
-            makeDetail("Age", `${user.dob.age} years old`)
-          );
-
-          details.appendChild(
-            makeDetail(
-              "Country",
-              user.location.country
-            )
-          );
-
-          card.append(
-            avatarRing,
-            name,
-            place,
-            details
-          );
-
-          profilesContainer.appendChild(card);
         });
 
         countLabel.textContent =
-          `${users.length} profiles found`;
+          `${users.length} profiles loaded successfully`;
 
-      } catch (error) {
-        profilesContainer.innerHTML = "";
-
-        const errorMessage = document.createElement("div");
-        errorMessage.className = "message error";
-        errorMessage.textContent =
-          `${error.message} Check your internet connection and try again.`;
-
-        profilesContainer.appendChild(errorMessage);
-        countLabel.textContent = "Unable to load profiles";
-
-      } finally {
-        loadButton.disabled = false;
-        loadButton.textContent = "✦ Load Users";
       }
+
+      catch (error) {
+
+        console.error("API Error:", error);
+
+        profilesContainer.replaceChildren();
+
+        showMessage(
+          `Could not fetch profiles: ${error.message}`,
+          true
+        );
+
+        countLabel.textContent = "Failed to load profiles";
+
+      }
+
+      finally {
+
+        loadButton.disabled = false;
+
+        loadButton.textContent = "✦ Load Users";
+
+      }
+
     }
 
+
+    // STEP 4: Create an individual profile card
+
+    function createProfile(user) {
+
+      // Get information from the JSON object
+
+      const fullName =
+        `${user.name.first} ${user.name.last}`;
+
+      const city =
+        user.location.city;
+
+      const country =
+        user.location.country;
+
+      const email =
+        user.email;
+
+      const phone =
+        user.phone;
+
+      const age =
+        user.dob.age;
+
+      const picture =
+        user.picture.large;
+
+      // Create the main card
+
+      const card = document.createElement("article");
+
+      card.className = "profile-card";
+
+
+      // Create profile picture
+
+      const ring = document.createElement("div");
+
+      ring.className = "avatar-ring";
+
+      const image = document.createElement("img");
+
+      image.className = "avatar";
+
+      image.src = picture;
+
+      image.alt = `Profile photo of ${fullName}`;
+
+      image.loading = "lazy";
+
+      image.onerror = function() {
+        image.alt = "Profile image unavailable";
+      };
+
+      ring.appendChild(image);
+
+
+      // Create name
+
+      const name = document.createElement("h3");
+
+      name.textContent = fullName;
+
+
+      // Create location
+
+      const location = document.createElement("p");
+
+      location.className = "location";
+
+      location.textContent = `📍 ${city}, ${country}`;
+
+
+      // Create details container
+
+      const details = document.createElement("div");
+
+      details.className = "details";
+
+
+      // Add user information
+
+      details.appendChild(
+        makeDetail("Email", email, "email")
+      );
+
+      details.appendChild(
+        makeDetail("Phone", phone)
+      );
+
+      details.appendChild(
+        makeDetail("Age", `${age} years old`)
+      );
+
+      details.appendChild(
+        makeDetail("Gender", user.gender)
+      );
+
+
+      // Put all elements inside the card
+
+      card.append(
+        ring,
+        name,
+        location,
+        details
+      );
+
+
+      // Display card on the webpage
+
+      profilesContainer.appendChild(card);
+
+    }
+
+
+    // STEP 5: Create reusable detail elements
+
     function makeDetail(labelText, valueText, extraClass = "") {
+
       const wrapper = document.createElement("div");
+
       wrapper.className = "detail";
 
       const label = document.createElement("span");
+
       label.className = "detail-label";
+
       label.textContent = labelText;
 
       const value = document.createElement("div");
+
       value.textContent = valueText;
 
       if (extraClass) {
@@ -480,11 +560,34 @@
       }
 
       wrapper.append(label, value);
+
       return wrapper;
+
     }
 
-    // Load some profiles when the page first opens.
+
+    // STEP 6: Show loading and error messages
+
+    function showMessage(message, isError = false) {
+
+      const box = document.createElement("div");
+
+      box.className = isError
+        ? "message error"
+        : "message";
+
+      box.textContent = message;
+
+      profilesContainer.replaceChildren(box);
+
+    }
+
+
+    // STEP 7: Automatically fetch users when page opens
+
     loadUsers();
+
   </script>
+
 </body>
 </html>
