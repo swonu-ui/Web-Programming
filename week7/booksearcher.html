@@ -1,0 +1,840 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bloom Books | Discover Your Next Read</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --pink: #ff8fab;
+      --purple: #9b8afb;
+      --orange: #ffb36b;
+      --yellow: #ffe08a;
+      --blue: #8ed8f8;
+      --green: #a9e5c3;
+      --ink: #302b40;
+      --muted: #817c90;
+      --white: #ffffff;
+      --background: #fffaf8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "DM Sans", sans-serif;
+      background: var(--background);
+      color: var(--ink);
+      min-height: 100vh;
+    }
+
+    /* Decorative background */
+    .background-shapes {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .shape {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(2px);
+      opacity: 0.35;
+    }
+
+    .shape-one {
+      width: 330px;
+      height: 330px;
+      background: var(--pink);
+      top: 100px;
+      left: -170px;
+    }
+
+    .shape-two {
+      width: 400px;
+      height: 400px;
+      background: var(--blue);
+      top: 450px;
+      right: -220px;
+    }
+
+    .shape-three {
+      width: 240px;
+      height: 240px;
+      background: var(--yellow);
+      bottom: -100px;
+      left: 25%;
+    }
+
+    /* Navigation */
+    nav {
+      max-width: 1200px;
+      margin: auto;
+      padding: 25px 35px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 25px;
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
+
+    .logo span {
+      color: #ec7299;
+    }
+
+    .nav-label {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    /* Main hero section */
+    .hero {
+      max-width: 1100px;
+      margin: 45px auto 35px;
+      padding: 55px 35px;
+      text-align: center;
+      background: linear-gradient(
+        125deg,
+        #ffe0e8,
+        #eee4ff 48%,
+        #dff5ff
+      );
+      border-radius: 32px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-tag {
+      display: inline-block;
+      padding: 9px 17px;
+      border-radius: 30px;
+      background: white;
+      color: #a36ac0;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(38px, 6vw, 65px);
+      line-height: 1.1;
+      margin-bottom: 17px;
+    }
+
+    .hero h1 span {
+      color: #e66f9b;
+    }
+
+    .hero p {
+      color: #716b81;
+      font-size: 15px;
+      line-height: 1.7;
+      max-width: 500px;
+      margin: 0 auto 30px;
+    }
+
+    /* Search bar */
+    .search-box {
+      background: white;
+      max-width: 700px;
+      margin: auto;
+      padding: 9px;
+      border-radius: 18px;
+      display: flex;
+      gap: 8px;
+      box-shadow: 0 12px 35px rgba(104, 77, 130, 0.12);
+    }
+
+    .search-icon {
+      padding: 13px 5px 13px 12px;
+      font-size: 20px;
+    }
+
+    #searchInput {
+      flex: 1;
+      min-width: 0;
+      border: none;
+      outline: none;
+      font-family: inherit;
+      font-size: 14px;
+      color: var(--ink);
+    }
+
+    #searchInput::placeholder {
+      color: #aaa5b4;
+    }
+
+    #searchType {
+      border: none;
+      outline: none;
+      background: #f8f3ff;
+      color: #76658f;
+      border-radius: 11px;
+      padding: 0 10px;
+      font-family: inherit;
+      font-weight: 600;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    #searchButton {
+      border: none;
+      background: linear-gradient(135deg, #f27ca4, #a28afa);
+      color: white;
+      border-radius: 12px;
+      padding: 14px 25px;
+      font-family: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.2s, opacity 0.2s;
+    }
+
+    #searchButton:hover {
+      transform: translateY(-2px);
+      opacity: 0.9;
+    }
+
+    /* Quick search categories */
+    .popular-searches {
+      margin-top: 23px;
+      color: #81788d;
+      font-size: 12px;
+    }
+
+    .popular-searches span {
+      margin: 5px;
+      display: inline-block;
+      padding: 7px 13px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.75);
+      cursor: pointer;
+      font-weight: 600;
+      transition: 0.2s;
+    }
+
+    .popular-searches span:hover {
+      background: white;
+      transform: translateY(-2px);
+    }
+
+    /* Results section */
+    .results-section {
+      max-width: 1200px;
+      margin: 55px auto;
+      padding: 0 35px;
+    }
+
+    .section-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .section-heading h2 {
+      font-family: "Playfair Display", serif;
+      font-size: 30px;
+    }
+
+    #resultCount {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 7px;
+    }
+
+    /* Book grid */
+    #bookResults {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 24px;
+    }
+
+    .book-card {
+      background: white;
+      padding: 15px;
+      border-radius: 20px;
+      box-shadow: 0 8px 25px rgba(71, 52, 90, 0.07);
+      transition: transform 0.25s, box-shadow 0.25s;
+      min-width: 0;
+      animation: appear 0.4s ease both;
+    }
+
+    .book-card:hover {
+      transform: translateY(-7px);
+      box-shadow: 0 15px 35px rgba(71, 52, 90, 0.13);
+    }
+
+    @keyframes appear {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .cover-wrapper {
+      height: 245px;
+      border-radius: 13px;
+      background: linear-gradient(135deg, #ffe0e8, #e8e0ff, #dff5ff);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      margin-bottom: 15px;
+      position: relative;
+    }
+
+    .cover-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      transition: transform 0.3s;
+    }
+
+    .book-card:hover .cover-wrapper img {
+      transform: scale(1.04);
+    }
+
+    .cover-placeholder {
+      position: absolute;
+      font-size: 50px;
+      opacity: 0.6;
+    }
+
+    .book-title {
+      font-size: 15px;
+      font-weight: 800;
+      line-height: 1.4;
+      margin-bottom: 7px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      min-height: 42px;
+    }
+
+    .book-author {
+      color: #a078a5;
+      font-size: 12px;
+      margin-bottom: 12px;
+      min-height: 18px;
+    }
+
+    .book-details {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .detail-tag {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 6px 9px;
+      border-radius: 20px;
+      background: #f2efff;
+      color: #806bb2;
+    }
+
+    .detail-tag.year {
+      background: #fff0e5;
+      color: #c57d42;
+    }
+
+    .view-book {
+      display: block;
+      text-align: center;
+      text-decoration: none;
+      color: white;
+      background: linear-gradient(110deg, #f28cae, #a28afa);
+      padding: 10px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 700;
+      transition: opacity 0.2s;
+    }
+
+    .view-book:hover {
+      opacity: 0.8;
+    }
+
+    /* Loading, errors and empty results */
+    .message {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 65px 20px;
+      background: white;
+      border-radius: 20px;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .message .emoji {
+      display: block;
+      font-size: 42px;
+      margin-bottom: 12px;
+    }
+
+    .spinner {
+      width: 35px;
+      height: 35px;
+      border: 4px solid #f3dce8;
+      border-top-color: #a28afa;
+      border-radius: 50%;
+      margin: 0 auto 15px;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    #loadMore {
+      display: none;
+      margin: 35px auto 0;
+      padding: 13px 30px;
+      border: none;
+      border-radius: 12px;
+      background: #302b40;
+      color: white;
+      font-family: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    #loadMore:hover {
+      background: #7661a9;
+    }
+
+    footer {
+      text-align: center;
+      padding: 35px 20px;
+      color: #9b95a5;
+      font-size: 12px;
+    }
+
+    footer span {
+      color: #e77ca0;
+    }
+
+    /* Responsive design */
+    @media (max-width: 900px) {
+      #bookResults {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 650px) {
+      nav {
+        padding: 20px;
+      }
+
+      .hero {
+        margin: 20px 15px;
+        padding: 40px 17px;
+      }
+
+      .search-box {
+        flex-wrap: wrap;
+      }
+
+      .search-icon {
+        display: none;
+      }
+
+      #searchInput {
+        padding: 13px 8px;
+        width: 100%;
+      }
+
+      #searchType {
+        flex: 1;
+        padding: 12px;
+      }
+
+      #searchButton {
+        padding: 12px 17px;
+      }
+
+      .results-section {
+        padding: 0 17px;
+      }
+
+      #bookResults {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 13px;
+      }
+
+      .cover-wrapper {
+        height: 190px;
+      }
+
+      .book-card {
+        padding: 10px;
+      }
+
+      .section-heading h2 {
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="background-shapes">
+    <div class="shape shape-one"></div>
+    <div class="shape shape-two"></div>
+    <div class="shape shape-three"></div>
+  </div>
+
+  <nav>
+    <div class="logo">Bloom<span>Books.</span> ✿</div>
+    <div class="nav-label">A little world of stories ♡</div>
+  </nav>
+
+  <main>
+    <section class="hero">
+      <div class="hero-tag">✦ YOUR NEXT CHAPTER STARTS HERE ✦</div>
+
+      <h1>Find your next <span>favorite</span> book.</h1>
+
+      <p>
+        Explore thousands of books, discover new authors,
+        and find a story that feels like it was written just for you.
+      </p>
+
+      <div class="search-box">
+        <span class="search-icon">⌕</span>
+
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Search books, authors, or stories..."
+        >
+
+        <select id="searchType" aria-label="Search type">
+          <option value="q">All</option>
+          <option value="title">Title</option>
+          <option value="author">Author</option>
+        </select>
+
+        <button id="searchButton">Search →</button>
+      </div>
+
+      <div class="popular-searches">
+        Try:
+        <span data-query="fantasy">Fantasy</span>
+        <span data-query="romance">Romance</span>
+        <span data-query="mystery">Mystery</span>
+        <span data-query="science fiction">Sci-fi</span>
+        <span data-query="classic literature">Classics</span>
+      </div>
+    </section>
+
+    <section class="results-section">
+      <div class="section-heading">
+        <div>
+          <h2 id="resultsTitle">Discover books ✨</h2>
+          <p id="resultCount">Search for a book to explore the collection.</p>
+        </div>
+      </div>
+
+      <div id="bookResults">
+        <div class="message">
+          <span class="emoji">📚</span>
+          <strong>Your next favorite story is waiting.</strong>
+          <br>
+          Enter a book title or author in the search bar above!
+        </div>
+      </div>
+
+      <button id="loadMore">Load more books ↓</button>
+    </section>
+  </main>
+
+  <footer>
+    Made with <span>♥</span> for book lovers · Book data from Open Library
+  </footer>
+
+  <script>
+    // 1. Select the HTML elements we need.
+    const searchInput = document.querySelector("#searchInput");
+    const searchButton = document.querySelector("#searchButton");
+    const searchType = document.querySelector("#searchType");
+    const bookResults = document.querySelector("#bookResults");
+    const resultCount = document.querySelector("#resultCount");
+    const resultsTitle = document.querySelector("#resultsTitle");
+    const loadMoreButton = document.querySelector("#loadMore");
+
+    // 2. Store information about the current search.
+    let currentQuery = "";
+    let currentType = "q";
+    let currentOffset = 0;
+    const booksPerPage = 12;
+    let totalBooks = 0;
+    let isLoading = false;
+
+    // 3. Search for books using the Open Library API.
+    async function searchBooks(loadMore = false) {
+
+      // Do not send an empty search.
+      const query = searchInput.value.trim();
+
+      if (!loadMore && query === "") {
+        bookResults.innerHTML = `
+          <div class="message">
+            <span class="emoji">🔎</span>
+            Please enter a book title or author's name.
+          </div>
+        `;
+        return;
+      }
+
+      // Prevent multiple requests at the same time.
+      if (isLoading) return;
+      isLoading = true;
+
+      if (!loadMore) {
+        currentQuery = query;
+        currentType = searchType.value;
+        currentOffset = 0;
+        bookResults.innerHTML = `
+          <div class="message">
+            <div class="spinner"></div>
+            Finding your books...
+          </div>
+        `;
+        resultsTitle.textContent = "Search results ✨";
+        loadMoreButton.style.display = "none";
+      } else {
+        loadMoreButton.textContent = "Loading...";
+        loadMoreButton.disabled = true;
+      }
+
+      try {
+        // Create the API URL and its search parameters.
+        const params = new URLSearchParams();
+
+        params.set(currentType, currentQuery);
+        params.set("limit", booksPerPage);
+        params.set("offset", currentOffset);
+        params.set(
+          "fields",
+          "key,title,author_name,first_publish_year,cover_i,edition_count,subject,publisher"
+        );
+
+        const apiURL =
+          `https://openlibrary.org/search.json?${params.toString()}`;
+
+        // Send a request to the API.
+        const response = await fetch(apiURL);
+
+        if (!response.ok) {
+          throw new Error("The book service could not respond. Please try again.");
+        }
+
+        // Convert the API response into JavaScript data.
+        const data = await response.json();
+
+        // Get the books from the docs array.
+        const books = data.docs || [];
+
+        totalBooks = data.numFound || 0;
+
+        if (!loadMore) {
+          bookResults.innerHTML = "";
+        }
+
+        if (books.length === 0 && !loadMore) {
+          bookResults.innerHTML = `
+            <div class="message">
+              <span class="emoji">🥲</span>
+              <strong>No books found!</strong>
+              <br>
+              Try another title or author's name.
+            </div>
+          `;
+
+          resultCount.textContent = "0 books found";
+          return;
+        }
+
+        // Create a card for every book returned by the API.
+        books.forEach(book => {
+          createBookCard(book);
+        });
+
+        // Update the number of results shown.
+        currentOffset += books.length;
+
+        const shown = Math.min(currentOffset, totalBooks);
+
+        resultCount.textContent =
+          `Showing ${shown} of ${totalBooks.toLocaleString()} results`;
+
+        // Show the Load More button if more books exist.
+        if (currentOffset < totalBooks && books.length > 0) {
+          loadMoreButton.style.display = "block";
+        } else {
+          loadMoreButton.style.display = "none";
+        }
+
+      } catch (error) {
+        console.error("Book search error:", error);
+
+        if (!loadMore) {
+          bookResults.innerHTML = `
+            <div class="message">
+              <span class="emoji">⚠️</span>
+              <strong>Something went wrong.</strong>
+              <br>
+              Check your internet connection and try again.
+              <br>
+              <small>${error.message}</small>
+            </div>
+          `;
+        } else {
+          resultCount.textContent =
+            "Could not load more books. Please try again.";
+        }
+
+      } finally {
+        isLoading = false;
+        loadMoreButton.disabled = false;
+        loadMoreButton.textContent = "Load more books ↓";
+      }
+    }
+
+    // 4. Build and display one book card.
+    function createBookCard(book) {
+
+      const card = document.createElement("article");
+      card.className = "book-card";
+
+      // Book title.
+      const title = document.createElement("h3");
+      title.className = "book-title";
+      title.textContent = book.title || "Untitled";
+
+      // Author name.
+      const author = document.createElement("p");
+      author.className = "book-author";
+      author.textContent = book.author_name
+        ? book.author_name.slice(0, 2).join(", ")
+        : "Unknown author";
+
+      // Cover image area.
+      const coverWrapper = document.createElement("div");
+      coverWrapper.className = "cover-wrapper";
+
+      const placeholder = document.createElement("span");
+      placeholder.className = "cover-placeholder";
+      placeholder.textContent = "📖";
+      coverWrapper.appendChild(placeholder);
+
+      if (book.cover_i) {
+        const cover = document.createElement("img");
+
+        cover.src =
+          `https://covers.openlibrary.org/b/id/${book.cover_i}-L.jpg`;
+
+        cover.alt = `Cover of ${book.title || "book"}`;
+        cover.loading = "lazy";
+
+        cover.onerror = function () {
+          cover.remove();
+        };
+
+        coverWrapper.appendChild(cover);
+      }
+
+      // Book publication year and edition count.
+      const details = document.createElement("div");
+      details.className = "book-details";
+
+      if (book.first_publish_year) {
+        const year = document.createElement("span");
+        year.className = "detail-tag year";
+        year.textContent = book.first_publish_year;
+        details.appendChild(year);
+      }
+
+      if (book.edition_count) {
+        const editions = document.createElement("span");
+        editions.className = "detail-tag";
+        editions.textContent = `${book.edition_count} editions`;
+        details.appendChild(editions);
+      }
+
+      // Link to the book's Open Library page.
+      const link = document.createElement("a");
+      link.className = "view-book";
+      link.textContent = "Explore book ↗";
+      link.href = book.key
+        ? `https://openlibrary.org${book.key}`
+        : "https://openlibrary.org";
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+
+      // Add all elements to the card.
+      card.appendChild(coverWrapper);
+      card.appendChild(title);
+      card.appendChild(author);
+      card.appendChild(details);
+      card.appendChild(link);
+
+      bookResults.appendChild(card);
+    }
+
+    // 5. Run a search when the Search button is clicked.
+    searchButton.addEventListener("click", () => {
+      searchBooks();
+    });
+
+    // 6. Also search when the user presses Enter.
+    searchInput.addEventListener("keydown", event => {
+      if (event.key === "Enter") {
+        searchBooks();
+      }
+    });
+
+    // 7. Load more results when the button is clicked.
+    loadMoreButton.addEventListener("click", () => {
+      searchBooks(true);
+    });
+
+    // 8. Make the popular search words clickable.
+    document.querySelectorAll(".popular-searches span").forEach(tag => {
+      tag.addEventListener("click", () => {
+        searchInput.value = tag.dataset.query;
+        searchType.value = "q";
+        searchBooks();
+      });
+    });
+
+  </script>
+</body>
+</html>
