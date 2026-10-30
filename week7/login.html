@@ -1,0 +1,566 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | BloomSpace</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: "DM Sans", sans-serif;
+      background: #fffaf8;
+      color: #342e45;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Background decorations */
+    .background {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .bubble {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.45;
+      filter: blur(2px);
+    }
+
+    .bubble.pink {
+      background: #ffb5cc;
+      width: 300px;
+      height: 300px;
+      top: -100px;
+      left: -100px;
+    }
+
+    .bubble.purple {
+      background: #c7b8ff;
+      width: 350px;
+      height: 350px;
+      right: -120px;
+      top: 20%;
+    }
+
+    .bubble.blue {
+      background: #a8e4fa;
+      width: 250px;
+      height: 250px;
+      bottom: -80px;
+      left: 15%;
+    }
+
+    .bubble.orange {
+      background: #ffdab0;
+      width: 180px;
+      height: 180px;
+      bottom: 10%;
+      right: 20%;
+    }
+
+    /* Navigation */
+    nav {
+      width: 100%;
+      max-width: 1200px;
+      margin: auto;
+      padding: 25px 35px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 25px;
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
+
+    .logo span {
+      color: #e779a1;
+    }
+
+    .nav-text {
+      color: #938b9f;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    /* Main login area */
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 35px 20px 60px;
+    }
+
+    .login-container {
+      width: 100%;
+      max-width: 430px;
+      background: rgba(255, 255, 255, 0.94);
+      padding: 42px 40px;
+      border-radius: 28px;
+      box-shadow: 0 15px 55px rgba(110, 85, 140, 0.12);
+      border: 1px solid rgba(255,255,255,0.9);
+      animation: appear 0.6s ease;
+    }
+
+    @keyframes appear {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Login icon */
+    .login-icon {
+      width: 75px;
+      height: 75px;
+      margin: 0 auto 20px;
+      border-radius: 24px;
+      background: linear-gradient(
+        135deg,
+        #ffd8e5,
+        #e6dfff,
+        #d9f3ff
+      );
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 34px;
+      transform: rotate(-5deg);
+    }
+
+    .heading {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .heading h1 {
+      font-family: "Playfair Display", serif;
+      font-size: 34px;
+      margin-bottom: 9px;
+    }
+
+    .heading h1 span {
+      color: #e77ca3;
+    }
+
+    .heading p {
+      color: #928a9e;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    /* Form labels */
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 9px;
+      color: #51485f;
+    }
+
+    /* Input fields */
+    .input-wrapper {
+      display: flex;
+      align-items: center;
+      background: #faf8ff;
+      border: 1.5px solid #eee8f5;
+      border-radius: 13px;
+      padding: 0 14px;
+      transition: 0.25s;
+    }
+
+    .input-wrapper:focus-within {
+      border-color: #b39af3;
+      background: white;
+      box-shadow: 0 0 0 4px rgba(179, 154, 243, 0.13);
+    }
+
+    .input-icon {
+      font-size: 17px;
+      margin-right: 11px;
+    }
+
+    .input-wrapper input {
+      flex: 1;
+      min-width: 0;
+      height: 49px;
+      border: none;
+      outline: none;
+      background: transparent;
+      font-family: inherit;
+      font-size: 13px;
+      color: #342e45;
+    }
+
+    .input-wrapper input::placeholder {
+      color: #b1aabb;
+    }
+
+    /* Password visibility button */
+    .toggle-password {
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      color: #9586bd;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 8px 0 8px 8px;
+    }
+
+    /* Remember me */
+    .form-options {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin: 4px 0 25px;
+    }
+
+    .remember {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: #81788e;
+      cursor: pointer;
+    }
+
+    .remember input {
+      accent-color: #e77ca3;
+      width: 15px;
+      height: 15px;
+      cursor: pointer;
+    }
+
+    .forgot {
+      color: #a17fcb;
+      font-size: 12px;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .forgot:hover {
+      color: #e77ca3;
+    }
+
+    /* Sign in button */
+    .login-button {
+      width: 100%;
+      border: none;
+      border-radius: 13px;
+      padding: 15px;
+      background: linear-gradient(
+        110deg,
+        #f18cad,
+        #ad91ed,
+        #83cde9
+      );
+      color: white;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 8px 18px rgba(180, 132, 205, 0.2);
+      transition: 0.25s;
+    }
+
+    .login-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 22px rgba(180, 132, 205, 0.3);
+    }
+
+    .login-button:active {
+      transform: scale(0.98);
+    }
+
+    /* Message displayed by JavaScript */
+    #message {
+      display: none;
+      margin-top: 17px;
+      padding: 12px;
+      border-radius: 11px;
+      background: #e9f8ee;
+      color: #39865a;
+      font-size: 12px;
+      line-height: 1.6;
+      text-align: center;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 25px 0;
+      color: #b2aaba;
+      font-size: 11px;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: "";
+      height: 1px;
+      flex: 1;
+      background: #eee9f2;
+    }
+
+    .signup-text {
+      text-align: center;
+      font-size: 12px;
+      color: #928a9e;
+    }
+
+    .signup-text a {
+      color: #e779a1;
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .signup-text a:hover {
+      text-decoration: underline;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #a59cab;
+      font-size: 11px;
+    }
+
+    footer span {
+      color: #e779a1;
+    }
+
+    /* Mobile responsive design */
+    @media (max-width: 500px) {
+      nav {
+        padding: 20px;
+      }
+
+      .nav-text {
+        font-size: 10px;
+      }
+
+      .login-container {
+        padding: 35px 24px;
+      }
+
+      .heading h1 {
+        font-size: 30px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Background decorations -->
+  <div class="background">
+    <div class="bubble pink"></div>
+    <div class="bubble purple"></div>
+    <div class="bubble blue"></div>
+    <div class="bubble orange"></div>
+  </div>
+
+  <!-- Navigation -->
+  <nav>
+    <div class="logo">Bloom<span>Space.</span> ✿</div>
+    <div class="nav-text">A happy place for you ♡</div>
+  </nav>
+
+  <!-- Login form -->
+  <main>
+
+    <div class="login-container">
+
+      <div class="login-icon">🌷</div>
+
+      <div class="heading">
+        <h1>Welcome <span>back!</span></h1>
+        <p>We're happy to see you again.<br>
+        Please sign in to continue.</p>
+      </div>
+
+      <form id="loginForm">
+
+        <!-- Email -->
+        <div class="form-group">
+          <label for="email">Email address</label>
+
+          <div class="input-wrapper">
+            <span class="input-icon">✉️</span>
+
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="name@example.com"
+              autocomplete="email"
+              required
+            >
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div class="form-group">
+          <label for="password">Password</label>
+
+          <div class="input-wrapper">
+            <span class="input-icon">🔒</span>
+
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Enter your password"
+              autocomplete="current-password"
+              required
+              minlength="8"
+            >
+
+            <button
+              type="button"
+              class="toggle-password"
+              id="togglePassword"
+            >
+              Show
+            </button>
+          </div>
+        </div>
+
+        <!-- Remember me and forgot password -->
+        <div class="form-options">
+
+          <label class="remember">
+            <input type="checkbox" id="remember">
+            Remember me
+          </label>
+
+          <a href="#" class="forgot" id="forgotLink">
+            Forgot password?
+          </a>
+
+        </div>
+
+        <!-- Submit button -->
+        <button type="submit" class="login-button">
+          Sign In ✨
+        </button>
+
+        <div id="message" role="status" aria-live="polite"></div>
+
+      </form>
+
+      <div class="divider">OR</div>
+
+      <p class="signup-text">
+        Don't have an account?
+        <a href="#" id="signupLink">Create one</a>
+      </p>
+
+    </div>
+
+  </main>
+
+  <footer>
+    Made with <span>♥</span> for you · BloomSpace
+  </footer>
+
+  <script>
+
+    // Select the HTML elements
+    const loginForm = document.querySelector("#loginForm");
+
+    const passwordInput = document.querySelector("#password");
+
+    const togglePassword = document.querySelector("#togglePassword");
+
+    const message = document.querySelector("#message");
+
+    // Show or hide password
+    togglePassword.addEventListener("click", function () {
+
+      if (passwordInput.type === "password") {
+
+        passwordInput.type = "text";
+
+        togglePassword.textContent = "Hide";
+
+      } else {
+
+        passwordInput.type = "password";
+
+        togglePassword.textContent = "Show";
+
+      }
+
+    });
+
+    // Handle form submission
+    loginForm.addEventListener("submit", function (event) {
+
+      // Stop the browser from reloading the page
+      event.preventDefault();
+
+      // Display a demonstration message
+      message.style.display = "block";
+
+      message.textContent =
+        "Your form is valid! This is a demo login page, not a real account sign-in.";
+
+    });
+
+    // Forgot password demonstration
+    document.querySelector("#forgotLink").addEventListener("click", function (event) {
+
+      event.preventDefault();
+
+      message.style.display = "block";
+
+      message.textContent =
+        "Password recovery is not connected in this demo.";
+
+    });
+
+    // Sign up demonstration
+    document.querySelector("#signupLink").addEventListener("click", function (event) {
+
+      event.preventDefault();
+
+      message.style.display = "block";
+
+      message.textContent =
+        "Account registration is not connected in this demo.";
+
+    });
+
+  </script>
+
+</body>
+</html>
