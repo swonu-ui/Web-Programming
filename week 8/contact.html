@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Contact Me ♡</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "DM Sans", sans-serif;
+      background: #ffe5ed;
+      color: #34465c;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 30px 15px;
+    }
+
+    /* Main contact card */
+    .contact-container {
+      width: 100%;
+      max-width: 650px;
+      background: #91c9e8;
+      padding: 40px;
+      border-radius: 28px;
+      box-shadow: 0 15px 40px rgba(70, 120, 160, 0.18);
+      border: 5px solid white;
+    }
+
+    .heading {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .heading .icon {
+      font-size: 38px;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      font-family: "Playfair Display", serif;
+      font-size: 38px;
+      color: #294761;
+      margin-bottom: 10px;
+    }
+
+    .heading p {
+      font-size: 14px;
+      color: #35566e;
+      line-height: 1.6;
+    }
+
+    /* Form fields */
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 800;
+      color: #294761;
+      margin-bottom: 8px;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 14px 16px;
+      border: 2px solid transparent;
+      border-radius: 12px;
+      background: #ffffff;
+      color: #34465c;
+      font-family: inherit;
+      font-size: 14px;
+      outline: none;
+      transition: 0.2s;
+    }
+
+    input:focus,
+    textarea:focus {
+      border-color: #e982a5;
+      box-shadow: 0 0 0 3px rgba(233, 130, 165, 0.15);
+    }
+
+    textarea {
+      min-height: 150px;
+      resize: vertical;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: #a4aab4;
+    }
+
+    /* Validation messages */
+    .error-message {
+      display: block;
+      color: #a83258;
+      font-size: 12px;
+      margin-top: 6px;
+      min-height: 16px;
+    }
+
+    .counter {
+      text-align: right;
+      color: #35566e;
+      font-size: 12px;
+      margin-top: 6px;
+    }
+
+    /* Submit button */
+    button {
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 12px;
+      background: #f28eae;
+      color: white;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      background: #e7779c;
+      transform: translateY(-2px);
+    }
+
+    /* Success message */
+    .success-message {
+      display: none;
+      background: #fff1f5;
+      color: #a34c70;
+      padding: 18px;
+      margin-top: 20px;
+      border-radius: 12px;
+      text-align: center;
+      font-weight: 700;
+      line-height: 1.6;
+    }
+
+    /* Responsive design */
+    @media (max-width: 600px) {
+      .contact-container {
+        padding: 25px 20px;
+      }
+
+      h1 {
+        font-size: 30px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="contact-container">
+
+    <div class="heading">
+      <div class="icon">💌</div>
+
+      <h1>Contact Me</h1>
+
+      <p>
+        Have a question or want to work together?
+        Send me a message ♡
+      </p>
+    </div>
+
+    <form id="contactForm" novalidate>
+
+      <!-- Name -->
+      <div class="form-group">
+
+        <label for="name">Name</label>
+
+        <input
+          type="text"
+          id="name"
+          placeholder="Your name"
+          minlength="2"
+          required
+        >
+
+        <small class="error-message" id="nameError"></small>
+
+      </div>
+
+      <!-- Email -->
+      <div class="form-group">
+
+        <label for="email">Email</label>
+
+        <input
+          type="email"
+          id="email"
+          placeholder="name@example.com"
+          required
+        >
+
+        <small class="error-message" id="emailError"></small>
+
+      </div>
+
+      <!-- Subject -->
+      <div class="form-group">
+
+        <label for="subject">Subject</label>
+
+        <input
+          type="text"
+          id="subject"
+          placeholder="What is this about?"
+          minlength="3"
+          required
+        >
+
+        <small class="error-message" id="subjectError"></small>
+
+      </div>
+
+      <!-- Message -->
+      <div class="form-group">
+
+        <label for="message">Message (20–1000 characters)</label>
+
+        <textarea
+          id="message"
+          placeholder="Write your message here..."
+          minlength="20"
+          maxlength="1000"
+          required
+        ></textarea>
+
+        <div class="counter" id="charCounter">
+          0 / 1000
+        </div>
+
+        <small class="error-message" id="messageError"></small>
+
+      </div>
+
+      <!-- Submit -->
+      <button type="submit">
+        Send Message ♡
+      </button>
+
+      <!-- Success -->
+      <div class="success-message" id="successMessage">
+        ✨ Thanks! Your message has been submitted successfully.
+      </div>
+
+    </form>
+
+  </main>
+
+  <script>
+
+    // 1. Select HTML elements.
+    const form = document.querySelector("#contactForm");
+
+    const nameInput = document.querySelector("#name");
+    const emailInput = document.querySelector("#email");
+    const subjectInput = document.querySelector("#subject");
+    const messageInput = document.querySelector("#message");
+
+    const charCounter = document.querySelector("#charCounter");
+    const successMessage = document.querySelector("#successMessage");
+
+
+    // 2. Update the message character counter.
+    messageInput.addEventListener("input", () => {
+
+      const length = messageInput.value.length;
+
+      charCounter.textContent = `${length} / 1000`;
+
+    });
+
+
+    // 3. Validate the name.
+    function validateName() {
+
+      const name = nameInput.value.trim();
+      const error = document.querySelector("#nameError");
+
+      if (name.length < 2) {
+
+        error.textContent = "Please enter at least 2 letters.";
+        return false;
+
+      }
+
+      error.textContent = "";
+      return true;
+
+    }
+
+
+    // 4. Validate the email.
+    function validateEmail() {
+
+      const email = emailInput.value.trim();
+      const error = document.querySelector("#emailError");
+
+      if (email === "" || !emailInput.validity.valid) {
+
+        error.textContent = "Please enter a valid email address.";
+        return false;
+
+      }
+
+      error.textContent = "";
+      return true;
+
+    }
+
+
+    // 5. Validate the subject.
+    function validateSubject() {
+
+      const subject = subjectInput.value.trim();
+      const error = document.querySelector("#subjectError");
+
+      if (subject.length < 3) {
+
+        error.textContent = "The subject needs at least 3 characters.";
+        return false;
+
+      }
+
+      error.textContent = "";
+      return true;
+
+    }
+
+
+    // 6. Validate the message.
+    function validateMessage() {
+
+      const message = messageInput.value.trim();
+      const error = document.querySelector("#messageError");
+
+      if (message.length < 20) {
+
+        error.textContent = "Your message needs at least 20 characters.";
+        return false;
+
+      }
+
+      if (message.length > 1000) {
+
+        error.textContent = "Your message cannot exceed 1000 characters.";
+        return false;
+
+      }
+
+      error.textContent = "";
+      return true;
+
+    }
+
+
+    // 7. Validate fields when the user leaves them.
+    nameInput.addEventListener("blur", validateName);
+
+    emailInput.addEventListener("blur", validateEmail);
+
+    subjectInput.addEventListener("blur", validateSubject);
+
+    messageInput.addEventListener("blur", validateMessage);
+
+
+    // 8. Handle form submission.
+    form.addEventListener("submit", (event) => {
+
+      // Stop the browser from refreshing the page.
+      event.preventDefault();
+
+      // Check every field.
+      const nameValid = validateName();
+      const emailValid = validateEmail();
+      const subjectValid = validateSubject();
+      const messageValid = validateMessage();
+
+      // Submit only if every field is valid.
+      if (
+        nameValid &&
+        emailValid &&
+        subjectValid &&
+        messageValid
+      ) {
+
+        successMessage.style.display = "block";
+
+        form.reset();
+
+        charCounter.textContent = "0 / 1000";
+
+      } else {
+
+        successMessage.style.display = "none";
+
+      }
+
+    });
+
+  </script>
+
+</body>
+</html>
