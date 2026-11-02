@@ -1,193 +1,488 @@
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0"> 
-    <title>Weekly assignment of web programming</title>
-   <style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Web Programming Journey ♡</title>
+
+    <style>
         :root {
-            --primary: #B03A77;
-            --accent: #FFA5D6;
-            --bg: #FFF6FA;
-            --text: #4A2E3D;
-            --radius: 12px;
-            /* Tiffany Blue theme color */
-            --tiffany-blue: #00C4C4; 
+            --pink: #f5a8c7;
+            --pink-light: #fff0f6;
+            --pink-dark: #c45b91;
+
+            --purple: #b9a5e8;
+            --purple-light: #f2edff;
+            --purple-dark: #7861b2;
+
+            --blue: #a5dfe9;
+            --blue-dark: #438f9d;
+
+            --yellow: #ffe39a;
+            --yellow-dark: #b58a2d;
+
+            --text: #55445f;
+            --muted: #95869e;
+            --white: #ffffff;
+
+            --radius: 22px;
+            --shadow: 0 8px 25px rgba(117, 83, 133, 0.10);
         }
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --bg: #4A2E3D;       
-                --text: #FFF6FA;     
-                --primary: #FFA5D6;  
-                --accent: #00C4C4;   
-            }
-        }
-        *, *::before, *::after {
+
+        * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
+
         body {
-            background: var(--bg);
-            color: var(--text);
-            font-family: sans-serif;
-            padding: 24px;
-            position: relative;
             min-height: 100vh;
-        }
-        h1 {
-            color: var(--primary);
-            margin-bottom: 24px;
-        }
-        /* Forces vertical single-column layout across all screens */
-        .grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 16px;
-            max-width: 600px;
-        }
-        .card {
-            border: 2px solid var(--accent);
-            border-radius: var(--radius);
-            background: var(--bg);
+            padding: 45px 20px 60px;
+            font-family: 'Trebuchet MS', Arial, sans-serif;
             color: var(--text);
-            font-size: 15px;
-            font-weight: 600;
-            overflow: hidden;
-            /* Added transition so the full outer box shadow glows smoothly */
-            transition: box-shadow 0.3s ease, border-color 0.3s ease;
-            position: relative;
-    overflow: visible;
-        }
-        .card::before,
-.card::after {
-    content: "🌸";
-    position: absolute;
-    top: -16px;
-    font-size: 28px;
-    z-index: 10;
-    pointer-events: none;
-}
 
-.card::before {
-    left: -12px;
-}
+            background:
+                radial-gradient(circle at 10% 10%, #ffe1ed 0, transparent 25%),
+                radial-gradient(circle at 90% 20%, #e5dcff 0, transparent 28%),
+                radial-gradient(circle at 80% 90%, #dff8fa 0, transparent 25%),
+                #fff9fc;
+        }
 
-.card::after {
-    right: -12px;
-}
-        /* When you hover anywhere over the box, it casts the shadow into the outer margin area */
-        .card:hover {
-            border-color: var(--tiffany-blue);
-            box-shadow: 0 8px 24px rgba(0, 196, 196, 0.35);
+        /* HEADER */
+
+        .hero {
+            max-width: 850px;
+            margin: 0 auto 35px;
+            padding: 35px 25px;
+            text-align: center;
+
+            background: rgba(255, 255, 255, 0.8);
+            border: 2px solid white;
+            border-radius: 30px;
+            box-shadow: var(--shadow);
         }
-        /* Style the main clickable toggle container */
-        .card summary {
-            padding: 16px 24px;
-            cursor: pointer;
-            outline: none;
-            user-select: none;
-            transition: transform 0.25s ease;
+
+        .hero-decoration {
+            font-size: 34px;
+            margin-bottom: 12px;
         }
-        .card summary:hover {
-            transform: translateX(5px);
+
+        .hero h1 {
+            font-size: clamp(25px, 5vw, 38px);
+            color: var(--pink-dark);
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
         }
-        /* Container for first level sub-options (Monday/Friday) */
-        .sub-options {
+
+        .hero p {
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .student-tag {
+            display: inline-block;
+            margin-top: 18px;
+            padding: 9px 18px;
+            border-radius: 30px;
+            background: var(--purple-light);
+            color: var(--purple-dark);
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        /* SMALL DECORATIONS */
+
+        .section-heading {
+            max-width: 850px;
+            margin: 0 auto 18px;
             display: flex;
-            flex-direction: column;
-            background: rgba(255, 165, 214, 0.08); 
-            border-top: 1px solid var(--accent);
-            transition: border-color 0.3s ease;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
         }
-        /* Syncs inner border color when card updates */
-        .card:hover .sub-options {
-            border-top-color: rgba(0, 196, 196, 0.4);
+
+        .section-heading h2 {
+            color: var(--purple-dark);
+            font-size: 20px;
         }
-        /* Layout configuration for nested day components */
+
+        .section-heading span {
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        /* WEEK GRID */
+
+        .grid {
+            max-width: 850px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 20px;
+        }
+
+        /* WEEK CARD */
+
+        .card {
+            position: relative;
+            background: var(--white);
+            border: 2px solid #f4e5f0;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: transform 0.25s ease,
+                        box-shadow 0.25s ease,
+                        border-color 0.25s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--pink);
+            box-shadow: 0 13px 28px rgba(190, 113, 163, 0.17);
+        }
+
+        .card:nth-child(4n+1) {
+            --card-color: var(--pink);
+            --card-light: var(--pink-light);
+            --card-dark: var(--pink-dark);
+        }
+
+        .card:nth-child(4n+2) {
+            --card-color: var(--purple);
+            --card-light: var(--purple-light);
+            --card-dark: var(--purple-dark);
+        }
+
+        .card:nth-child(4n+3) {
+            --card-color: var(--blue);
+            --card-light: #edfbfd;
+            --card-dark: var(--blue-dark);
+        }
+
+        .card:nth-child(4n+4) {
+            --card-color: var(--yellow);
+            --card-light: #fff9e9;
+            --card-dark: var(--yellow-dark);
+        }
+
+        /* MAIN WEEK BUTTON */
+
+        .card > details > summary {
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            list-style: none;
+            cursor: pointer;
+            background: var(--card-light);
+            color: var(--card-dark);
+            font-size: 17px;
+            font-weight: bold;
+            user-select: none;
+        }
+
+        .card > details > summary::-webkit-details-marker,
+        .sub-options summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .week-name {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .week-icon {
+            display: inline-flex;
+            width: 38px;
+            height: 38px;
+            align-items: center;
+            justify-content: center;
+            border-radius: 13px;
+            background: white;
+            font-size: 19px;
+        }
+
+        .arrow {
+            transition: transform 0.25s ease;
+            font-size: 13px;
+        }
+
+        details[open] > summary .arrow {
+            transform: rotate(180deg);
+        }
+
+        .card > details > summary:hover {
+            filter: brightness(0.98);
+        }
+
+        /* INNER CONTENT */
+
+        .sub-options {
+            background: white;
+            border-top: 1px solid #f4e5f0;
+            animation: appear 0.25s ease;
+        }
+
+        @keyframes appear {
+            from {
+                opacity: 0;
+                transform: translateY(-5px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         .sub-options details {
-            border-bottom: 1px solid rgba(255, 165, 214, 0.15);
+            border-bottom: 1px solid #f6edf4;
         }
+
         .sub-options details:last-child {
             border-bottom: none;
         }
+
         .sub-options summary {
-            padding: 12px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 22px;
+            cursor: pointer;
+            list-style: none;
             font-size: 14px;
-            font-weight: 500;
+            font-weight: bold;
+            color: var(--text);
+            transition: background 0.2s ease;
         }
-        /* Container for final link items */
+
+        .sub-options summary:hover {
+            background: var(--card-light);
+        }
+
+        .day-arrow {
+            color: var(--card-dark);
+            font-size: 11px;
+            transition: transform 0.2s ease;
+        }
+
+        .sub-options details[open] > summary .day-arrow {
+            transform: rotate(180deg);
+        }
+
+        /* TASK LINKS */
+
         .nested-links {
             display: flex;
             flex-direction: column;
-            background: rgba(255, 165, 214, 0.04);
+            padding: 5px 14px 13px 27px;
+            background: #fffafd;
         }
-        /* Stretches final clickable items to fill width */
-        .nested-links a {
-            padding: 10px 48px;
-            text-decoration: none;
-            color: inherit;
-            font-size: 13px;
-            font-weight: 400;
-            transition: background 0.2s ease, padding-left 0.2s ease;
-        }
-        .nested-links a:hover {
-            background: rgba(255, 165, 214, 0.15);
-            padding-left: 54px;
-        }
-        
-        /* --- STICKERS STYLE --- */
-        .sticker {
-            position: absolute;
-            font-size: 32px;
-            user-select: none;
-            pointer-events: none;
-            z-index: 1;
-            opacity: 0.85;
-        }
-    
-        /* --- HOVER HEARTS STYLE --- */
-        .heart-particle {
-            position: fixed;
-            pointer-events: none;
-            user-select: none;
-            z-index: 9999;
-            font-size: 16px;
-            animation: bubbleUp 0.8s ease-out forwards;
-        }
-        @keyframes bubbleUp {
-            0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; }
-            100% { transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(1.2); opacity: 0; }
-        }
- </style>
 
+        .nested-links a {
+            display: block;
+            padding: 10px 13px;
+            margin: 3px 0;
+            border-radius: 10px;
+            text-decoration: none;
+            color: #796b83;
+            font-size: 13px;
+            font-weight: 500;
+            transition: background 0.2s ease,
+                        color 0.2s ease,
+                        padding-left 0.2s ease;
+        }
+
+        .nested-links a::before {
+            content: "♡";
+            margin-right: 9px;
+            color: var(--card-dark);
+        }
+
+        .nested-links a:hover {
+            background: var(--card-light);
+            color: var(--card-dark);
+            padding-left: 20px;
+        }
+
+        .nested-links a:focus-visible,
+        summary:focus-visible {
+            outline: 3px solid var(--blue-dark);
+            outline-offset: 3px;
+        }
+
+        /* FOOTER */
+
+        footer {
+            max-width: 850px;
+            margin: 45px auto 0;
+            padding: 25px;
+            text-align: center;
+            border-top: 1px solid #f0dce9;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.9;
+        }
+
+        footer .footer-icons {
+            font-size: 22px;
+            margin-bottom: 8px;
+        }
+
+        /* MOBILE RESPONSIVE */
+
+        @media (max-width: 600px) {
+            body {
+                padding: 25px 14px 40px;
+            }
+
+            .hero {
+                padding: 28px 16px;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .section-heading {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+        }
+
+        /* DARK MODE */
+
+        @media (prefers-color-scheme: dark) {
+            body {
+                background: #282332;
+                color: #f8eaf5;
+            }
+
+            .hero,
+            .card {
+                background: #393044;
+                border-color: #55425d;
+            }
+
+            .hero p,
+            .section-heading span,
+            footer {
+                color: #c9b9cf;
+            }
+
+            .sub-options {
+                background: #393044;
+                border-color: #55425d;
+            }
+
+            .sub-options details {
+                border-color: #55425d;
+            }
+
+            .sub-options summary {
+                color: #f8eaf5;
+            }
+
+            .nested-links {
+                background: #30293a;
+            }
+
+            .nested-links a {
+                color: #e8d9eb;
+            }
+
+            .student-tag {
+                background: #514363;
+                color: #eadfff;
+            }
+        }
+
+    </style>
 </head>
 
 <body>
- 
-<h1>Rai Swonu (202637725)</h1>
-<div class="grid">
-        <!-- Week 2 -->
+
+    <!-- HEADER -->
+
+    <header class="hero">
+
+        <div class="hero-decoration">
+            🌷 🦋 🎀
+        </div>
+
+        <h1>My Web Programming Journey</h1>
+
+        <p>
+            A little collection of my coding exercises,
+            projects and learning progress.
+            <br>
+            Every line of code is a little step forward ♡
+        </p>
+
+        <div class="student-tag">
+            ✨ Rai Swonu · 202637725
+        </div>
+
+    </header>
+
+
+    <!-- SECTION TITLE -->
+
+    <div class="section-heading">
+        <h2>📚 My Weekly Assignments</h2>
+        <span>Choose a week to explore ♡</span>
+    </div>
+
+
+    <!-- WEEK GRID -->
+
+    <main class="grid">
+
+        <!-- WEEK 2 -->
+
         <div class="card">
             <details>
-                <summary>Week 2</summary>
-                <div class="sub-options">
-                    <details>
-                        <summary>Monday</summary>
-                        <div class="nested-links">
-                        <a href="week2/Monday/sep%207/T1.html" target="_blank" rel="noopener noreferrer">Task 1</a>
-                    <a href="week2/Monday/sep%207/T2.html" target="_blank" rel="noopener noreferrer">Task 2</a>
-                    <a href="week2/Monday/sep%207/T3.html" target="_blank" rel="noopener noreferrer">Task 3</a>
-                    <a href="week2/Monday/sep%207/T4.html" target="_blank" rel="noopener noreferrer">Task 4</a>
-                    <a href="week2/Monday/sep%207/T5.html" target="_blank" rel="noopener noreferrer">Task 5</a>
-                    <a href="week2/Monday/sep%207/T6.html" target="_blank" rel="noopener noreferrer">Task 6</a>
-                    <a href="week2/Monday/sep%207/T7.html" target="_blank" rel="noopener noreferrer">Task 7</a>
-                    <a href="week2/Monday/sep%207/T8.html" target="_blank" rel="noopener noreferrer">Task 8</a>
+                <summary>
+                    <span class="week-name">
+                        <span class="week-icon">🌸</span>
+                        Week 2
+                    </span>
+                    <span class="arrow">▼</span>
+                </summary>
 
+                <div class="sub-options">
+
+                    <details>
+                        <summary>
+                            Monday
+                            <span class="day-arrow">▼</span>
+                        </summary>
+
+                        <div class="nested-links">
+                            <a href="week2/Monday/sep%207/T1.html" target="_blank" rel="noopener noreferrer">Task 1</a>
+                            <a href="week2/Monday/sep%207/T2.html" target="_blank" rel="noopener noreferrer">Task 2</a>
+                            <a href="week2/Monday/sep%207/T3.html" target="_blank" rel="noopener noreferrer">Task 3</a>
+                            <a href="week2/Monday/sep%207/T4.html" target="_blank" rel="noopener noreferrer">Task 4</a>
+                            <a href="week2/Monday/sep%207/T5.html" target="_blank" rel="noopener noreferrer">Task 5</a>
+                            <a href="week2/Monday/sep%207/T6.html" target="_blank" rel="noopener noreferrer">Task 6</a>
+                            <a href="week2/Monday/sep%207/T7.html" target="_blank" rel="noopener noreferrer">Task 7</a>
+                            <a href="week2/Monday/sep%207/T8.html" target="_blank" rel="noopener noreferrer">Task 8</a>
                         </div>
                     </details>
+
                     <details>
-                        <summary>Friday</summary>
+                        <summary>
+                            Friday
+                            <span class="day-arrow">▼</span>
+                        </summary>
+
                         <div class="nested-links">
                             <a href="week2/friday/sep11/t1.html" target="_blank" rel="noopener noreferrer">Task 1</a>
                             <a href="week2/friday/sep11/t2.html" target="_blank" rel="noopener noreferrer">Task 2</a>
@@ -199,17 +494,32 @@
                             <a href="week2/friday/sep11/t8.html" target="_blank" rel="noopener noreferrer">Task 8</a>
                         </div>
                     </details>
+
                 </div>
             </details>
         </div>
 
-        <!-- Week 3 -->
+
+        <!-- WEEK 3 -->
+
         <div class="card">
             <details>
-                <summary>Week 3</summary>
+                <summary>
+                    <span class="week-name">
+                        <span class="week-icon">🦋</span>
+                        Week 3
+                    </span>
+                    <span class="arrow">▼</span>
+                </summary>
+
                 <div class="sub-options">
+
                     <details>
-                        <summary>Monday</summary>
+                        <summary>
+                            Monday
+                            <span class="day-arrow">▼</span>
+                        </summary>
+
                         <div class="nested-links">
                             <a href="week3/monday/w3mt1.html" target="_blank" rel="noopener noreferrer">Task 1</a>
                             <a href="week3/monday/w3mt2.html" target="_blank" rel="noopener noreferrer">Task 2</a>
@@ -221,8 +531,13 @@
                             <a href="week3/monday/w3mt8.html" target="_blank" rel="noopener noreferrer">Task 8</a>
                         </div>
                     </details>
+
                     <details>
-                        <summary>Friday</summary>
+                        <summary>
+                            Friday
+                            <span class="day-arrow">▼</span>
+                        </summary>
+
                         <div class="nested-links">
                             <a href="week3/friday/w3f1.html" target="_blank" rel="noopener noreferrer">Task 1</a>
                             <a href="week3/friday/w3f2.html" target="_blank" rel="noopener noreferrer">Task 2</a>
@@ -233,68 +548,118 @@
                             <a href="week3/friday/w3f7.html" target="_blank" rel="noopener noreferrer">Task 7</a>
                         </div>
                     </details>
+
                 </div>
             </details>
         </div>
 
-        <!-- Week 4 -->
+
+        <!-- WEEK 4 -->
+
         <div class="card">
             <details>
-                <summary>Week 4</summary>
+                <summary>
+                    <span class="week-name">
+                        <span class="week-icon">💜</span>
+                        Week 4
+                    </span>
+                    <span class="arrow">▼</span>
+                </summary>
+
                 <div class="sub-options">
+
                     <details>
-                        <summary>Monday</summary>
+                        <summary>
+                            Monday
+                            <span class="day-arrow">▼</span>
+                        </summary>
+
                         <div class="nested-links">
                             <a href="week4/w4t1.html" target="_blank" rel="noopener noreferrer">Task 1</a>
                             <a href="week4/w4t2.html" target="_blank" rel="noopener noreferrer">Task 2</a>
                             <a href="week4/w4t3.html" target="_blank" rel="noopener noreferrer">Task 3</a>
                             <a href="week4/w4t4.html" target="_blank" rel="noopener noreferrer">Task 4</a>
-                            
                         </div>
                     </details>
-                  
-                    
+
                 </div>
             </details>
         </div>
+
+
+        <!-- WEEK 5 -->
+
         <div class="card">
             <details>
-                <summary>Week 5</summary>
+                <summary>
+                    <span class="week-name">
+                        <span class="week-icon">🌼</span>
+                        Week 5
+                    </span>
+                    <span class="arrow">▼</span>
+                </summary>
+
                 <div class="sub-options">
+
                     <details>
-                        <summary>Monday</summary>
+                        <summary>
+                            Monday
+                            <span class="day-arrow">▼</span>
+                        </summary>
+
                         <div class="nested-links">
                             <a href="week5/w5ic1.html" target="_blank" rel="noopener noreferrer">Task 1</a>
                             <a href="week5/w5ic2.html" target="_blank" rel="noopener noreferrer">Task 2</a>
                             <a href="week5/w5ic3.html" target="_blank" rel="noopener noreferrer">Task 3</a>
-                    
-                            
                         </div>
                     </details>
-                  
-                    
+
                 </div>
             </details>
         </div>
+
+
+        <!-- WEEK 6 -->
+
         <div class="card">
             <details>
-                <summary>Week 6</summary>
+                <summary>
+                    <span class="week-name">
+                        <span class="week-icon">🩵</span>
+                        Week 6
+                    </span>
+                    <span class="arrow">▼</span>
+                </summary>
+
                 <div class="sub-options">
+
                     <div class="nested-links">
-                        <a href="week6/blogpostsearcher.html" target="_blank" rel="noopener noreferrer">Place holder post searcher</a>
+                        <a href="week6/blogpostsearcher.html" target="_blank" rel="noopener noreferrer">Placeholder Post Searcher</a>
                         <a href="week6/weather.html" target="_blank" rel="noopener noreferrer">Seoul Weather</a>
                         <a href="week6/randomprofilefetcher.html" target="_blank" rel="noopener noreferrer">Random Profile Fetcher</a>
                         <a href="week6/pokedex.html" target="_blank" rel="noopener noreferrer">Pokedex</a>
                         <a href="week6/Contryinfo.html" target="_blank" rel="noopener noreferrer">Country Info</a>
                     </div>
+
                 </div>
             </details>
         </div>
 
+
+        <!-- WEEK 7 -->
+
         <div class="card">
             <details>
-                <summary>Week 7</summary>
+                <summary>
+                    <span class="week-name">
+                        <span class="week-icon">📚</span>
+                        Week 7
+                    </span>
+                    <span class="arrow">▼</span>
+                </summary>
+
                 <div class="sub-options">
+
                     <div class="nested-links">
                         <a href="week7/booksearcher.html" target="_blank" rel="noopener noreferrer">Book Searcher</a>
                         <a href="week7/booksearcher2.html" target="_blank" rel="noopener noreferrer">Book Searcher 2</a>
@@ -303,14 +668,26 @@
                         <a href="week7/fetch.html" target="_blank" rel="noopener noreferrer">Fetch</a>
                         <a href="week7/wire.html" target="_blank" rel="noopener noreferrer">Wire</a>
                     </div>
+
                 </div>
             </details>
         </div>
 
+
+        <!-- WEEK 8 -->
+
         <div class="card">
             <details>
-                <summary>Week 8</summary>
+                <summary>
+                    <span class="week-name">
+                        <span class="week-icon">🎀</span>
+                        Week 8
+                    </span>
+                    <span class="arrow">▼</span>
+                </summary>
+
                 <div class="sub-options">
+
                     <div class="nested-links">
                         <a href="week%208/login.html" target="_blank" rel="noopener noreferrer">Login</a>
                         <a href="week%208/registration.html" target="_blank" rel="noopener noreferrer">Registration</a>
@@ -318,13 +695,27 @@
                         <a href="week%208/studentregistration.html" target="_blank" rel="noopener noreferrer">Student Registration</a>
                         <a href="week%208/contact.html" target="_blank" rel="noopener noreferrer">Contact</a>
                     </div>
+
                 </div>
             </details>
         </div>
-        
-    </div>
-            <script>
-       
-    </script>
+
+    </main>
+
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        <div class="footer-icons">
+            🌷 ♡ 🦋
+        </div>
+
+        <p>My Web Programming Portfolio</p>
+        <p>Learning, creating and growing one line at a time.</p>
+        <p>Made with love and lots of coffee ☕</p>
+
+    </footer>
+
 </body>
 </html>
