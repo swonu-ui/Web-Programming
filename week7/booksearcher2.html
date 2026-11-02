@@ -1,0 +1,460 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Little Library ♡</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 40px 20px;
+            font-family: Arial, sans-serif;
+            background: #f8f5ff;
+            color: #514568;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        header h1 {
+            color: #8b6bb5;
+            font-size: 32px;
+        }
+
+        header p {
+            color: #9d91ac;
+        }
+
+        /* Search Form */
+        .search-box {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 5px 18px rgba(100, 75, 130, 0.10);
+            display: flex;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        input {
+            flex: 1;
+            min-width: 0;
+            padding: 14px;
+            border: 2px solid #e3d9f0;
+            border-radius: 12px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #a584ca;
+        }
+
+        button {
+            padding: 14px 22px;
+            border: none;
+            border-radius: 12px;
+            background: #a584ca;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            background: #8965b4;
+            transform: translateY(-2px);
+        }
+
+        button:disabled {
+            background: #c9bbda;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        h2 {
+            color: #8b6bb5;
+        }
+
+        /* Status Messages */
+        #message {
+            text-align: center;
+            margin: 25px 0;
+            color: #9d91ac;
+            line-height: 1.6;
+        }
+
+        .loading {
+            color: #8965b4 !important;
+        }
+
+        .error {
+            color: #d85c75 !important;
+        }
+
+        .success {
+            color: #559b78 !important;
+        }
+
+        .empty {
+            color: #a584ca !important;
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            width: 35px;
+            height: 35px;
+            border: 4px solid #e9ddf5;
+            border-top: 4px solid #a584ca;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 15px auto;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Retry Button */
+        #retryButton {
+            display: block;
+            margin: 15px auto;
+            background: #d18aaa;
+        }
+
+        /* Book Results */
+        .book-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+            gap: 22px;
+        }
+
+        .book-card {
+            background: white;
+            border-radius: 18px;
+            padding: 16px;
+            text-align: center;
+            box-shadow: 0 5px 18px rgba(100, 75, 130, 0.10);
+            transition: transform 0.3s;
+        }
+
+        .book-card:hover {
+            transform: translateY(-6px);
+        }
+
+        .book-card img {
+            width: 100%;
+            height: 220px;
+            object-fit: contain;
+            background: #f5f0fc;
+            border-radius: 10px;
+        }
+
+        .book-card h3 {
+            color: #72558f;
+            font-size: 17px;
+        }
+
+        .book-card p {
+            color: #9d91ac;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            color: #aa9db8;
+            font-size: 13px;
+            margin-top: 45px;
+        }
+
+        @media (max-width: 550px) {
+            .search-box {
+                flex-direction: column;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- Header -->
+        <header>
+            <h1>♡ My Little Library ♡</h1>
+            <p>Find your next favorite book ✿</p>
+        </header>
+
+        <main>
+
+            <!-- Search Form -->
+            <form id="searchForm" class="search-box">
+
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Enter a book title or author..."
+                    required
+                >
+
+                <button type="submit" id="searchButton">
+                    Search ♡
+                </button>
+
+            </form>
+
+            <!-- Search Results -->
+            <section>
+
+                <h2>📚 Search Results</h2>
+
+                <!-- Loading, Error and Success Messages -->
+                <div id="message" aria-live="polite">
+                    Search for a book to get started! ♡
+                </div>
+
+                <!-- Loading Spinner -->
+                <div id="spinner" class="spinner" hidden></div>
+
+                <!-- Retry Button -->
+                <button id="retryButton" type="button" hidden>
+                    Try Again ↻
+                </button>
+
+                <!-- Book Cards -->
+                <div id="bookResults" class="book-container">
+                </div>
+
+            </section>
+
+        </main>
+
+        <!-- Footer -->
+        <footer>
+            <p>Made with ♡ for book lovers</p>
+            <p>Book information provided by Open Library</p>
+        </footer>
+
+    </div>
+
+
+    <script>
+
+        // 1. Select HTML elements
+        const searchForm = document.querySelector("#searchForm");
+        const searchInput = document.querySelector("#searchInput");
+        const searchButton = document.querySelector("#searchButton");
+        const bookResults = document.querySelector("#bookResults");
+        const message = document.querySelector("#message");
+        const spinner = document.querySelector("#spinner");
+        const retryButton = document.querySelector("#retryButton");
+
+        // Store the last search keyword
+        let lastSearch = "";
+
+
+        // 2. Show loading state
+        function showLoading() {
+
+            message.textContent = "Searching for beautiful books... ♡";
+            message.className = "loading";
+
+            spinner.hidden = false;
+            retryButton.hidden = true;
+
+            searchButton.disabled = true;
+            searchButton.textContent = "Loading...";
+
+            bookResults.innerHTML = "";
+        }
+
+
+        // 3. Show error state
+        function showError(error) {
+
+            message.textContent =
+                "Oops! Something went wrong. Please check your internet connection.";
+
+            message.className = "error";
+
+            spinner.hidden = true;
+            retryButton.hidden = false;
+
+            console.error("API Error:", error);
+        }
+
+
+        // 4. Show success state
+        function showSuccess(number) {
+
+            message.textContent =
+                `Found ${number} books! Happy reading ♡`;
+
+            message.className = "success";
+
+            spinner.hidden = true;
+            retryButton.hidden = true;
+        }
+
+
+        // 5. Search books using Open Library API
+        async function searchBooks(searchText) {
+
+            lastSearch = searchText;
+
+            showLoading();
+
+            try {
+
+                // API URL
+                const apiURL =
+                    `https://openlibrary.org/search.json?q=${encodeURIComponent(searchText)}&limit=12`;
+
+                // Fetch API data
+                const response = await fetch(apiURL);
+
+                // Check response
+                if (!response.ok) {
+                    throw new Error("Unable to connect to Open Library API");
+                }
+
+                // Convert response into JSON
+                const data = await response.json();
+
+                // Check if books exist
+                if (!data.docs || data.docs.length === 0) {
+
+                    message.textContent =
+                        "No books found! Try another title or author. ♡";
+
+                    message.className = "empty";
+
+                    spinner.hidden = true;
+                    retryButton.hidden = true;
+
+                    return;
+                }
+
+                // Display success message
+                showSuccess(data.docs.length);
+
+                // Display every book
+                data.docs.forEach(function(book) {
+
+                    // Create card
+                    const card = document.createElement("div");
+                    card.className = "book-card";
+
+                    // Book image
+                    const image = document.createElement("img");
+
+                    if (book.cover_i) {
+                        image.src =
+                            `https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg`;
+                    } else {
+                        image.src =
+                            "https://placehold.co/200x280/eee8ff/7655a0?text=No+Cover";
+                    }
+
+                    image.alt = `Cover of ${book.title || "Unknown Book"}`;
+
+                    // Book title
+                    const title = document.createElement("h3");
+                    title.textContent =
+                        book.title || "Unknown Title";
+
+                    // Author
+                    const author = document.createElement("p");
+                    author.textContent =
+                        "Author: " +
+                        (book.author_name?.[0] || "Unknown Author");
+
+                    // Publication year
+                    const year = document.createElement("p");
+                    year.textContent =
+                        "Published: " +
+                        (book.first_publish_year || "Unknown");
+
+                    // Add elements to card
+                    card.appendChild(image);
+                    card.appendChild(title);
+                    card.appendChild(author);
+                    card.appendChild(year);
+
+                    // Add card to results
+                    bookResults.appendChild(card);
+
+                });
+
+            } catch (error) {
+
+                // Show error message
+                showError(error);
+
+            } finally {
+
+                // Always restore the search button
+                spinner.hidden = true;
+                searchButton.disabled = false;
+                searchButton.textContent = "Search ♡";
+
+            }
+
+        }
+
+
+        // 6. Listen for form submission
+        searchForm.addEventListener("submit", function(event) {
+
+            event.preventDefault();
+
+            const searchText = searchInput.value.trim();
+
+            if (searchText === "") {
+                message.textContent = "Please enter a book title!";
+                message.className = "error";
+                return;
+            }
+
+            searchBooks(searchText);
+
+        });
+
+
+        // 7. Retry button
+        retryButton.addEventListener("click", function() {
+
+            if (lastSearch) {
+                searchBooks(lastSearch);
+            }
+
+        });
+
+    </script>
+
+</body>
+</html>

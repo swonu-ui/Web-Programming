@@ -1,0 +1,219 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Little Library</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 40px 20px;
+            font-family: Arial, sans-serif;
+            background-color: #f8f5ff;
+            color: #514568;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            color: #8b6bb5;
+            font-size: 32px;
+        }
+
+        header p {
+            color: #9d91ac;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 5px 18px rgba(100, 75, 130, 0.10);
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-7px);
+        }
+
+        .card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .card-content {
+            padding: 22px;
+        }
+
+        .category {
+            display: inline-block;
+            background-color: #eee6fa;
+            color: #8b6bb5;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+
+        .card h2 {
+            font-size: 20px;
+            color: #72558f;
+            margin-bottom: 8px;
+        }
+
+        .author {
+            color: #a394b5;
+            font-size: 13px;
+        }
+
+        .description {
+            color: #80768d;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .card button {
+            background-color: #b69ad5;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .card button:hover {
+            background-color: #9875bd;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            color: #aa9db8;
+            font-size: 13px;
+        }
+
+        @media (max-width: 750px) {
+            .card-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 500px) {
+            .card-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>♡ My Little Library ♡</h1>
+        <p>A little corner for book lovers</p>
+    </header>
+
+    <main class="container">
+
+        <h2>Featured Books ✿</h2>
+
+        <div class="card-container">
+
+            <!-- Card 1 -->
+            <div class="card">
+                <img
+                    src="https://placehold.co/400x300/e8dff5/72558f?text=Little+Women"
+                    alt="Little Women book">
+
+                <div class="card-content">
+                    <span class="category">Classic</span>
+
+                    <h2>Little Women</h2>
+
+                    <p class="author">By Louisa May Alcott</p>
+
+                    <p class="description">
+                        A beautiful story about four sisters,
+                        family, friendship, and growing up.
+                    </p>
+
+                    <button>Explore Book</button>
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="card">
+                <img
+                    src="https://placehold.co/400x300/f8e4eb/a76d8d?text=Pride+and+Prejudice"
+                    alt="Pride and Prejudice book">
+
+                <div class="card-content">
+                    <span class="category">Romance</span>
+
+                    <h2>Pride and Prejudice</h2>
+
+                    <p class="author">By Jane Austen</p>
+
+                    <p class="description">
+                        A classic novel about love,
+                        family, and first impressions.
+                    </p>
+
+                    <button>Explore Book</button>
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="card">
+                <img
+                    src="https://placehold.co/400x300/dcece5/638d7b?text=The+Secret+Garden"
+                    alt="The Secret Garden book">
+
+                <div class="card-content">
+                    <span class="category">Adventure</span>
+
+                    <h2>The Secret Garden</h2>
+
+                    <p class="author">By Frances Hodgson Burnett</p>
+
+                    <p class="description">
+                        A heartwarming story about friendship,
+                        nature, and discovering a hidden garden.
+                    </p>
+
+                    <button>Explore Book</button>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <footer>
+        <p>Made with ♡ for book lovers</p>
+    </footer>
+
+</body>
+</html>

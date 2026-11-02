@@ -7,8 +7,8 @@
         {
             "type": "pwa-chrome",
             "request": "launch",
-            "name": "Open Week 7 Joke Fetcher",
-            "file": "${workspaceFolder}/week7/w7joke.html"
+            "name": "Open Main Index",
+            "file": "${workspaceFolder}/index.html"
         }
     ]
 }
