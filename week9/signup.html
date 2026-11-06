@@ -1,0 +1,295 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Run Lighthouse &amp; Fix Issues</title>
+
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: Georgia, serif;
+    margin: 0;
+    background: #F5EBDD;
+    color: #4A2C20;
+  }
+
+  .wrap {
+    max-width: 460px;
+    margin: 45px auto;
+    padding: 35px;
+    background: #FFFAF3;
+    border: 1px solid #D8B99A;
+    border-radius: 18px;
+    box-shadow: 0 8px 20px rgba(74, 44, 32, 0.08);
+  }
+
+  h1 {
+    font-size: 28px;
+    color: #A34F24;
+    margin: 0 0 12px;
+  }
+
+  .intro {
+    color: #806653;
+    font-size: 14px;
+    line-height: 1.7;
+    margin-bottom: 25px;
+  }
+
+  .search-row {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 18px;
+  }
+
+  #searchBtn {
+    background: #66834C;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    font-size: 20px;
+    cursor: pointer;
+  }
+
+  #searchBtn:hover {
+    background: #506B3B;
+  }
+
+  label {
+    display: block;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #4A2C20;
+  }
+
+  input {
+    width: 100%;
+    padding: 12px;
+    font-family: Georgia, serif;
+    font-size: 15px;
+    border: 1px solid #D8B99A;
+    border-radius: 8px;
+    background: #fff;
+    color: #4A2C20;
+  }
+
+  input:focus {
+    outline: 3px solid #66834C;
+    outline-offset: 2px;
+    border-color: #66834C;
+  }
+
+  .field {
+    margin-bottom: 20px;
+  }
+
+  .error {
+    display: none;
+    color: #A34F24;
+    font-size: 13px;
+    margin: 7px 0 0;
+  }
+
+  .success {
+    color: #506B3B;
+    font-size: 13px;
+    margin: 7px 0 0;
+  }
+
+  button[type="submit"] {
+    width: 100%;
+    min-height: 46px;
+    background: #A34F24;
+    color: #FFFAF3;
+    border: none;
+    border-radius: 9px;
+    font-family: Georgia, serif;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+
+  button[type="submit"]:hover {
+    background: #7E3B1C;
+  }
+
+  button:focus-visible {
+    outline: 3px solid #66834C;
+    outline-offset: 4px;
+  }
+
+  .team {
+    margin-top: 25px;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .team a {
+    color: #66834C;
+    font-weight: bold;
+  }
+
+  .team img {
+    vertical-align: middle;
+    margin-right: 8px;
+    border-radius: 8px;
+    object-fit: cover;
+  }
+
+  footer {
+    text-align: center;
+    color: #806653;
+    font-size: 12px;
+    margin-top: 25px;
+  }
+
+  @media (max-width: 500px) {
+    .wrap {
+      margin: 20px 14px;
+      padding: 25px;
+    }
+  }
+</style>
+</head>
+
+<body>
+
+<div class="wrap">
+
+  <h1>🍂 Sign Up</h1>
+
+  <p class="intro">
+    Create your account and join our little community!
+    Please enter your details below.
+  </p>
+
+  <form id="signupForm" novalidate>
+
+    <div class="search-row">
+      <button id="searchBtn" type="button" aria-label="Search">
+        🔍
+      </button>
+    </div>
+
+    <div class="field">
+      <label for="email">Email address</label>
+
+      <input
+        id="email"
+        name="email"
+        type="email"
+        placeholder="you@example.com"
+        autocomplete="email"
+        required
+        aria-describedby="emailError"
+      >
+
+      <p class="error" id="emailError" aria-live="polite">
+        ⚠️ Please enter a valid email address.
+      </p>
+    </div>
+
+    <div class="field">
+      <label for="password">Password</label>
+
+      <input
+        id="password"
+        name="password"
+        type="password"
+        autocomplete="new-password"
+        minlength="8"
+        required
+        aria-describedby="passwordError"
+      >
+
+      <p class="error" id="passwordError" aria-live="polite">
+        ⚠️ Password must be at least 8 characters long.
+      </p>
+    </div>
+
+    <button type="submit">
+      Create account
+    </button>
+
+    <p class="success" id="successMessage" role="status"></p>
+
+  </form>
+
+  <p class="team">
+    <a href="#">
+      <img
+        src="https://placehold.co/80x40/D8B99A/4A2C20?text=Team"
+        alt="Our team"
+        width="80"
+        height="40"
+      >
+      Learn about our team
+    </a>
+  </p>
+
+  <footer>
+    Made with autumn colors 🍁
+  </footer>
+
+</div>
+
+<script>
+const form = document.getElementById('signupForm');
+
+const email = document.getElementById('email');
+const password = document.getElementById('password');
+
+const emailError = document.getElementById('emailError');
+const passwordError = document.getElementById('passwordError');
+const successMessage = document.getElementById('successMessage');
+
+form.addEventListener('submit', (event) => {
+
+  event.preventDefault();
+
+  const validEmail = email.validity.valid;
+  const validPassword = password.value.length >= 8;
+
+  emailError.style.display = validEmail ? 'none' : 'block';
+  passwordError.style.display = validPassword ? 'none' : 'block';
+
+  successMessage.textContent = '';
+
+  if (validEmail && validPassword) {
+    successMessage.textContent =
+      '🍂 Account created successfully! (Demo only)';
+  } else if (!validEmail) {
+    email.focus();
+  } else {
+    password.focus();
+  }
+
+});
+
+email.addEventListener('input', () => {
+  emailError.style.display = 'none';
+  successMessage.textContent = '';
+});
+
+password.addEventListener('input', () => {
+  passwordError.style.display = 'none';
+  successMessage.textContent = '';
+});
+
+document.getElementById('searchBtn').addEventListener('click', () => {
+  email.focus();
+});
+
+</script>
+
+</body>
+</html>
