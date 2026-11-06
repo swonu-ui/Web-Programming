@@ -1,0 +1,207 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Autumn Email Validation</title>
+
+<style>
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: Georgia, serif;
+    background: #F5EBDD;
+    background-image: radial-gradient(#D9BFA3 1px, transparent 1px);
+    background-size: 24px 24px;
+    color: #4A2C20;
+    padding: 40px 16px 48px;
+  }
+
+  .wrap {
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  .decoration {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 14px;
+  }
+
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 8px;
+    text-align: center;
+    color: #A34F24;
+  }
+
+  p.sub {
+    color: #87634C;
+    margin-bottom: 24px;
+    text-align: center;
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  .box {
+    background: #FFFAF3;
+    border: 1px solid #E6CFB5;
+    border-radius: 20px;
+    padding: 26px;
+    box-shadow: 0 8px 25px rgba(105, 62, 35, 0.10);
+  }
+
+  label {
+    display: block;
+    font-size: 0.95rem;
+    margin-bottom: 9px;
+    color: #68412D;
+    font-weight: bold;
+  }
+
+  input {
+    width: 100%;
+    padding: 13px 14px;
+    border: 2px solid #D8B99A;
+    border-radius: 11px;
+    font-size: 1rem;
+    outline: none;
+    background: #FFFDF9;
+    color: #4A2C20;
+    font-family: Georgia, serif;
+    transition: 0.25s ease;
+  }
+
+  input:focus {
+    border-color: #C16A35;
+    box-shadow: 0 0 0 3px rgba(193, 106, 53, 0.15);
+  }
+
+  input.valid {
+    border-color: #66834C;
+    background: #F3F7EC;
+  }
+
+  input.invalid {
+    border-color: #B94A35;
+    background: #FFF1EC;
+  }
+
+  .hint {
+    font-size: 0.88rem;
+    margin-top: 10px;
+    display: none;
+    line-height: 1.5;
+  }
+
+  .hint.err {
+    display: block;
+    color: #B13D2D;
+  }
+
+  .hint.ok {
+    display: block;
+    color: #587640;
+  }
+
+  .footer {
+    text-align: center;
+    margin-top: 24px;
+    color: #98745B;
+    font-size: 0.85rem;
+  }
+
+  .leaf {
+    color: #A34F24;
+  }
+
+</style>
+</head>
+
+<body>
+
+<div class="wrap">
+
+  <div class="decoration">🍂 🍁 🎃</div>
+
+  <h1>Email Validation</h1>
+
+  <p class="sub">
+    A little autumn magic! Enter your email
+    and watch it get validated as you type.
+  </p>
+
+  <div class="box">
+
+    <label for="email">
+      🍁 Email Address
+    </label>
+
+    <input
+      id="email"
+      type="email"
+      placeholder="you@example.com"
+      autocomplete="email"
+      aria-describedby="hint"
+    >
+
+    <p class="hint" id="hint" aria-live="polite"></p>
+
+  </div>
+
+  <p class="footer">
+    <span class="leaf">✦</span>
+    Made with autumn vibes and pumpkin spice
+    <span class="leaf">✦</span>
+  </p>
+
+</div>
+
+<script>
+
+  const input = document.getElementById('email');
+  const hint = document.getElementById('hint');
+
+  input.addEventListener('input', () => {
+
+    const v = input.value.trim();
+
+    // Empty input: reset the validation
+    if (v === '') {
+
+      input.classList.remove('valid', 'invalid');
+
+      hint.className = 'hint';
+
+      hint.textContent = '';
+
+      return;
+
+    }
+
+    // Check email format
+    const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+
+    // Change input color
+    input.classList.toggle('valid', ok);
+
+    input.classList.toggle('invalid', !ok);
+
+    // Display feedback
+    hint.className = ok ? 'hint ok' : 'hint err';
+
+    hint.textContent = ok
+      ? '🍂 Perfect! Your email format looks good!'
+      : '🍁 Oops! Please enter a valid email address.';
+
+  });
+
+</script>
+
+</body>
+</html>

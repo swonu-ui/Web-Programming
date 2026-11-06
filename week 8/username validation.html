@@ -1,0 +1,212 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Autumn Username Validation</title>
+
+<style>
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: Georgia, serif;
+    background: #F5EBDD;
+    background-image: radial-gradient(#D9BFA3 1px, transparent 1px);
+    background-size: 24px 24px;
+    color: #4A2C20;
+    padding: 40px 16px 48px;
+  }
+
+  .wrap {
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  .decoration {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 12px;
+  }
+
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 8px;
+    text-align: center;
+    color: #A34F24;
+  }
+
+  p.sub {
+    color: #87634C;
+    margin-bottom: 24px;
+    text-align: center;
+    line-height: 1.6;
+    font-size: 0.95rem;
+  }
+
+  .box {
+    background: #FFFAF3;
+    border: 1px solid #E6CFB5;
+    border-radius: 20px;
+    padding: 26px;
+    box-shadow: 0 8px 25px rgba(105, 62, 35, 0.10);
+  }
+
+  label {
+    display: block;
+    font-size: 0.95rem;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #68412D;
+  }
+
+  input {
+    width: 100%;
+    padding: 13px 14px;
+    border: 2px solid #D8B99A;
+    border-radius: 12px;
+    font-size: 1rem;
+    background: #FFFDF9;
+    color: #4A2C20;
+    outline: none;
+    transition: 0.25s ease;
+    font-family: Georgia, serif;
+  }
+
+  input:focus {
+    border-color: #C16A35;
+    box-shadow: 0 0 0 3px rgba(193, 106, 53, 0.15);
+  }
+
+  input.valid {
+    border-color: #66834C;
+    background: #F3F7EC;
+  }
+
+  input.invalid {
+    border-color: #B94A35;
+    background: #FFF1EC;
+  }
+
+  .hint {
+    font-size: 0.88rem;
+    margin-top: 10px;
+    color: #87634C;
+    line-height: 1.5;
+  }
+
+  .hint.err {
+    color: #B13D2D;
+  }
+
+  .hint.ok {
+    color: #587640;
+  }
+
+  .footer {
+    text-align: center;
+    margin-top: 22px;
+    color: #98745B;
+    font-size: 0.85rem;
+  }
+
+  .leaf {
+    color: #A34F24;
+  }
+</style>
+</head>
+
+<body>
+
+<div class="wrap">
+
+  <div class="decoration">🍂 🍁 🎃</div>
+
+  <h1>Autumn Username Check</h1>
+
+  <p class="sub">
+    A little autumn magic! Type your username
+    and watch the colors change as you type.
+  </p>
+
+  <div class="box">
+
+    <label for="username">
+      🍁 Choose your username
+    </label>
+
+    <input
+      id="username"
+      type="text"
+      placeholder="e.g. pumpkin123"
+      autocomplete="off"
+      aria-describedby="hint"
+    >
+
+    <p class="hint" id="hint" aria-live="polite">
+      Your username must have at least 3
+      letters or numbers.
+    </p>
+
+  </div>
+
+  <p class="footer">
+    <span class="leaf">✦</span>
+    Made with autumn vibes and pumpkin spice
+    <span class="leaf">✦</span>
+  </p>
+
+</div>
+
+<script>
+
+  const input = document.getElementById('username');
+  const hint = document.getElementById('hint');
+
+  input.addEventListener('input', () => {
+
+    const v = input.value.trim();
+
+    const ok = /^[A-Za-z0-9]{3,}$/.test(v);
+
+    input.classList.toggle('valid', v !== '' && ok);
+
+    input.classList.toggle('invalid', v !== '' && !ok);
+
+    if (v === '') {
+
+      hint.className = 'hint';
+
+      hint.textContent =
+        'Your username must have at least 3 letters or numbers.';
+
+    }
+
+    else if (ok) {
+
+      hint.className = 'hint ok';
+
+      hint.textContent =
+        '🍂 Perfect! Your username looks good!';
+
+    }
+
+    else {
+
+      hint.className = 'hint err';
+
+      hint.textContent =
+        '🍁 Oops! Use at least 3 letters or numbers, without spaces or symbols.';
+
+    }
+
+  });
+
+</script>
+
+</body>
+</html>
