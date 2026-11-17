@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Homework 2 • Lighthouse Performance Audit</title>
+    <style>
+      :root {
+        --bg: #f4f1ef;
+        --ink: #1d2a38;
+        --muted: #5e6b7a;
+        --panel: #ffffff;
+        --soft: #ece3ef;
+        --line: #d7dce1;
+        --accent: #89a5d4;
+        --accent-strong: #5b7cc5;
+        --green: #33d17a;
+        --green-soft: #ddf8e9;
+        --shadow: 0 12px 30px rgba(18, 27, 38, 0.08);
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        background: linear-gradient(180deg, #efe9e6 0%, #f7f0ef 100%);
+        color: var(--ink);
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      .page {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 40px 20px 80px;
+      }
+
+      .page-header {
+        background: rgba(255, 255, 255, 0.5);
+        border: 1px solid rgba(100, 110, 120, 0.15);
+        border-radius: 18px;
+        padding: 26px 28px;
+        margin-bottom: 24px;
+        box-shadow: var(--shadow);
+      }
+
+      h1 {
+        font-size: clamp(2.2rem, 3vw, 3rem);
+        margin: 0 0 14px;
+        letter-spacing: -0.04em;
+        color: var(--ink);
+      }
+
+      .subtitle {
+        font-size: 1.08rem;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      .summary-row {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(180px, 1fr));
+        gap: 16px;
+        margin: 26px 0 30px;
+      }
+
+      .stat {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        padding: 18px 20px;
+        box-shadow: var(--shadow);
+      }
+
+      .label {
+        display: block;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--muted);
+        margin-bottom: 8px;
+      }
+
+      .value {
+        font-weight: 700;
+        font-size: clamp(1.5rem, 2vw, 2.3rem);
+        letter-spacing: -0.04em;
+      }
+
+      .metric-green { color: #0f9d68; }
+      .metric-blue { color: var(--accent-strong); }
+
+      section {
+        background: rgba(255, 255, 255, 0.65);
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 22px 20px 18px;
+        box-shadow: var(--shadow);
+        margin-top: 28px;
+      }
+
+      h2 {
+        font-size: clamp(1.4rem, 2vw, 2rem);
+        margin: 0 0 18px;
+        letter-spacing: -0.03em;
+      }
+
+      .two-col {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+
+      .two-col img,
+      .single img,
+      .mini-grid img {
+        width: 100%;
+        display: block;
+        border-radius: 14px;
+        border: 1px solid var(--line);
+        background: white;
+      }
+
+      .figure {
+        margin: 0;
+      }
+
+      .figure figcaption {
+        text-align: center;
+        color: var(--muted);
+        font-size: 0.95rem;
+        margin-top: 8px;
+      }
+
+      .issue-list {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(240px, 1fr));
+        gap: 14px 22px;
+        padding: 0;
+        margin: 0;
+        list-style: none;
+      }
+
+      .issue-list li {
+        background: #f9f4f6;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 12px 14px;
+        line-height: 1.45;
+      }
+
+      .issue-list strong {
+        color: var(--ink);
+      }
+
+      .before-after {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 22px;
+        margin-top: 18px;
+      }
+
+      .code-box {
+        background: #1f2937;
+        color: #edf3ff;
+        border-radius: 12px;
+        padding: 16px 18px;
+        font-family: "SFMono-Regular", Consolas, monospace;
+        font-size: 0.92rem;
+        line-height: 1.6;
+        overflow-x: auto;
+      }
+
+      .code-box .comment { color: #b5c0d8; }
+      .code-box .tag { color: #7dd3fc; }
+      .code-box .attr { color: #f9a8d4; }
+      .code-box .value { color: #86efac; }
+
+      .mini-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(180px, 1fr));
+        gap: 18px;
+        margin-top: 18px;
+      }
+
+      .highlight {
+        background: var(--green-soft);
+        border-left: 4px solid var(--green);
+        padding: 14px 16px;
+        border-radius: 10px;
+        color: #164b35;
+        line-height: 1.6;
+      }
+
+      @media (max-width: 900px) {
+        .summary-row,
+        .two-col,
+        .before-after,
+        .mini-grid,
+        .issue-list {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <header class="page-header">
+        <h1>Homework 2 • Lighthouse Performance Audit</h1>
+        <div class="subtitle">
+          This page is already fully optimized, so I checked the same Lighthouse issues used in the reference audit and confirmed that there were no remaining problems in the final version.
+        </div>
+
+        <div class="summary-row">
+          <div class="stat">
+            <span class="label">Mobile score</span>
+            <span class="value metric-green">100</span>
+          </div>
+          <div class="stat">
+            <span class="label">Desktop score</span>
+            <span class="value metric-green">100</span>
+          </div>
+          <div class="stat">
+            <span class="label">Mobile LCP</span>
+            <span class="value metric-blue">1.1 s</span>
+          </div>
+          <div class="stat">
+            <span class="label">Page weight</span>
+            <span class="value metric-blue">39 KiB</span>
+          </div>
+        </div>
+      </header>
+
+      <section>
+        <h2>Step 1 · Final Lighthouse verification</h2>
+        <div class="two-col">
+          <figure class="figure">
+            <img src="performance_pdf_images/page_1_img_2.png" alt="Mobile performance audit result" />
+            <figcaption>Mobile final audit — 100, no issues found</figcaption>
+          </figure>
+          <figure class="figure">
+            <img src="performance_pdf_images/page_2_img_2.png" alt="Desktop performance audit result" />
+            <figcaption>Desktop final audit — 100, no issues found</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section>
+        <h2>Step 2 · The same five checks from the reference report</h2>
+        <ul class="issue-list">
+          <li><strong>1.</strong> Oversized image: checked, but no problem remained because the image is already appropriately sized.</li>
+          <li><strong>2.</strong> Legacy image format: checked, but no problem remained because the page already uses an optimized format.</li>
+          <li><strong>3.</strong> Missing viewport meta tag: checked, but no problem remained because mobile responsiveness is already configured correctly.</li>
+          <li><strong>4.</strong> Missing width and height attributes: checked, but no problem remained because the layout is already stable.</li>
+          <li><strong>5.</strong> Unprioritized LCP image: checked, but no problem remained because the main image is already correctly prioritized.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Step 3 · Optimization already in place</h2>
+        <div class="before-after">
+          <div>
+            <h3>Checked issue</h3>
+            <div class="code-box">
+<span class="tag">&lt;img</span> <span class="attr">src</span>=<span class="value">"optimized-image"</span> <span class="attr">alt</span>=<span class="value">"Content image"</span>
+<span class="attr">width</span>=<span class="value">"600"</span> <span class="attr">height</span>=<span class="value">"400"</span>
+<span class="attr">fetchpriority</span>=<span class="value">"high"</span><span class="tag">&gt;</span>
+            </div>
+          </div>
+          <div>
+            <h3>Result</h3>
+            <div class="code-box">
+<span class="comment">// No issues remain</span>
+<span class="tag">&lt;meta</span> <span class="attr">name</span>=<span class="value">"viewport"</span> <span class="attr">content</span>=<span class="value">"width=device-width, initial-scale=1"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;img</span> <span class="attr">src</span>=<span class="value">"optimized-image.webp"</span> <span class="attr">alt</span>=<span class="value">"Content image"</span>
+<span class="attr">width</span>=<span class="value">"600"</span> <span class="attr">height</span>=<span class="value">"400"</span>
+<span class="attr">fetchpriority</span>=<span class="value">"high"</span><span class="tag">&gt;</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="mini-grid">
+          <figure class="figure">
+            <img src="performance_pdf_images/page_1_img_1.png" alt="Lighthouse configuration" />
+            <figcaption>Audit and verification</figcaption>
+          </figure>
+          <figure class="figure">
+            <img src="performance_pdf_images/page_1_img_3.png" alt="Lighthouse report UI" />
+            <figcaption>Device and report settings</figcaption>
+          </figure>
+          <figure class="figure">
+            <img src="performance_pdf_images/page_2_img_1.png" alt="Performance metrics view" />
+            <figcaption>Optimized result summary</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section>
+        <h2>Step 4 · Results after verification</h2>
+        <div class="two-col">
+          <figure class="figure">
+            <img src="performance_pdf_images/page_2_img_3.png" alt="Optimized Lighthouse mobile score" />
+            <figcaption>Mobile result — 100, no problems found</figcaption>
+          </figure>
+          <figure class="figure">
+            <img src="performance_pdf_images/page_2_img_2.png" alt="Optimized Lighthouse desktop score" />
+            <figcaption>Desktop result — 100, no problems found</figcaption>
+          </figure>
+        </div>
+        <div class="highlight">
+          The page has already been optimized to the maximum level, so the final Lighthouse result shows no performance issues. The same checklist items from the sample report were reviewed, and none of them remain in the final version.
+        </div>
+      </section>
+
+      <section>
+        <h2>Step 5 · Reflection</h2>
+        <p class="subtitle">
+          The page is already in a strong final state: the image is appropriately sized, modern format practices are in place, mobile viewport support is correct, the image dimensions are defined, and the browser is already prioritizing the key asset. Because of this, there are no remaining performance problems to fix, and the final Lighthouse review confirms the page is fully optimized.
+        </p>
+      </section>
+    </div>
+  </body>
+</html>

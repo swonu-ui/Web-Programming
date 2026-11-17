@@ -160,7 +160,7 @@
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
+            grid-template-columns: 1fr;
             gap: 18px;
         }
 
@@ -169,12 +169,17 @@
         .card {
             min-width: 0;
             overflow: hidden;
-            background: var(--white);
-            border: 2px solid #f0e5ef;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
+            background: linear-gradient(180deg, #fffdfd 0%, #fff7fb 100%);
+            border: 2px solid #f3dfe9;
+            border-radius: 26px;
+            box-shadow: 0 12px 26px rgba(138, 98, 125, 0.09);
             transition: box-shadow 0.2s ease,
-                        border-color 0.2s ease;
+                        border-color 0.2s ease,
+                        transform 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
         }
 
         .card:hover {
@@ -209,14 +214,15 @@
             justify-content: space-between;
             align-items: center;
             gap: 10px;
-            min-height: 76px;
-            padding: 17px 20px;
+            min-height: 84px;
+            padding: 18px 22px;
             color: var(--card-dark);
-            background: var(--card-light);
+            background: linear-gradient(135deg, var(--card-light) 0%, rgba(255,255,255,0.9) 100%);
             font-size: 17px;
             font-weight: bold;
             cursor: pointer;
             list-style: none;
+            border-bottom: 1px solid rgba(156, 122, 138, 0.12);
         }
 
         summary::-webkit-details-marker {
@@ -231,14 +237,16 @@
 
         .week-icon {
             display: inline-flex;
-            width: 38px;
-            height: 38px;
+            width: 42px;
+            height: 42px;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
-            background: white;
-            border-radius: 12px;
-            font-size: 19px;
+            background: rgba(255,255,255,0.8);
+            border: 2px solid rgba(255,255,255,0.8);
+            border-radius: 14px;
+            font-size: 20px;
+            box-shadow: 0 4px 10px rgba(120, 94, 123, 0.12);
         }
 
         .arrow {
@@ -294,45 +302,69 @@
         .nested-links {
             display: flex;
             flex-direction: column;
-            gap: 3px;
-            padding: 7px 14px 14px 25px;
+            gap: 6px;
+            padding: 14px 16px 16px;
             background: #fffafd;
         }
 
         .nested-links ul {
             display: flex;
             flex-direction: column;
-            gap: 3px;
+            gap: 6px;
             margin: 0;
             padding: 0;
             list-style: none;
         }
 
         .nested-links a {
-            display: block;
-            min-height: 42px;
-            padding: 10px 13px;
+            display: flex;
+            align-items: center;
+            min-height: 44px;
+            padding: 10px 14px;
             color: #55445f;
-            background: transparent;
-            border-radius: 9px;
+            background: #fff;
+            border: 1px solid #f3dfe9;
+            border-radius: 12px;
             font-size: 13px;
-            font-weight: 500;
-            text-decoration: underline;
-            text-decoration-color: #c5a7cf;
-            text-underline-offset: 3px;
-            transition: background 0.2s ease;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
         }
 
         .nested-links a::before {
             content: "♡";
-            margin-right: 9px;
+            margin-right: 10px;
             color: var(--card-dark);
             text-decoration: none;
+            font-size: 12px;
         }
 
         .nested-links a:hover {
             color: #49304f;
             background: var(--card-light);
+            border-color: #e8c6d7;
+            transform: translateX(2px);
+        }
+
+        .final-project-section {
+            margin-top: 42px;
+        }
+
+        .project-open-link {
+            color: var(--pink-dark);
+            font-size: 14px;
+            font-weight: 700;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+
+        .project-frame {
+            display: block;
+            width: 100%;
+            height: min(1100px, 100vh);
+            min-height: 700px;
+            background: white;
+            border: 1px solid #e8c6d7;
         }
 
         /* KEYBOARD ACCESSIBILITY */
@@ -730,20 +762,85 @@
                         <span class="arrow" aria-hidden="true">▼</span>
                     </summary>
 
-                    <nav class="nested-links" aria-label="Week 9 assignments">
+                    <div class="sub-options">
+
+                        <details>
+                            <summary>
+                                Part 1
+                                <span class="day-arrow" aria-hidden="true">▼</span>
+                            </summary>
+
+                            <nav class="nested-links" aria-label="Week 9 Part 1 assignments">
+                                <ul>
+                                    <li><a href="week9/part1/skip.html" target="_blank" rel="noopener noreferrer">Skip Link</a></li>
+                                    <li><a href="Accessibility_v3.pdf" target="_blank" rel="noopener noreferrer">Accessibility PDF</a></li>
+                                    <li><a href="week9/part1/alt.html" target="_blank" rel="noopener noreferrer">Add Proper Alt Text</a></li>
+                                    <li><a href="week9/part1/navbuttonfix.html" target="_blank" rel="noopener noreferrer">Fix the div-button</a></li>
+                                    <li><a href="week9/part1/signup.html" target="_blank" rel="noopener noreferrer">Sign Up Form</a></li>
+                                    <li><a href="week9/part1/index.html">Week 9 Monday</a></li>
+                                    <li><a href="week9/part1/audit.html">Accessibility audit worksheet</a></li>
+                                </ul>
+                            </nav>
+                        </details>
+
+                        <details>
+                            <summary>
+                                Part 2
+                                <span class="day-arrow" aria-hidden="true">▼</span>
+                            </summary>
+
+                            <nav class="nested-links" aria-label="Week 9 Part 2 assignments">
+                                <ul>
+                                    <li><a href="week9/part2/friday/index.html">Week 9 Friday · performance &amp; movie lab</a></li>
+                                    <li><a href="performance-optimization.html">Performance optimization final page</a></li>
+                                </ul>
+                            </nav>
+                        </details>
+
+                    </div>
+
+                </details>
+            </article>
+
+            <!-- WEEK 10 -->
+
+            <article class="card">
+                <details>
+                    <summary>
+                        <span class="week-name">
+                            <span class="week-icon" aria-hidden="true">🌼</span>
+                            Week 10
+                        </span>
+                        <span class="arrow" aria-hidden="true">▼</span>
+                    </summary>
+
+                    <nav class="nested-links" aria-label="Week 10 assignments">
                         <ul>
-                            <li><a href="week9/alt.html" target="_blank" rel="noopener noreferrer">Add Proper Alt Text</a></li>
-                            <li><a href="week9/skip.html" target="_blank" rel="noopener noreferrer">Skip Link</a></li>
-                            <li><a href="week9/nav.html" target="_blank" rel="noopener noreferrer">Fix the div-button</a></li>
-                            <li><a href="week9/signup.html" target="_blank" rel="noopener noreferrer">Sign Up Form</a></li>
-                            <li><a href="week9/vanbuttonfix.html" target="_blank" rel="noopener noreferrer">Button Fix Practice</a></li>
-                            <li><a href="week9/accessibility.pdf" target="_blank" rel="noopener noreferrer">Accessibility PDF</a></li>
+                            <li><a href="week10/index.html">Week 10 overview</a></li>
+                            <li><a href="week10/monday/index.html">Monday · Git &amp; version control</a></li>
+                            <li><a href="week10/friday/index.html">Friday · deployment &amp; 404</a></li>
+                            <li><a href="week10/book-search/index.html">Book Search</a></li>
+                            <li><a href="week10/portfolio/index.html">Personal portfolio</a></li>
+                            <li><a href="week10/report.html">Accessibility &amp; submission checklist</a></li>
                         </ul>
                     </nav>
                 </details>
             </article>
 
         </div>
+
+        <section class="final-project-section" aria-labelledby="final-project-title">
+            <div class="section-heading">
+                <h2 id="final-project-title">Final project</h2>
+                <p><a class="project-open-link" href="final%20project/BiHE_index.html" target="_blank" rel="noopener noreferrer">Open in new tab</a></p>
+            </div>
+            <iframe
+                class="project-frame"
+                src="final%20project/BiHE_index.html"
+                title="BiHE group project"
+                loading="lazy">
+            </iframe>
+        </section>
     </main>
 
 
@@ -756,6 +853,22 @@
         <p>Learning, creating and growing one line at a time.</p>
         <p>Made with care and lots of coffee ☕</p>
     </footer>
+
+    <script>
+        const weekDetails = document.querySelectorAll('.card > details');
+
+        weekDetails.forEach((detail) => {
+            detail.addEventListener('toggle', () => {
+                if (!detail.open) return;
+
+                weekDetails.forEach((other) => {
+                    if (other !== detail) {
+                        other.removeAttribute('open');
+                    }
+                });
+            });
+        });
+    </script>
 
 </body>
 </html>
