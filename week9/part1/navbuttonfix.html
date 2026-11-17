@@ -1,0 +1,64 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fix the div-button</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        button {
+            cursor: pointer;
+            padding: 10px 20px;
+            margin: 5px;
+        }
+
+        button:focus-visible {
+            outline: 3px solid orange;
+            outline-offset: 3px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>Fix the div-button</h2>
+
+    <p>Press Tab, then Enter or Space:</p>
+
+    <!-- Fixed: div replaced with button -->
+    <button type="button" id="submitBtn">
+        Submit form
+    </button>
+
+    <!-- Fixed: div replaced with button -->
+    <button type="button" id="closeBtn" aria-label="Close">
+        ✕
+    </button>
+
+    <p id="message"></p>
+
+    <script>
+        // Get the buttons
+        const submitBtn = document.getElementById("submitBtn");
+        const closeBtn = document.getElementById("closeBtn");
+        const message = document.getElementById("message");
+
+        // Submit button action
+        submitBtn.addEventListener("click", function() {
+            message.textContent = "Submit form button clicked!";
+        });
+
+        // Close button action
+        closeBtn.addEventListener("click", function() {
+            message.textContent = "Close button clicked!";
+        });
+    </script>
+
+</body>
+</html>

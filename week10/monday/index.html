@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Rai Swonu's Web Programming coursework: Week 10 Monday · Git."><title>Week 10 Monday · Git | Rai Swonu</title><link rel="stylesheet" href="../../coursework-assets/pastel.css"><script src="../../coursework-assets/access.js" defer></script></head>
+<body class="pastel"><a class="skip" href="#main">Skip to main content</a><header class="topbar"><nav class="wrap" aria-label="Course navigation"><a class="brand" href="../../index.html">🌷 Swonu's Web Journey</a><div class="navlinks"><a href="../../week9/part1/index.html">Week 9</a><a href="../../week10/index.html">Week 10</a></div></nav></header><main id="main" tabindex="-1" class="page"><p class="eyebrow">WEB PROGRAMMING · RAI SWONU · 202637725</p><h1>Week 10 Monday · Git</h1><p>Run commands in your own local checkout of <code>swonu-ui/Web-Programming</code>. Review each diff before committing.</p><section class="demo"><h2>E1 · First repository and commit</h2><p>For a separate practice folder, initialize Git, create an HTML file and inspect the first commit:</p><pre><code>mkdir git-practice
+cd git-practice
+git init -b main
+# Create index.html in your editor.
+git add index.html
+git commit -m "Add first HTML page"
+git log --oneline</code></pre><p>The existing Web-Programming repository is already initialized; do not reinitialize it for this exercise. <a href="../git-exercise/index.html">Open the included HTML example</a>.</p></section><section class="demo"><h2>E2 · Branch and merge</h2><pre><code>git switch -c feature/pastel-style
+# Create style.css and link it from index.html.
+git add index.html style.css
+git commit -m "Style practice page with pastel colors"
+git switch main
+git merge feature/pastel-style
+git log --oneline --graph --all</code></pre><p>Capture the actual branch history. A file copy does not create a branch or merge.</p></section><section class="demo"><h2>E3 · Push to GitHub</h2><p>In the existing Web-Programming checkout, merge the package files into the repository root. Then:</p><pre><code>git status
+git diff
+git add index.html coursework-assets week9 week10 404.html
+git commit -m "Add Week 9 performance and Week 10 coursework"
+git push origin main</code></pre><p>For the separate practice folder, create your own empty GitHub repository and add its actual remote before pushing. Never push the practice history over this course repository.</p></section><h2>Evidence to save</h2><ul><li>First commit and git log output.</li><li>Branch/merge history.</li><li>Successful push output and the matching GitHub commit URL.</li></ul></main><footer class="wrap"><span>Rai Swonu · Learning, creating and growing ♡</span><a href="../../index.html">Back to all coursework</a></footer></body></html>
