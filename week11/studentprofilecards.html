@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Profile Cards</title>
+
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <style>
+    :root {
+      --pink: #f58ab7;
+      --pink-dark: #96365f;
+      --purple: #b79ce9;
+      --purple-dark: #62477d;
+      --blue: #79cfdf;
+      --blue-dark: #27616b;
+      --yellow: #ffd56a;
+      --ink: #55445f;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 8% 12%, rgba(255, 190, 215, 0.95) 0 85px, transparent 86px),
+        radial-gradient(circle at 92% 18%, rgba(209, 192, 255, 0.90) 0 110px, transparent 111px),
+        radial-gradient(circle at 82% 92%, rgba(159, 226, 235, 0.72) 0 140px, transparent 141px),
+        radial-gradient(circle at 12% 88%, rgba(255, 221, 139, 0.70) 0 90px, transparent 91px),
+        #fff9fc;
+    }
+
+    .exercise {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 40px 0 52px;
+    }
+
+    .exercise h1 {
+      width: fit-content;
+      max-width: 100%;
+      margin: 0 auto 24px;
+      padding: 14px 22px;
+      border: 2px solid rgba(255, 255, 255, 0.85);
+      border-radius: 999px;
+      color: var(--pink-dark);
+      background: linear-gradient(135deg, #fff 0%, #fdf0f7 100%);
+      box-shadow: 0 10px 28px rgba(150, 54, 95, 0.12);
+      font-size: clamp(24px, 4vw, 38px);
+      line-height: 1.15;
+      text-align: center;
+    }
+
+    .exercise h1 code {
+      padding: 4px 10px;
+      border-radius: 12px;
+      color: var(--purple-dark);
+      background: #ede4ff;
+      font-family: 'Courier New', monospace;
+      font-size: 0.78em;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(460px, 1.18fr);
+      gap: 20px;
+      align-items: stretch;
+    }
+
+    pre {
+      margin: 0;
+      min-height: 520px;
+      padding: 26px;
+      overflow: auto;
+      border: 2px solid #ffffff;
+      border-radius: 26px;
+      background: linear-gradient(145deg, rgba(98, 71, 125, 0.98), rgba(74, 86, 128, 0.98));
+      color: #fff8fc;
+      box-shadow: 0 16px 34px rgba(98, 71, 125, 0.18);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    pre::first-line { color: #ffd56a; }
+
+    .live-result {
+      position: relative;
+      min-height: 520px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      padding: 24px 16px;
+      border: 2px solid #ffffff;
+      border-radius: 26px;
+      background:
+        radial-gradient(circle at 18% 18%, #ffb9d5 0 8px, transparent 9px),
+        radial-gradient(circle at 82% 20%, #d7c8fa 0 9px, transparent 10px),
+        radial-gradient(circle at 20% 78%, #a6e2eb 0 11px, transparent 12px),
+        radial-gradient(circle at 82% 82%, #ffe49b 0 10px, transparent 11px),
+        linear-gradient(135deg, #fff0f6 0%, #f1ecff 48%, #eafafd 100%);
+      box-shadow: 0 16px 34px rgba(150, 54, 95, 0.12);
+    }
+
+    .live-result::before {
+      content: '🌸';
+      position: absolute;
+      left: 12px;
+      top: 8px;
+      font-size: 36px;
+    }
+
+    .live-result::after {
+      content: '🦋';
+      position: absolute;
+      right: 14px;
+      bottom: 10px;
+      font-size: 38px;
+    }
+
+    .student-directory {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+    }
+
+    .directory-heading {
+      margin: 0 0 16px;
+      color: var(--pink-dark);
+      font-size: 24px;
+      text-align: center;
+    }
+
+    .student-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .student-card {
+      min-width: 0;
+      padding: 18px 14px;
+      border: 3px solid #ffffff;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.96);
+      box-shadow: 0 12px 28px rgba(150, 54, 95, 0.14), 0 4px 0 #efb0cc;
+      transition: none;
+    }
+
+    .student-card:nth-child(2) {
+      box-shadow: 0 12px 28px rgba(98, 71, 125, 0.14), 0 4px 0 #c8b8ed;
+    }
+
+    .student-card:nth-child(3) {
+      box-shadow: 0 12px 28px rgba(39, 97, 107, 0.14), 0 4px 0 #8bd1dc;
+    }
+
+    .student-card h2 {
+      min-height: 44px;
+      margin: 0 0 8px;
+      color: var(--pink-dark);
+      font-size: 16px;
+      line-height: 1.25;
+      text-align: center;
+      overflow-wrap: anywhere;
+    }
+
+    .student-id {
+      display: block;
+      margin: 0 auto 12px;
+      padding: 5px 8px;
+      border-radius: 999px;
+      color: var(--purple-dark);
+      background: #eee7ff;
+      font-size: 11px;
+      font-weight: 800;
+      text-align: center;
+    }
+
+    .student-card p {
+      margin: 7px 0;
+      color: var(--blue-dark);
+      font-size: 12px;
+    }
+
+    .student-card strong { color: var(--ink); }
+
+    .description {
+      width: fit-content;
+      max-width: 100%;
+      margin: 22px auto 0;
+      padding: 11px 17px;
+      border: 2px solid #ffffff;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.82);
+      color: #695c70;
+      box-shadow: 0 8px 20px rgba(150, 54, 95, 0.09);
+      font-size: 13px;
+      text-align: center;
+    }
+
+    .description code { color: var(--pink-dark); font-weight: 800; }
+
+    @media (max-width: 900px) {
+      .layout { grid-template-columns: 1fr; }
+      pre, .live-result { min-height: 420px; }
+    }
+
+    @media (max-width: 560px) {
+      .exercise {
+        width: min(100% - 24px, 1180px);
+        padding-top: 24px;
+      }
+
+      .exercise h1 { border-radius: 22px; }
+      .student-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="exercise">
+    <h1>Task 11-A · <code>StudentProfileCard</code></h1>
+
+    <div class="layout">
+      <pre><code>// src/StudentProfileCard.jsx
+function StudentProfileCard({ name, studentId, major, year, gpa }) {
+  return (
+    &lt;article className="student-card"&gt;
+      &lt;h2&gt;{name}&lt;/h2&gt;
+      &lt;span className="student-id"&gt;ID: {studentId}&lt;/span&gt;
+      &lt;p&gt;&lt;strong&gt;Major:&lt;/strong&gt; {major}&lt;/p&gt;
+      &lt;p&gt;&lt;strong&gt;Year:&lt;/strong&gt; {year}&lt;/p&gt;
+      &lt;p&gt;&lt;strong&gt;GPA:&lt;/strong&gt; {gpa}&lt;/p&gt;
+    &lt;/article&gt;
+  );
+}
+
+// src/App.jsx
+function App() {
+  return (
+    &lt;main&gt;
+      &lt;h1&gt;Student Directory&lt;/h1&gt;
+
+      &lt;StudentProfileCard
+        name="Rai Swonu"
+        studentId="202637725"
+        major="Computer Engineering"
+        year="1"
+        gpa="3.24"
+      /&gt;
+
+      &lt;StudentProfileCard
+        name="Syangba Anusha"
+        studentId="202637263"
+        major="Computer Engineering"
+        year="1"
+        gpa="3.12"
+      /&gt;
+
+      &lt;StudentProfileCard
+        name="Limbu Romi"
+        studentId="202637272"
+        major="Computer Engineering"
+        year="1"
+        gpa="3.38"
+      /&gt;
+
+      &lt;StudentProfileCard
+        name="Moktan Rasila"
+        studentId="202637267"
+        major="Computer Engineering"
+        year="1"
+        gpa="3.47"
+      /&gt;
+    &lt;/main&gt;
+  );
+}</code></pre>
+
+      <section class="live-result" aria-label="Live result">
+        <div id="root"></div>
+      </section>
+    </div>
+
+    <p class="description">The component receives exactly five props and uses CSS to create a reusable student card.</p>
+  </main>
+
+  <script type="text/babel">
+    function StudentProfileCard({ name, studentId, major, year, gpa }) {
+      return (
+        <article className="student-card">
+          <h2>{name}</h2>
+          <span className="student-id">ID: {studentId}</span>
+          <p><strong>Major:</strong> {major}</p>
+          <p><strong>Year:</strong> {year}</p>
+          <p><strong>GPA:</strong> {gpa}</p>
+        </article>
+      );
+    }
+
+    function App() {
+      return (
+        <section className="student-directory">
+          <h2 className="directory-heading">Student Directory</h2>
+          <div className="student-grid">
+            <StudentProfileCard
+              name="Rai Swonu"
+              studentId="202637725"
+              major="Computer Engineering"
+              year="1"
+              gpa="3.24"
+            />
+            <StudentProfileCard
+              name="Syangba Anusha"
+              studentId="202637263"
+              major="Computer Engineering"
+              year="1"
+              gpa="3.12"
+            />
+            <StudentProfileCard
+              name="Limbu Romi"
+              studentId="202637272"
+              major="Computer Engineering"
+              year="1"
+              gpa="3.38"
+            />
+            <StudentProfileCard
+              name="Moktan Rasila"
+              studentId="202637267"
+              major="Computer Engineering"
+              year="1"
+              gpa="3.47"
+            />
+          </div>
+        </section>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>

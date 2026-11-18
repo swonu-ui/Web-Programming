@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rai's Portfolio Gallery</title>
+
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <style>
+    :root {
+      --pink: #f58ab7;
+      --pink-dark: #96365f;
+      --purple: #b79ce9;
+      --purple-dark: #62477d;
+      --blue: #79cfdf;
+      --blue-dark: #27616b;
+      --yellow: #ffd56a;
+      --yellow-dark: #765514;
+      --ink: #55445f;
+      --muted: #695c70;
+      --white: #ffffff;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 8% 12%, rgba(255, 190, 215, 0.95) 0 85px, transparent 86px),
+        radial-gradient(circle at 92% 18%, rgba(209, 192, 255, 0.90) 0 110px, transparent 111px),
+        radial-gradient(circle at 82% 92%, rgba(159, 226, 235, 0.72) 0 140px, transparent 141px),
+        radial-gradient(circle at 12% 88%, rgba(255, 221, 139, 0.70) 0 90px, transparent 91px),
+        #fff9fc;
+    }
+
+    .page {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 40px 0 52px;
+    }
+
+    .hero {
+      margin-bottom: 24px;
+      padding: 30px 20px;
+      text-align: center;
+      border: 2px solid #ffffff;
+      border-radius: 30px;
+      background: rgba(255, 255, 255, 0.88);
+      box-shadow: 0 12px 32px rgba(150, 54, 95, 0.12);
+    }
+
+    .hero-decoration {
+      margin-bottom: 8px;
+      font-size: 28px;
+    }
+
+    .hero h1 {
+      margin: 0 0 8px;
+      color: var(--pink-dark);
+      font-size: clamp(28px, 5vw, 43px);
+    }
+
+    .hero p {
+      margin: 0 auto;
+      max-width: 620px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .student-tag {
+      display: inline-block;
+      margin-top: 14px;
+      padding: 8px 16px;
+      border-radius: 999px;
+      color: var(--purple-dark);
+      background: #eee7ff;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .gallery-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .gallery-toolbar h2 {
+      margin: 0;
+      color: var(--purple-dark);
+      font-size: 22px;
+    }
+
+    .result-count {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .filter-button {
+      padding: 9px 13px;
+      border: 2px solid #ffffff;
+      border-radius: 999px;
+      color: var(--ink);
+      background: rgba(255, 255, 255, 0.82);
+      box-shadow: 0 5px 14px rgba(150, 54, 95, 0.08);
+      font: inherit;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .filter-button[aria-pressed="true"] {
+      color: var(--white);
+      background: linear-gradient(135deg, var(--pink-dark), var(--purple-dark));
+      border-color: #ffffff;
+    }
+
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .project-card {
+      min-width: 0;
+      padding: 20px;
+      border: 3px solid #ffffff;
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.94);
+      box-shadow: 0 12px 28px rgba(150, 54, 95, 0.12), 0 4px 0 #efb0cc;
+    }
+
+    .project-card:nth-child(3n+2) {
+      box-shadow: 0 12px 28px rgba(98, 71, 125, 0.12), 0 4px 0 #c8b8ed;
+    }
+
+    .project-card:nth-child(3n+3) {
+      box-shadow: 0 12px 28px rgba(39, 97, 107, 0.12), 0 4px 0 #8bd1dc;
+    }
+
+    .card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .card-icon {
+      display: inline-grid;
+      width: 44px;
+      height: 44px;
+      flex: 0 0 44px;
+      place-items: center;
+      border-radius: 14px;
+      background: #fff0f6;
+      font-size: 21px;
+    }
+
+    .week-label {
+      padding: 5px 9px;
+      border-radius: 999px;
+      color: var(--blue-dark);
+      background: #def7fb;
+      font-size: 11px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .project-card h2 {
+      margin: 0 0 8px;
+      color: var(--pink-dark);
+      font-size: 18px;
+      line-height: 1.25;
+    }
+
+    .project-card .description {
+      min-height: 64px;
+      margin: 0 0 12px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .details {
+      margin: 0 0 12px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: #fff9fd;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .details strong { color: var(--purple-dark); }
+
+    .tech-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 0 0 14px;
+      padding: 0;
+      list-style: none;
+    }
+
+    .tech-tag {
+      padding: 5px 8px;
+      border-radius: 999px;
+      color: var(--purple-dark);
+      background: #eee7ff;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .project-links {
+      display: flex;
+      gap: 8px;
+    }
+
+    .project-link {
+      flex: 1;
+      padding: 9px 8px;
+      border-radius: 12px;
+      color: var(--blue-dark);
+      background: linear-gradient(135deg, #dff8fb, #f1efff);
+      font-size: 12px;
+      font-weight: 800;
+      text-align: center;
+      text-decoration: none;
+    }
+
+    .project-link.secondary {
+      color: var(--pink-dark);
+      background: #fff0f6;
+    }
+
+    @media (max-width: 900px) {
+      .project-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 620px) {
+      .page {
+        width: min(100% - 24px, 1180px);
+        padding-top: 24px;
+      }
+
+      .gallery-toolbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .filter-bar {
+        justify-content: flex-start;
+      }
+
+      .project-grid { grid-template-columns: 1fr; }
+      .hero { border-radius: 22px; }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page" id="root"></main>
+
+  <script type="text/babel">
+    const projects = [
+      {
+        id: 1,
+        title: 'HTML Foundations',
+        week: 'Week 2',
+        icon: '🌸',
+        description: 'Eight Monday and eight Friday exercises introducing basic HTML structure and page elements.',
+        details: 'Covers headings, lists, links, tables and text formatting through Monday and Friday tasks.',
+        technologies: ['HTML'],
+        demo: '../week2/Monday/sep%207/T1.html',
+        repo: 'https://github.com/swonu-ui/Web-Programming/tree/main/week2'
+      },
+      {
+        id: 2,
+        title: 'HTML Practice Set',
+        week: 'Week 3',
+        icon: '🌷',
+        description: 'A larger set of HTML exercises covering layouts and repeated page-building practice.',
+        details: 'Includes eight Monday tasks and seven Friday tasks, plus additional practice pages.',
+        technologies: ['HTML'],
+        demo: '../week3/monday/w3mt1.html',
+        repo: 'https://github.com/swonu-ui/Web-Programming/tree/main/week3'
+      },
+      {
+        id: 3,
+        title: 'HTML & CSS Tables',
+        week: 'Week 4',
+        icon: '🧁',
+        description: 'Four table-focused assignments combining HTML structure with custom CSS presentation.',
+        details: 'Practice areas include table layout, borders, spacing and visual styling.',
+        technologies: ['HTML', 'CSS'],
+        demo: '../week4/w4t1.html',
+        repo: 'https://github.com/swonu-ui/Web-Programming/tree/main/week4'
+      },
+      {
+        id: 4,
+        title: 'CSS Styling Exercises',
+        week: 'Week 5',
+        icon: '🎀',
+        description: 'Three in-class CSS exercises focused on page presentation and component styling.',
+        details: 'Builds on HTML structure with colors, spacing, borders and responsive visual ideas.',
+        technologies: ['HTML', 'CSS'],
+        demo: '../week5/w5ic1.html',
+        repo: 'https://github.com/swonu-ui/Web-Programming/tree/main/week5'
+      },
+      {
+        id: 5,
+        title: 'API Mini Projects',
+        week: 'Week 6',
+        icon: '🩵',
+        description: 'A collection of API-powered apps for weather, profiles, Pokémon and country information.',
+        details: 'Includes blog post searcher, Seoul weather, random profile fetcher, Pokédex and country info.',
+        technologies: ['JavaScript', 'API'],
+        demo: '../week6/weather.html',
+        repo: 'https://github.com/swonu-ui/Web-Programming/tree/main/week6'
+      },
+      {
+        id: 6,
+        title: 'Fetch & Book Search',
+        week: 'Week 7',
+        icon: '📚',
+        description: 'JavaScript fetch exercises, book search interfaces and card-based layouts.',
+        details: 'Projects include two book searchers, fetch practice, cards and a wire example.',
+        technologies: ['JavaScript', 'API'],
+        demo: '../week7/booksearcher.html',
+        repo: 'https://github.com/swonu-ui/Web-Programming/tree/main/week7'
+      },
+      {
+        id: 7,
+        title: 'Forms & Validation',
+        week: 'Week 8',
+        icon: '🎀',
+        description: 'Registration and login forms with username, email and password validation.',
+        details: 'Divided into registration/contact work and password, email, username and student forms.',
+        technologies: ['HTML', 'JavaScript'],
+        demo: '../week%208/registration.html',
+        repo: 'https://github.com/swonu-ui/Web-Programming/tree/main/week8'
+      },
+      {
+        id: 8,
+        title: 'Accessibility & Performance',
+        week: 'Week 9',
+        icon: '🌟',
+        description: 'Accessibility fixes, audits and performance optimization for web pages.',
+        details: 'Includes skip links, alt text, navigation fixes, sign-up work, audits and a movie lab.',
+        technologies: ['Accessibility', 'HTML', 'JavaScript'],
+        demo: '../week9/part1/index.html',
+        repo: 'https://github.com/swonu-ui/Web-Programming/tree/main/week9'
+      },
+      {
+        id: 9,
+        title: 'Git & Deployment',
+        week: 'Week 10',
+        icon: '🌼',
+        description: 'Version control, branching, pushing, deployment and an accessibility submission report.',
+        details: 'Also includes the Week 10 book search, personal portfolio and 404 page exercises.',
+        technologies: ['Git', 'HTML', 'JavaScript'],
+        demo: '../week10/index.html',
+        repo: 'https://github.com/swonu-ui/Web-Programming/tree/main/week10'
+      },
+      {
+        id: 10,
+        title: 'React Components',
+        week: 'Week 11',
+        icon: '⚛️',
+        description: 'React props, reusable components, conditional icons and component composition.',
+        details: 'Contains ProfileCard, NotificationList, Card children and the StudentProfileCard homework.',
+        technologies: ['React', 'JavaScript', 'CSS'],
+        demo: 'profilecard.html',
+        repo: 'https://github.com/swonu-ui/Web-Programming/tree/main/week11'
+      },
+      {
+        id: 11,
+        title: 'BiHE Final Project',
+        week: 'Final Project',
+        icon: '💖',
+        description: 'A complete group web project presented as the final portfolio showcase.',
+        details: 'Combines course concepts into a polished multi-page project with shared styles and scripts.',
+        technologies: ['HTML', 'CSS', 'JavaScript'],
+        demo: '../final%20project/BiHE_index.html',
+        repo: 'https://github.com/swonu-ui/Web-Programming/tree/main/final%20project'
+      }
+    ];
+
+    function FilterBar({ selectedFilter, onFilterChange }) {
+      const technologyNames = ['All', ...new Set(projects.flatMap(project => project.technologies))];
+
+      return (
+        <nav className="filter-bar" aria-label="Filter portfolio projects">
+          {technologyNames.map(filter => (
+            <button
+              key={filter}
+              type="button"
+              className="filter-button"
+              aria-pressed={selectedFilter === filter}
+              onClick={() => onFilterChange(filter)}
+            >
+              {filter}
+            </button>
+          ))}
+        </nav>
+      );
+    }
+
+    function ProjectCard({ project }) {
+      return (
+        <article className="project-card">
+          <div className="card-top">
+            <span className="card-icon" aria-hidden="true">{project.icon}</span>
+            <span className="week-label">{project.week}</span>
+          </div>
+
+          <h2>{project.title}</h2>
+          <p className="description">{project.description}</p>
+
+          <p className="details"><strong>Included:</strong> {project.details}</p>
+
+          <ul className="tech-list" aria-label="Technologies">
+            {project.technologies.map(technology => (
+              <li className="tech-tag" key={technology}>{technology}</li>
+            ))}
+          </ul>
+
+          <div className="project-links">
+            <a className="project-link" href={project.demo} target="_blank" rel="noopener noreferrer">Live Demo</a>
+            <a className="project-link secondary" href={project.repo} target="_blank" rel="noopener noreferrer">Repository</a>
+          </div>
+        </article>
+      );
+    }
+
+    function ProjectList({ projects }) {
+      return (
+        <section className="project-grid" aria-label="Portfolio projects">
+          {projects.map(project => (
+            <ProjectCard key={project.id} project={project} />
+          ))}
+        </section>
+      );
+    }
+
+    function App() {
+      const [selectedFilter, setSelectedFilter] = React.useState('All');
+      const visibleProjects = selectedFilter === 'All'
+        ? projects
+        : projects.filter(project => project.technologies.includes(selectedFilter));
+
+      return (
+        <>
+          <header className="hero">
+            <div className="hero-decoration" aria-hidden="true">🌷 🦋 🎀</div>
+            <h1>Rai's Web Programming Portfolio</h1>
+            <p>A cute collection of my weekly coding exercises, projects and learning progress.</p>
+            <span className="student-tag">Rai Swonu · 202637725</span>
+          </header>
+
+          <div className="gallery-toolbar">
+            <div>
+              <h2>My Coursework</h2>
+              <p className="result-count">
+                Showing {visibleProjects.length} of {projects.length} projects
+              </p>
+            </div>
+            <FilterBar
+              selectedFilter={selectedFilter}
+              onFilterChange={setSelectedFilter}
+            />
+          </div>
+
+          <ProjectList projects={visibleProjects} />
+        </>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>

@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Card with Children</title>
+
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <style>
+    :root {
+      --pink: #f58ab7;
+      --pink-dark: #96365f;
+      --purple: #b79ce9;
+      --purple-dark: #62477d;
+      --blue: #79cfdf;
+      --blue-dark: #27616b;
+      --yellow: #ffd56a;
+      --ink: #55445f;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      overflow-x: hidden;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 8% 12%, rgba(255, 190, 215, 0.95) 0 85px, transparent 86px),
+        radial-gradient(circle at 92% 18%, rgba(209, 192, 255, 0.90) 0 110px, transparent 111px),
+        radial-gradient(circle at 82% 92%, rgba(159, 226, 235, 0.72) 0 140px, transparent 141px),
+        radial-gradient(circle at 12% 88%, rgba(255, 221, 139, 0.70) 0 90px, transparent 91px),
+        #fff9fc;
+    }
+
+    body::before {
+      content: '✦';
+      position: fixed;
+      left: -55px;
+      bottom: 8%;
+      z-index: -1;
+      font-size: 180px;
+      line-height: 1;
+      opacity: 0.12;
+      color: var(--purple);
+    }
+
+    body::after {
+      content: '🌼';
+      position: fixed;
+      right: -35px;
+      top: 5%;
+      z-index: -1;
+      font-size: 180px;
+      line-height: 1;
+      opacity: 0.12;
+    }
+
+    .exercise {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 40px 0 52px;
+    }
+
+    .exercise h1 {
+      width: fit-content;
+      max-width: 100%;
+      margin: 0 auto 24px;
+      padding: 14px 22px;
+      border: 2px solid rgba(255, 255, 255, 0.85);
+      border-radius: 999px;
+      color: var(--pink-dark);
+      background: linear-gradient(135deg, #fff 0%, #fdf0f7 100%);
+      box-shadow: 0 10px 28px rgba(150, 54, 95, 0.12);
+      font-size: clamp(24px, 4vw, 38px);
+      line-height: 1.15;
+      text-align: center;
+    }
+
+    .exercise h1 code {
+      padding: 4px 10px;
+      border-radius: 12px;
+      color: var(--purple-dark);
+      background: #ede4ff;
+      font-family: 'Courier New', monospace;
+      font-size: 0.78em;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.28fr) minmax(300px, 0.72fr);
+      gap: 20px;
+      align-items: stretch;
+    }
+
+    pre {
+      margin: 0;
+      min-height: 430px;
+      padding: 26px;
+      overflow: auto;
+      border: 2px solid #ffffff;
+      border-radius: 26px;
+      background: linear-gradient(145deg, rgba(98, 71, 125, 0.98), rgba(74, 86, 128, 0.98));
+      color: #fff8fc;
+      box-shadow: 0 16px 34px rgba(98, 71, 125, 0.18);
+      font-size: 13px;
+      line-height: 1.58;
+    }
+
+    pre::first-line { color: #ffd56a; }
+
+    .live-result {
+      position: relative;
+      min-height: 430px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      padding: 24px 16px;
+      border: 2px solid #ffffff;
+      border-radius: 26px;
+      background:
+        radial-gradient(circle at 18% 18%, #ffb9d5 0 8px, transparent 9px),
+        radial-gradient(circle at 82% 20%, #d7c8fa 0 9px, transparent 10px),
+        radial-gradient(circle at 20% 78%, #a6e2eb 0 11px, transparent 12px),
+        radial-gradient(circle at 82% 82%, #ffe49b 0 10px, transparent 11px),
+        linear-gradient(135deg, #fff0f6 0%, #f1ecff 48%, #eafafd 100%);
+      box-shadow: 0 16px 34px rgba(150, 54, 95, 0.12);
+    }
+
+    .live-result::before {
+      content: '🌸';
+      position: absolute;
+      left: 12px;
+      top: 8px;
+      font-size: 36px;
+    }
+
+    .live-result::after {
+      content: '🦋';
+      position: absolute;
+      right: 14px;
+      bottom: 10px;
+      font-size: 38px;
+    }
+
+    .card-stack {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      width: 280px;
+      max-width: 100%;
+      gap: 14px;
+    }
+
+    .content-card {
+      padding: 18px 20px;
+      border: 3px solid #ffffff;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.94);
+      box-shadow: 0 12px 28px rgba(150, 54, 95, 0.14), 0 4px 0 #efb0cc;
+    }
+
+    .content-card:nth-child(2) {
+      box-shadow: 0 12px 28px rgba(98, 71, 125, 0.14), 0 4px 0 #c8b8ed;
+    }
+
+    .content-card h3 {
+      margin: 0 0 9px;
+      color: var(--pink-dark);
+      font-size: 18px;
+    }
+
+    .content-card ul {
+      margin: 0;
+      padding-left: 20px;
+      color: var(--purple-dark);
+      font-weight: 700;
+    }
+
+    .content-card li + li { margin-top: 4px; }
+
+    .content-card p {
+      margin: 0;
+      color: var(--blue-dark);
+      line-height: 1.5;
+      font-weight: 700;
+    }
+
+    .description {
+      width: fit-content;
+      max-width: 100%;
+      margin: 22px auto 0;
+      padding: 11px 17px;
+      border: 2px solid #ffffff;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.82);
+      color: #695c70;
+      box-shadow: 0 8px 20px rgba(150, 54, 95, 0.09);
+      font-size: 13px;
+      text-align: center;
+    }
+
+    .description code { color: var(--pink-dark); font-weight: 800; }
+
+    @media (max-width: 800px) {
+      .exercise {
+        width: min(100% - 24px, 1120px);
+        padding-top: 24px;
+      }
+
+      .layout { grid-template-columns: 1fr; }
+      pre, .live-result { min-height: 360px; }
+      .exercise h1 { border-radius: 22px; }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="exercise">
+    <h1>Layout with <code>props.children</code></h1>
+
+    <div class="layout">
+      <pre><code>function Card({ title, children }) {
+  return (
+    &lt;section className="content-card"&gt;
+      &lt;h3&gt;{title}&lt;/h3&gt;
+      {children}
+    &lt;/section&gt;
+  );
+}
+
+function App() {
+  return (
+    &lt;div className="card-stack"&gt;
+      &lt;Card title="Lecture Topics"&gt;
+        &lt;ul&gt;
+          &lt;li&gt;Components&lt;/li&gt;
+          &lt;li&gt;Props&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/Card&gt;
+
+      &lt;Card title="Homework"&gt;
+        &lt;p&gt;
+          Build a student profile card component
+        &lt;/p&gt;
+      &lt;/Card&gt;
+    &lt;/div&gt;
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+  &lt;App /&gt;
+);</code></pre>
+
+      <section class="live-result" aria-label="Live result">
+        <div id="root"></div>
+      </section>
+    </div>
+
+    <p class="description">The <code>children</code> prop lets <code>Card</code> wrap any content inside it.</p>
+  </main>
+
+  <script type="text/babel">
+    function Card({ title, children }) {
+      return (
+        <section className="content-card">
+          <h3>{title}</h3>
+          {children}
+        </section>
+      );
+    }
+
+    function App() {
+      return (
+        <div className="card-stack">
+          <Card title="Lecture Topics">
+            <ul>
+              <li>Components</li>
+              <li>Props</li>
+            </ul>
+          </Card>
+
+          <Card title="Homework">
+            <p>Build a student profile card component</p>
+          </Card>
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>
