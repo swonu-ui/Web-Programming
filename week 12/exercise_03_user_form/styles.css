@@ -1,0 +1,69 @@
+@import url('../exercise_01_counter_bug/styles.css');
+
+.user-form-card { max-width: none; }
+
+.user-form {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.form-field {
+  display: grid;
+  gap: 7px;
+}
+
+.form-field label {
+  color: #60457e;
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.form-field input {
+  width: 100%;
+  height: 42px;
+  border: 2px solid #efdae6;
+  border-radius: 12px;
+  background: #fff;
+  color: var(--ink);
+  padding: 0 12px;
+  outline: none;
+}
+
+.form-field input:focus {
+  border-color: #b9a5e8;
+  box-shadow: 0 0 0 4px rgba(185, 165, 232, 0.18);
+}
+
+.state-output {
+  grid-column: 1 / -1;
+  margin: 2px 0 0;
+  color: var(--muted);
+  font-family: "SFMono-Regular", Consolas, monospace;
+  font-size: 0.78rem;
+}
+
+.user-form button { justify-self: start; }
+
+.submitted-state {
+  display: none;
+  min-height: 116px;
+  place-content: center;
+  text-align: center;
+}
+
+.submitted-state.show {
+  display: grid;
+  gap: 14px;
+}
+
+.submitted-state p {
+  margin: 0;
+  color: var(--accent);
+  font-weight: 800;
+}
+
+@media (max-width: 640px) {
+  .user-form { grid-template-columns: 1fr; }
+  .state-output { grid-column: auto; }
+}

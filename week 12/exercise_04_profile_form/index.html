@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Demo 04 · ProfileForm</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main>
+    <header class="page-header">
+      <p class="kicker">♡ Week 12 · React State</p>
+      <h1>Demo 04 · ProfileForm <span>(state with an object)</span></h1>
+      <p class="description">
+        One object in state, updated with the spread operator so every change creates a new object.
+      </p>
+    </header>
+
+    <section class="code-section" aria-label="Example source code">
+      <pre><code><span>function</span> ProfileForm() {
+  <span>const</span> [user, setUser] = useState({ name: <b>''</b>, email: <b>''</b>, bio: <b>''</b> });
+
+  <span>const</span> handleChange = (field, value) =&gt; {
+    setUser((prev) =&gt; ({ ...prev, [field]: value }));
+  };
+
+  <span>return</span> (
+    &lt;form onSubmit={(e) =&gt; e.preventDefault()}&gt;
+      &lt;label htmlFor=<b>"pf-name"</b>&gt;Name&lt;/label&gt;
+      &lt;input id=<b>"pf-name"</b> value={user.name}
+             onChange={(e) =&gt; handleChange(<b>'name'</b>, e.target.value)} /&gt;
+
+      &lt;label htmlFor=<b>"pf-email"</b>&gt;Email&lt;/label&gt;
+      &lt;input id=<b>"pf-email"</b> type=<b>"email"</b> value={user.email}
+             onChange={(e) =&gt; handleChange(<b>'email'</b>, e.target.value)} /&gt;
+
+      &lt;label htmlFor=<b>"pf-bio"</b>&gt;Bio&lt;/label&gt;
+      &lt;textarea id=<b>"pf-bio"</b> rows=<i>"3"</i> value={user.bio}
+                onChange={(e) =&gt; handleChange(<b>'bio'</b>, e.target.value)} /&gt;
+
+      &lt;p&gt;State object:&lt;/p&gt;
+      &lt;pre&gt;&lt;code&gt;{JSON.stringify(user, null, 2)}&lt;/code&gt;&lt;/pre&gt;
+    &lt;/form&gt;
+  );
+}</code></pre>
+    </section>
+
+    <section class="demo-section" aria-labelledby="liveTitle">
+      <h2 id="liveTitle">Live result</h2>
+      <div class="demo-card profile-form-card">
+        <form id="profileForm" class="profile-form">
+          <div class="form-field">
+            <label for="profileName">Name</label>
+            <input id="profileName" name="name" type="text" autocomplete="name" placeholder="Your name">
+          </div>
+
+          <div class="form-field">
+            <label for="profileEmail">Email</label>
+            <input id="profileEmail" name="email" type="email" autocomplete="email" placeholder="you@example.com">
+          </div>
+
+          <div class="form-field full-width">
+            <label for="profileBio">Bio</label>
+            <textarea id="profileBio" name="bio" rows="3" placeholder="Tell us a little about yourself..."></textarea>
+          </div>
+        </form>
+
+        <div class="state-preview">
+          <p>State object:</p>
+          <pre><code id="stateObject">{
+  "name": "",
+  "email": "",
+  "bio": ""
+}</code></pre>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

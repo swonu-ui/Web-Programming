@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Demo 07 · Counter with History</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main>
+    <header class="page-header">
+      <p class="kicker">♡ Week 12 · React State</p>
+      <h1>Demo 07 · Counter with History</h1>
+      <p class="description">
+        Add 1, subtract 1, reset, view the last five values, and undo. This demo uses
+        two state variables: <code>count</code> and <code>history</code>.
+      </p>
+    </header>
+
+    <section class="code-section" aria-label="Example source code">
+      <pre><code><span>function</span> CounterWithHistory() {
+  <span>const</span> [count, setCount] = useState(<i>0</i>);
+  <span>const</span> [history, setHistory] = useState([<i>0</i>]);
+
+  <span>function</span> change(next) {
+    setCount(next);
+    setHistory((prev) =&gt; [...prev, next]);
+  }
+
+  <span>function</span> undo() {
+    <span>if</span> (history.length &lt; <i>2</i>) <span>return</span>;
+    setCount(history[history.length - <i>2</i>]);
+    setHistory((prev) =&gt; prev.slice(<i>0</i>, -<i>1</i>));
+  }
+
+  <span>return</span> (
+    &lt;div&gt;
+      &lt;p&gt;{count}&lt;/p&gt;
+      &lt;button onClick={() =&gt; change(count + <i>1</i>)}&gt;+1&lt;/button&gt;
+      &lt;button onClick={() =&gt; change(count - <i>1</i>)}&gt;−1&lt;/button&gt;
+      &lt;button onClick={() =&gt; change(<i>0</i>)}&gt;Reset&lt;/button&gt;
+      &lt;button onClick={undo} disabled={history.length &lt; <i>2</i>}&gt;Undo&lt;/button&gt;
+      &lt;p&gt;History (last 5): [{history.slice(-<i>5</i>).join(<b>', '</b>)}]&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+    </section>
+
+    <section class="demo-section" aria-labelledby="liveTitle">
+      <h2 id="liveTitle">Live result</h2>
+      <div class="demo-card history-card">
+        <p class="history-count" id="historyCount" aria-live="polite">0</p>
+        <div class="history-controls">
+          <button id="incrementButton" type="button">+1</button>
+          <button id="decrementButton" type="button">−1</button>
+          <button id="resetButton" type="button">Reset</button>
+          <button id="undoButton" type="button" disabled>Undo</button>
+        </div>
+        <p class="history-output" id="historyOutput">History (last 5): [0]</p>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

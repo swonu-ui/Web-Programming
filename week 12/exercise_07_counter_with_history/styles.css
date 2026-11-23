@@ -1,0 +1,41 @@
+@import url('../exercise_01_counter_bug/styles.css');
+
+.history-card {
+  max-width: none;
+  text-align: center;
+}
+
+.history-count {
+  margin: 0 0 12px;
+  color: var(--accent);
+  font-size: 2.4rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.history-controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.history-controls button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+  transform: none;
+}
+
+.history-output {
+  margin: 18px 0 0;
+  color: #60457e;
+  font-family: "SFMono-Regular", Consolas, monospace;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+@media (max-width: 640px) {
+  .history-controls button {
+    flex: 1 1 calc(50% - 10px);
+  }
+}

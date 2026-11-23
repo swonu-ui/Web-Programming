@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shopping Cart · Study Supplies</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main>
+    <header class="page-header">
+      <h1>🎀 Study Supplies Shop</h1>
+      <p>React state homework · Week 12</p>
+    </header>
+
+    <div class="shop-layout">
+      <section class="products-section" aria-labelledby="productsTitle">
+        <h2 id="productsTitle">Products</h2>
+        <ul class="product-list" id="productList"></ul>
+      </section>
+
+      <aside class="cart-panel" aria-labelledby="cartTitle">
+        <h2 id="cartTitle">Your cart <span id="cartHeadingCount">(0 items)</span></h2>
+        <div id="cartItems"></div>
+        <p class="cart-total">Total: <strong id="cartTotal">₩0</strong></p>
+        <button class="clear-cart" id="clearCart" type="button">Clear cart</button>
+      </aside>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

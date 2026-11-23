@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Demo 02 · CounterState</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main>
+    <header class="page-header">
+      <p class="kicker">♡ Week 12 · React State</p>
+      <h1>Demo 02 · CounterState <span>(useState &amp; functional updates)</span></h1>
+      <p class="description">
+        The fixed counter with <code>useState</code>. The last two buttons call the setter three times:
+        once with the current value and once with the functional form.
+      </p>
+    </header>
+
+    <section class="code-section" aria-label="Example source code">
+      <pre><code><span>function</span> CounterState() {
+  <span>const</span> [count, setCount] = useState(<i>0</i>);
+
+  <span>const</span> increment = () =&gt; setCount((prev) =&gt; prev + <i>1</i>);
+  <span>const</span> decrement = () =&gt; setCount((prev) =&gt; prev - <i>1</i>);
+  <span>const</span> reset = () =&gt; setCount(<i>0</i>);
+
+  <span>function</span> plusThreeStale() {
+    setCount(count + <i>1</i>);
+    setCount(count + <i>1</i>);
+    setCount(count + <i>1</i>);   <em>// all three use the same snapshot</em>
+  }
+
+  <span>function</span> plusThreeFunctional() {
+    setCount((prev) =&gt; prev + <i>1</i>);
+    setCount((prev) =&gt; prev + <i>1</i>);
+    setCount((prev) =&gt; prev + <i>1</i>);   <em>// each one gets the latest value</em>
+  }
+
+  <span>return</span> (
+    &lt;div&gt;
+      &lt;p aria-live=<b>"polite"</b>&gt;Count: &lt;strong&gt;{count}&lt;/strong&gt;&lt;/p&gt;
+      &lt;button onClick={decrement}&gt;−&lt;/button&gt;
+      &lt;button onClick={increment}&gt;+&lt;/button&gt;
+      &lt;button onClick={reset}&gt;Reset&lt;/button&gt;
+      &lt;button onClick={plusThreeStale}&gt;3 × setCount(count + 1)&lt;/button&gt;
+      &lt;button onClick={plusThreeFunctional}&gt;3 × setCount(prev =&gt; prev + 1)&lt;/button&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+    </section>
+
+    <section class="demo-section" aria-labelledby="liveTitle">
+      <h2 id="liveTitle">Live result</h2>
+      <div class="demo-card state-demo">
+        <p class="counter" id="counter" aria-live="polite">Count: <strong id="countValue">0</strong></p>
+        <div class="button-row">
+          <button id="decrementButton" type="button">−</button>
+          <button id="incrementButton" type="button">+</button>
+          <button id="resetButton" type="button">Reset</button>
+          <button class="long-button" id="staleButton" type="button">3 × setCount(count + 1)</button>
+          <button class="long-button" id="functionalButton" type="button">3 × setCount(prev =&gt; prev + 1)</button>
+        </div>
+        <p class="result-note">Try each button and compare the results.</p>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

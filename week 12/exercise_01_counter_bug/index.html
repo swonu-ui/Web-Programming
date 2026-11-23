@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Demo 01 · CounterBug</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <main>
+    <header class="page-header">
+      <p class="kicker">♡ Week 12 · React State</p>
+      <h1>Demo 01 · CounterBug <span>(a regular variable)</span></h1>
+      <p class="description">
+        The click handler changes a plain <code>let</code> variable. The log below shows
+        the variable going up, but the count on screen never changes.
+      </p>
+    </header>
+
+    <section class="code-section" aria-label="Example source code">
+      <pre><code><span>const</span> log = document.getElementById(<b>'log'</b>);
+
+<span>function</span> CounterBug() {
+  <span>let</span> count = <i>0</i>;   <em>// regular variable: React can't see it</em>
+
+  <span>function</span> handleClick() {
+    count++;
+    log.textContent += <b>' ' + count</b>;   <em>// stands in for console.log</em>
+  }
+
+  <span>return</span> (
+    &lt;div&gt;
+      &lt;p&gt;Count: {count}&lt;/p&gt;
+      &lt;button type=<b>"button"</b> onClick={handleClick}&gt;+1&lt;/button&gt;
+    &lt;/div&gt;
+  );
+}
+
+ReactDOM.createRoot(document.getElementById(<b>'root'</b>)).render(&lt;CounterBug /&gt;);</code></pre>
+    </section>
+
+    <section class="demo-section" aria-labelledby="liveTitle">
+      <h2 id="liveTitle">Live result</h2>
+      <div class="demo-card">
+        <p class="counter" id="counter">Count: 0</p>
+        <button id="incrementButton" type="button">+1</button>
+
+        <div class="log-wrap">
+          <p class="log-title">Log (what console.log would show)</p>
+          <p class="log" id="log" aria-live="polite"></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

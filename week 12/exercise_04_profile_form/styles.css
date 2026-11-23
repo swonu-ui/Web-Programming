@@ -1,0 +1,76 @@
+@import url('../exercise_01_counter_bug/styles.css');
+
+.profile-form-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, .75fr);
+  gap: 24px;
+  max-width: none;
+}
+
+.profile-form {
+  display: grid;
+  gap: 14px;
+}
+
+.form-field {
+  display: grid;
+  gap: 7px;
+}
+
+.form-field label,
+.state-preview p {
+  color: #60457e;
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.form-field input,
+.form-field textarea {
+  width: 100%;
+  border: 2px solid #efdae6;
+  border-radius: 12px;
+  background: #fff;
+  color: var(--ink);
+  padding: 11px 12px;
+  outline: none;
+  resize: vertical;
+}
+
+.form-field input {
+  height: 42px;
+}
+
+.form-field input:focus,
+.form-field textarea:focus {
+  border-color: #b9a5e8;
+  box-shadow: 0 0 0 4px rgba(185, 165, 232, 0.18);
+}
+
+.state-preview {
+  min-width: 0;
+  padding: 15px;
+  border: 2px solid #efdae6;
+  border-radius: 16px;
+  background: var(--pink-light);
+}
+
+.state-preview p {
+  margin: 0 0 8px;
+}
+
+.state-preview pre {
+  margin: 0;
+  overflow-x: auto;
+  border-radius: 10px;
+  background: #33283a;
+  color: #e8edf7;
+  padding: 14px;
+  font-size: 0.78rem;
+  line-height: 1.55;
+}
+
+@media (max-width: 640px) {
+  .profile-form-card {
+    grid-template-columns: 1fr;
+  }
+}

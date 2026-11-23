@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Demo 03 · UserForm</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main>
+    <header class="page-header">
+      <p class="kicker">♡ Week 12 · React State</p>
+      <h1>Demo 03 · UserForm <span>(multiple useState calls)</span></h1>
+      <p class="description">
+        Four separate state variables: <code>name</code>, <code>email</code>,
+        <code>age</code> and <code>submitted</code>.
+      </p>
+    </header>
+
+    <section class="code-section" aria-label="Example source code">
+      <pre><code><span>function</span> UserForm() {
+  <span>const</span> [name, setName] = useState(<b>''</b>);
+  <span>const</span> [email, setEmail] = useState(<b>''</b>);
+  <span>const</span> [age, setAge] = useState(<i>0</i>);
+  <span>const</span> [submitted, setSubmitted] = useState(<i>false</i>);
+
+  <span>function</span> handleSubmit(e) {
+    e.preventDefault();
+    setSubmitted(<i>true</i>);
+  }
+
+  <span>if</span> (submitted) {
+    <span>return</span> (
+      &lt;div&gt;
+        &lt;p&gt;Thanks, {name || <b>'friend'</b>}! Email: {email || <b>'(none)'</b>}, Age: {age}&lt;/p&gt;
+        &lt;button onClick={() =&gt; setSubmitted(<i>false</i>)}&gt;Edit again&lt;/button&gt;
+      &lt;/div&gt;
+    );
+  }
+
+  <span>return</span> (
+    &lt;form onSubmit={handleSubmit}&gt;
+      &lt;label htmlFor=<b>"uf-name"</b>&gt;Name&lt;/label&gt;
+      &lt;input id=<b>"uf-name"</b> value={name} onChange={e =&gt; setName(e.target.value)} /&gt;
+      &lt;label htmlFor=<b>"uf-email"</b>&gt;Email&lt;/label&gt;
+      &lt;input id=<b>"uf-email"</b> type=<b>"email"</b> value={email} onChange={e =&gt; setEmail(e.target.value)} /&gt;
+      &lt;label htmlFor=<b>"uf-age"</b>&gt;Age&lt;/label&gt;
+      &lt;input id=<b>"uf-age"</b> type=<b>"number"</b> value={age} onChange={e =&gt; setAge(Number(e.target.value))} /&gt;
+      &lt;button type=<b>"submit"</b>&gt;Submit&lt;/button&gt;
+    &lt;/form&gt;
+  );
+}</code></pre>
+    </section>
+
+    <section class="demo-section" aria-labelledby="liveTitle">
+      <h2 id="liveTitle">Live result</h2>
+      <div class="demo-card user-form-card">
+        <form id="userForm" class="user-form">
+          <div class="form-field">
+            <label for="nameInput">Name</label>
+            <input id="nameInput" type="text" placeholder="WongDengFoong">
+          </div>
+          <div class="form-field">
+            <label for="emailInput">Email</label>
+            <input id="emailInput" type="email" placeholder="me@gachon.ac.kr">
+          </div>
+          <div class="form-field">
+            <label for="ageInput">Age</label>
+            <input id="ageInput" type="number" min="0" value="0">
+          </div>
+          <p class="state-output" id="stateOutput">Right now: name = '', email = '', age = 0, submitted = false</p>
+          <button type="submit">Submit</button>
+        </form>
+
+        <div class="submitted-state" id="submittedState" aria-live="polite">
+          <p id="thanksText"></p>
+          <button id="editAgain" type="button">Edit again</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

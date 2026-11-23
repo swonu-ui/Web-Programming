@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Demo 05 · TodoList</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main>
+    <header class="page-header">
+      <p class="kicker">♡ Week 12 · React State</p>
+      <h1>Demo 05 · TodoList <span>(state with an array)</span></h1>
+      <p class="description">
+        Add with <code>spread</code>, remove with <code>filter</code>, and toggle with <code>map</code>.
+      </p>
+    </header>
+
+    <section class="code-section" aria-label="Example source code">
+      <pre><code><span>function</span> TodoList() {
+  <span>const</span> [todos, setTodos] = useState([]);
+  <span>const</span> [input, setInput] = useState(<b>''</b>);
+
+  <span>const</span> addTodo = (e) =&gt; {
+    e.preventDefault();
+    <span>if</span> (!input.trim()) <span>return</span>;
+    setTodos((prev) =&gt; [...prev, { id: Date.now(), text: input.trim(), done: <i>false</i> }]);
+    setInput(<b>''</b>);
+  };
+
+  <span>const</span> removeTodo = (id) =&gt;
+    setTodos((prev) =&gt; prev.filter((t) =&gt; t.id !== id));
+
+  <span>const</span> toggleTodo = (id) =&gt;
+    setTodos((prev) =&gt; prev.map((t) =&gt;
+      t.id === id ? { ...t, done: !t.done } : t
+    )));
+
+  <span>const</span> left = todos.filter((t) =&gt; !t.done).length;
+
+  <span>return</span> (
+    &lt;div&gt;
+      &lt;form onSubmit={addTodo}&gt;...&lt;/form&gt;
+      {todos.length === <i>0</i> ? &lt;p&gt;Nothing to do yet.&lt;/p&gt; : (
+        &lt;ul&gt;{todos.map((t) =&gt; (
+          &lt;li key={t.id}&gt;
+            &lt;input type=<b>"checkbox"</b> checked={t.done} onChange={() =&gt; toggleTodo(t.id)} /&gt;
+            &lt;span&gt;{t.text}&lt;/span&gt;
+            &lt;button onClick={() =&gt; removeTodo(t.id)}&gt;✕&lt;/button&gt;
+          &lt;/li&gt;
+        ))}&lt;/ul&gt;
+      )}
+      &lt;p&gt;{left} of {todos.length} left&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+    </section>
+
+    <section class="demo-section" aria-labelledby="liveTitle">
+      <h2 id="liveTitle">Live result</h2>
+      <div class="demo-card todo-card">
+        <form id="todoForm" class="todo-form">
+          <div class="todo-field">
+            <label for="todoInput">New task</label>
+            <input id="todoInput" type="text" placeholder="Finish the shopping cart">
+          </div>
+          <button type="submit">Add</button>
+        </form>
+
+        <p class="empty-state" id="emptyState">Nothing to do yet.</p>
+        <ul class="todo-list" id="todoList" aria-label="Todo items"></ul>
+        <p class="todo-count" id="todoCount" aria-live="polite">0 of 0 left</p>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

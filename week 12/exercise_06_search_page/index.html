@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Demo 06 · SearchPage</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main>
+    <header class="page-header">
+      <p class="kicker">♡ Week 12 · React State</p>
+      <h1>Demo 06 · SearchPage <span>(lifting state up)</span></h1>
+      <p class="description">
+        <code>SearchPage</code> owns <code>query</code> and <code>results</code>. 
+        <code>SearchBar</code> sends each change up through <code>onSearch</code>; 
+        <code>ResultList</code> only reads props.
+      </p>
+    </header>
+
+    <section class="code-section" aria-label="Example source code">
+      <pre><code><span>const</span> BERRIES = [<b>'Blackberry'</b>, <b>'Blueberry'</b>, <b>'Cloudberry'</b>,
+  <b>'Cranberry'</b>, <b>'Elderberry'</b>, <b>'Gooseberry'</b>, <b>'Huckleberry'</b>,
+  <b>'Mulberry'</b>, <b>'Raspberry'</b>, <b>'Salmonberry'</b>, <b>'Strawberry'</b>];
+
+<span>const</span> fetchResults = (q) =&gt;
+  Promise.resolve(BERRIES.filter((b) =&gt;
+    b.toLowerCase().includes(q.trim().toLowerCase())
+  )));
+
+<span>function</span> SearchPage() {
+  <span>const</span> [query, setQuery] = useState(<b>''</b>);
+  <span>const</span> [results, setResults] = useState(BERRIES);
+
+  <span>const</span> handleSearch = async (q) =&gt; {
+    setQuery(q);
+    <span>const</span> data = await fetchResults(q);
+    setResults(data);
+  };
+
+  <span>return</span> (
+    &lt;&gt;
+      &lt;SearchBar onSearch={handleSearch} /&gt;
+      &lt;ResultList query={query} results={results} /&gt;
+    &lt;/&gt;
+  );
+}</code></pre>
+    </section>
+
+    <section class="demo-section" aria-labelledby="liveTitle">
+      <h2 id="liveTitle">Live result</h2>
+      <div class="demo-card search-card">
+        <div class="search-field">
+          <label for="berrySearch">Search berry</label>
+          <div class="search-input-wrap">
+            <span aria-hidden="true">⌕</span>
+            <input id="berrySearch" type="search" autocomplete="off" placeholder="Try blueberry">
+          </div>
+        </div>
+
+        <div class="result-panel">
+          <p class="result-count" id="resultCount" aria-live="polite">14 results</p>
+          <ul class="fruit-list" id="berryList"></ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
